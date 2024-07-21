@@ -1,0 +1,113 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.flex_center_center {
+  @include flex-alignitems-justifycontent(center, center);
+}
+
+.text_area_asset_modal_container {
+  @include absolute-left-top-zindex-width-height(50%, 50%, 3);
+  background-color: $color-black-medium-soft;
+  transition: all $transition-time-very-fast;
+  transform: translate(-50%, -50%);
+  visibility: visible;
+  opacity: 1;
+  
+  .text_area_asset_modal_body {
+    padding: 1rem;
+    background-color: white;
+  }
+
+  button {
+    border-radius: $border-radiues-button;
+    background-color: $color-common;
+    border: 1px solid $color-common;
+    transition: all $transition-time-very-fast;
+    color: white;
+    padding: 0.5rem 2rem;
+
+    &:disabled {
+      transition: all $transition-time-very-fast;
+      background-color: $color-common-soft;
+      color: $color-common;
+
+      &:hover {
+        background-color: $color-common-soft;
+        color: $color-common;  
+      }
+    }
+
+    &:hover {
+      transition: all $transition-time-very-fast;
+      color: $color-common;
+      background-color: white;
+    }
+  }
+}
+
+.text_area_asset_modal_container_hidden {
+  transition: all $transition-time-very-fast;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.text_area_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .text_area {
+    border-radius: $border-radius-container;
+    border: $border-container-soft;
+    font-size: 0.9rem;
+    width: 100%;
+    flex-grow: 1;
+    padding: 1rem;
+    overflow: hidden;
+    resize: none;
+  
+    &:focus, &:hover {
+      transition: all $transition-time-fast;
+      border: 1px solid $color-common;
+    }
+  }
+  
+  section {
+    display: flex;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+  
+    .text_area_text_action {  
+      background-color: $color-common;
+      border-radius: $border-radiues-button;
+      transition: all $transition-time-fast;
+      border: 1px solid $color-common;
+      color: white;
+      padding: 0.5rem 1rem;
+  
+      &:disabled {
+        background-color: $color-common-soft;
+        color: $color-common;
+        cursor: auto;
+  
+        &:hover {
+          background-color: $color-common-soft;
+          border: 1px solid $color-common;
+          color: $color-common;
+        }
+      }
+  
+      svg {
+        pointer-events: none;
+        width: 0.9rem;
+      }
+  
+      &:hover {
+        transition: all $transition-time-fast;
+        border: 1px solid $color-common-hover;
+        color: $color-common-hover;
+        background-color: white;
+      }
+    }
+  }
+}

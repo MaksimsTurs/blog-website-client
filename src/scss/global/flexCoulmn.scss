@@ -1,0 +1,49 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+// ALIGN ITEM | JUSTIFY CONTENT | GAP
+
+.flex-column-normal-normal-none {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-column-normal-normal-medium {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flex-column-normal-normal-small {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.flex-column-flex-start-normal-none {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start; 
+}
+
+.flex-column-center-center-small {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.flex-column-center-center-medium {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.flex-column-center-normal-none {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

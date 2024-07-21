@@ -1,0 +1,30 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.authorization_modal_container {
+  @include absolute-left-top-zindex-width-height(0%, 8%, 99);
+  right: 0%;
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem 1rem;
+  
+  .authorization_modal_body {
+    border-radius: $border-radius-container;
+    box-shadow: $box-shadow-button-hover;
+    border: 1px solid $color-common;
+    background-color: white;
+    width: 20rem;
+    height: fit-content;
+    pointer-events: auto;
+  }
+}
+
+.authorization_modal_container_hidden {
+  @include absolute-left-top-zindex-width-height(100%, 1%, 99);
+  backdrop-filter: blur(0px);
+  background-color: white;
+  width: 18rem;
+  height: fit-content;
+}

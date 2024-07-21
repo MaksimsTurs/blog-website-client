@@ -1,0 +1,34 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.user_modal_user_content {
+  padding-right: 0.75rem;
+
+  > a {
+    border-radius: $border-radius-container;
+    padding: 0.5rem 0rem;
+    cursor: pointer;
+
+    .user_modal_data_container {
+      font-size: 0.8rem;
+
+      p:first-child {
+        font-weight: bold;
+      }
+
+      p:last-child {
+        color: $color-black-medium-soft;
+      }
+    }
+
+    &:hover {
+      background-color: $color-common-soft;
+      transition: all $transition-time-very-fast;
+      padding-left: 0.5rem;
+
+      .user_modal_data_container p:last-child {
+        color: $color-common !important;
+      }
+    }
+  }
+}

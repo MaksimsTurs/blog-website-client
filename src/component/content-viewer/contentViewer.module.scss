@@ -1,0 +1,18 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.content_viewer_container {
+  width: 100%;
+  flex-wrap: wrap;
+  height: fit-content;
+
+  .content_viewer_post_empty {
+    color: $color-black-medium-soft;
+    width: 100%;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}

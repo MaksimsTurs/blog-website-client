@@ -1,0 +1,11 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.pagintion_list_button {
+  @include loader(4px);
+  box-shadow: $box-shadow-container;
+  width: 2rem;
+  height: 2rem;
+}
+
+@include loader-animation();

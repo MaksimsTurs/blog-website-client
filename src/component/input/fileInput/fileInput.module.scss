@@ -1,0 +1,83 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.file_input_label {
+  @include flex-alignitems-justifycontent(center, center);
+  border: $border-container-soft;
+  border-radius: $border-radius-container;
+  transition: all $transition-time-very-fast;
+  position: relative;
+  overflow: hidden;
+  height: 8rem;
+  width: 100%;
+  cursor: pointer;
+
+  &:where(div) &:hover {
+    transition: none !important;
+    border: $border-container-soft !important;
+    cursor: auto;
+  }
+
+  &:hover {
+    transition: all $transition-time-very-fast;
+    border: 1px solid $color-common;
+
+    .file_input_text {
+      color: $color-common;
+      transition: all $transition-time-very-fast;
+    }
+  }
+
+  .file_input_uploaded_asset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+  }
+
+  .asset_input_buttons {
+    @include absolute-left-top-zindex-width-height(88%, 7%);
+
+    .asset_button {    
+      @include flex-alignitems-justifycontent(center, center);  
+      transition: all $transition-time-very-fast;
+      border: none;
+      color: white;
+      padding: 0.35rem;
+      border-radius: 50%;
+      width: fit-content;
+      height: fit-content;
+      cursor: pointer;
+      
+      svg {
+        position: none;
+        width: 0.9rem;
+        height: 0.9rem;
+      }
+    }
+
+    button {
+      background-color: $color-common-soft;
+
+      &:hover {
+        transition: all $transition-time-very-fast;
+        background-color: $color-common;
+      }
+    }
+
+    label {
+      background-color: $color-common-hover-soft;
+      
+      &:hover {
+        transition: all $transition-time-very-fast;
+        background-color: $color-common-hover;
+      }
+    }
+  }
+
+  .file_input_text {
+    @include flex-alignitems-justifycontent(center, center);
+    transition: all $transition-time-very-fast;
+    color: rgb(206, 206, 206);
+    gap: 0.5rem;
+  }
+}

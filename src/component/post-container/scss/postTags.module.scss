@@ -1,0 +1,19 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_tags {
+  font-size: $font-small;
+  margin-top: 0.5rem;
+
+  a {
+    border-radius: $border-radiues-button;
+    color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(192, 192, 192, 0.2);
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(192, 192, 192, 0.3);
+    }
+  }
+}

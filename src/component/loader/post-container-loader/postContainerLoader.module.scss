@@ -1,0 +1,29 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_loader_container {
+  min-width: 50%;
+  max-width: 100%;
+  height: fit-content;
+
+  .post_loader_text {
+    @include loader();
+    height: 0.9rem;
+  }
+
+  .post_loader_tag {
+    @include loader();
+    width: 2.5rem;
+    height: 1.5rem;
+    background-color: rgba(192, 192, 192, 0.4);
+  }
+
+  .post_loader_avatar {
+    @include loader();
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+  }
+}
+
+@include loader-animation();

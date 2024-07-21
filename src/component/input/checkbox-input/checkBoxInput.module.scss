@@ -1,0 +1,55 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.checkbox_default_input { display: none ; }
+
+.checkbox_body { 
+  cursor: pointer;
+
+  &:hover .checkbox_custom_checkbox_wrapper {
+    box-shadow: $box-shadow-button;
+    transition: all $transition-time-very-fast;
+
+    svg { color: $color-common; }
+  }
+}
+
+.checkbox_custom_checkbox_wrapper {
+  transition: all $transition-time-very-fast;
+  border: 1px solid $color-common;
+  position: relative;
+  border-radius: 4px;
+  width: 1.2rem;
+  height: 1.2rem;
+
+  svg {
+    @include absolute-left-top-zindex-width-height(50%, 50%);
+    transition: all $transition-time-very-fast;
+    transform: translate(-50%, -50%);
+    color: white;
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .checkbox_custom_checkbox_body {
+    @include absolute-left-top-zindex-width-height(50%, 50%);
+    transition: all $transition-time-very-fast;
+    background-color: $color-common;
+    transform: translate(-50%, -50%);
+    border-radius: 3px;
+    width: 0rem;
+    height: 0rem;
+  }
+}
+
+.checkbox_default_input:checked ~ .checkbox_custom_checkbox_wrapper {
+  background-color: $color-common;
+  transition: all $transition-time-very-fast;
+
+  .checkbox_custom_checkbox_body { 
+    width: 1.2rem; 
+    height: 1.2rem; 
+  }  
+
+  svg { color: white; }
+}

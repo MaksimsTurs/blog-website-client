@@ -1,0 +1,15 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.pagination_loader_container {
+  width: 100%;
+  height: fit-content;
+
+  .pagination_loader_button {
+    @include loader();
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@include loader-animation();

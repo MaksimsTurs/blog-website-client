@@ -1,0 +1,51 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+h3 {
+  color: $color-common;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px black;
+  font-size: 1.45rem;
+}
+
+.form_body {
+  height: fit-content;
+  padding: 1rem;
+}
+
+.form_error { 
+  border-radius: $border-radiues-button;
+  border: 1px solid #500;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.25rem;
+  color: #500; 
+  font-weight: normal; 
+}
+
+.form_button {
+  @include button-slide-right-animation();
+  border-radius: $border-radiues-button;
+  box-shadow: $box-shadow-button;
+  transition: all $transition-time-fast;
+  width: 10rem;
+  height: 2rem;
+  position: relative;
+  padding: 1rem;
+
+  section {
+    @include absolute-left-top-zindex-width-height(50%, 50%, 2);
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.form_button_pending:disabled {
+  transition: all $transition-time-fast;
+  background-color: #e38c44;
+  border: 1px solid #e38c44;
+
+  section { background-color: #e38c44; color: white; }
+    
+  &:hover { background-color: #e38c44; border: 1px solid #e38c44; }
+}

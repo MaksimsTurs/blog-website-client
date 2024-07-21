@@ -1,0 +1,9 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.admin_list_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+}

@@ -1,0 +1,86 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_header {
+  margin-bottom: 0.5rem;
+
+  .post_header_author_not_defined {
+    border-radius: $border-radiues-button;
+    color:white;
+    background-color: #500;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .post_action_button { 
+    position: relative;
+
+    &:hover > .post_action_container { display: flex; }
+    
+    .post_action_container {
+      @include absolute-left-top-zindex-width-height(-320%, 180%, 2, fit-content, fit-content);
+      border-radius: $border-radiues-button;
+      border: 1px solid $border-container-soft;
+      display: none;
+      text-align: left;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      
+      li {
+        transition: all $transition-time-very-fast;
+        width: 100%;
+        padding: 0.5rem 1.5rem;
+        position: relative;
+
+        svg {
+          width: $icon-medium; 
+          height: $icon-medium; 
+          padding: 0rem;
+        }
+
+        &:hover { background-color: $color-black-soft; }
+
+        &:last-child {
+          border-bottom-left-radius: $border-radiues-button;
+          border-bottom-right-radius: $border-radiues-button;
+        }
+
+        &:first-child {
+          border-top-left-radius: $border-radiues-button;
+          border-top-right-radius: $border-radiues-button;
+          color: rgb(156, 21, 21);
+          
+          &:hover {
+            transition: all $transition-time-very-fast;
+            background-color: rgba(156, 21, 21, 0.1);
+          }
+
+          &::after {
+            content: '\2BC8';
+            @include absolute-left-top-zindex-width-height(103.2%, 55%, 1, fit-content);
+            transform: translate(-50%, -50%);
+            -webkit-text-stroke: 1px $color-black-soft;
+            color: white;
+          }
+        }
+      }
+    }
+
+    svg {
+      width: 1.55em; 
+      height: 1.55rem; 
+      padding: 0.4rem 0rem;
+    }
+  }
+  
+  img {
+    border-radius: 50px;
+    width: 2.8rem;
+    height: 2.8rem;
+    object-fit: cover;
+  }
+
+  .post_create_date {
+    color: rgb(171, 171, 171);
+    font-size: 0.9rem;
+  }
+}

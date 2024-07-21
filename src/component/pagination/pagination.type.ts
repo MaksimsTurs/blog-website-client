@@ -1,0 +1,1 @@
+export type PaginationProps = { pagesCount: number, disableOn?: boolean }

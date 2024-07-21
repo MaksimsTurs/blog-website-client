@@ -1,0 +1,53 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.admin_side_menu_list_container {
+  border-left: 1px solid $border-container-soft;
+  position: fixed;
+  height: 100%;
+  right: 0%;
+  top: -0.5%;
+  margin-top: 3.85rem;
+  width: 10rem;
+  z-index: 99;
+
+  .admin_side_menu_body {
+    ul {
+      height: 0;
+      overflow: hidden;
+
+      li {
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        cursor: pointer;
+
+        &:hover {
+          transition: all $transition-time-very-fast;
+          color: $color-common;
+          background-color: $color-common-soft;
+        }
+      }
+    }
+
+    section {
+      transition: all $transition-time-very-fast;
+      border-left: 1px solid transparent;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid $color-black-soft;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+
+      > svg {
+        transition: all $transition-time-very-fast;
+        width: $icon-medium;
+        height: $icon-medium;
+      }
+
+      &:hover {
+        color: $color-common;
+        background-color: $color-common-soft;
+        border: 1px solid $color-common;
+        transition: all $transition-time-very-fast;
+      }
+    }
+  }
+}

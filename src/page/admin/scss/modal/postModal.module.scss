@@ -1,0 +1,46 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_list_container {
+  padding: 0.25rem;
+
+  .post_list_body {
+    width: 100%;
+    padding-top: 0.25rem;
+
+    > a {
+      transition: all $transition-time-very-fast;
+      border-radius: $border-radiues-button;
+      padding: 0.5rem 0rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $color-common-soft;
+        transition: all $transition-time-very-fast;
+        padding-left: 0.5rem;
+      }
+    }
+
+    img {
+      border-radius: $border-radius-container;
+      object-fit: cover;
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+}
+
+.post_auhtor_container {
+  margin-top: 0.5rem;
+
+  > img {
+    border-radius: $border-radius-container;
+    width: 5rem;
+  }
+
+  .post_author_data_body {
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}

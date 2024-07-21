@@ -1,0 +1,48 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.pagination_button_style {
+  border-radius: $border-radiues-button;
+  box-shadow: $box-shadow-button;
+  background-color: $color-common;
+  border: 1px solid $color-common;
+  transition: all $transition-time-very-fast;
+  padding: 0.4rem 0.75rem;
+  color: white;
+  max-width: 2.5rem;
+  cursor: pointer;
+
+  &:hover {
+    transition: all $transition-time-very-fast;
+    border: 1px solid $color-common-hover;
+    color: $color-common-hover;
+    background-color: white;
+  }
+}
+
+.pagination_button_disabled {
+  pointer-events: none;
+  cursor: auto;
+}
+
+.pagination_container {
+  height: fit-content;
+
+  .pagination_body {
+    gap: 0.25rem;
+
+    > li { padding: 0rem; }
+
+    .pagination_curr_page {
+      transition: all $transition-time-very-fast;
+      border: 1px solid $color-common-hover;
+      color: $color-common-hover;
+      background-color: white;
+    }
+  }
+
+  button > svg {
+    width: $icon-large;
+    height: $icon-large;
+  }
+}

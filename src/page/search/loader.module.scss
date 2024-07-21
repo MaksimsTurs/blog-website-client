@@ -1,0 +1,13 @@
+@import '@/scss/variabel';
+@import '@/scss/mixin';
+
+.search_loader_container {
+  width: 100%;
+
+  .search_loader_div {
+    @include loader();
+    height: 2rem;
+  }
+}
+
+@include loader-animation();

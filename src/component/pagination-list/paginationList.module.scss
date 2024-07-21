@@ -1,0 +1,29 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.pagination_list_button {
+  outline: $border-container-soft;
+  width: fit-content;
+  height: 100%;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    background-color: $color-common;
+    color: white;
+  }
+
+  svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+}
+
+.pagination_curr_page {
+  background-color: $color-common;
+  color: white;
+
+  &:hover {
+    background-color: $color-common;
+    color: white;
+  }
+}

@@ -1,0 +1,19 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+img {
+  object-fit: cover;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+}
+  
+.author_name {
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.author_registrate_data {
+  color: $color-black-medium-soft;
+  font-size: 0.9rem;
+}

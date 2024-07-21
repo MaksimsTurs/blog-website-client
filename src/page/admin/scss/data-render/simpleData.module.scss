@@ -1,0 +1,37 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.data_simple_container {
+  border-bottom: 1px solid $color-black-soft;
+  flex-wrap: wrap;
+  padding: 0rem 1rem 0.25rem 1rem;
+
+  &:last-child { border-bottom: none; }
+
+  .data_simple_key { font-weight: bold; }
+  
+  div { 
+    font-size: 0.9rem; 
+
+    p {
+      color: $color-black-medium-soft;
+    }
+
+    svg { 
+      color: $color-black-medium-soft;
+      cursor: pointer; 
+
+      &:hover { color: black; }
+    }
+  }
+
+  .data_simple_copyied {
+    color: $color-common;
+    transition: all $transition-time-very-fast;
+    transform: scale(1.1);
+
+    &:hover {
+      color: $color-common;
+    }
+  }
+}

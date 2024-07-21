@@ -1,0 +1,21 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_wrapper_container {
+  background-color: white;
+  padding: 0rem;
+  height: fit-content;
+
+  .post_is_hidden {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;  
+    background: $color-common;
+    padding: 0.5rem;
+    color: white;
+
+    svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.preview_container {
+  position: fixed;
+  right: 1rem;
+  width: 16.5rem;
+  
+  .preview_header {
+    border-bottom: $border-container-soft;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  
+    svg {
+      width: $icon-medium;
+      height: $icon-medium;
+      cursor: pointer;
+  
+      &:hover { color: red; }
+    }
+  }
+
+  a {
+    border-radius: $border-radius-container;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    img {
+      width: $icon-xx-large;
+      height: $icon-xx-large;
+      border-radius: 50%;
+    }
+
+    &:hover { background-color: $color-common-hover-soft; }
+  }
+  
+  .preview_item_count {
+    background-color: $color-common-hover-soft;
+    color: $color-common-hover;
+    padding: 0.4rem 0.72rem;
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,14 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.author_preview_loader_avatar {
+  @include loader(40px);
+  width: 5rem;
+  height: 5rem;
+}
+
+.author_preview_loader_text {
+  @include loader();
+}
+
+@include loader-animation();

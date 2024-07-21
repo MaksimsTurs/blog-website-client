@@ -1,0 +1,11 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.data_wrapper_container {
+  cursor: pointer;
+  padding: 0.5rem;
+
+  &:hover {
+    background-color: $color-common-hover-soft;
+  }
+}

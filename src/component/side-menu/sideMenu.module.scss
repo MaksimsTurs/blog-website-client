@@ -1,0 +1,50 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.aside_menu_container {
+  border-right: $border-container-soft;
+  position: fixed;
+  height: 100%;
+  width: 11rem;
+  padding: 4.5rem 0rem;
+  z-index: 2;
+  
+  .aside_menu_default_link {
+    gap: 1rem;
+  }
+  
+  .aside_menu_title {
+    color: $color-black-medium-soft;
+    padding: 0rem 2rem 0.25rem 2rem;
+  }   
+  
+  .aside_menu_text_wrapper { @include text-overflow-ellipsis(); }
+  
+  a {
+    transition: all $transition-time-very-fast;
+    padding: 0.45rem 2rem;
+    font-size: 0.9rem;
+          
+    &:hover {
+      background-color: $color-common-soft;
+      transition: all $transition-time-very-fast;
+      color: $color-common;
+    }
+
+    svg { width: 1rem; height: 1rem; }
+  }
+
+  .aside_link_active {
+    background-color: $color-common-soft;
+    color: $color-common;
+    position: relative;
+
+    &::after {
+      content: '';
+      @include absolute-left-top-zindex-width-height();
+      height: 100%;
+      width: 0.25rem;
+      background-color: $color-common;
+    }
+  }
+}

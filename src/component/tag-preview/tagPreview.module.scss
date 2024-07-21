@@ -1,0 +1,21 @@
+@import '@/scss/variabel';
+@import '@/scss/mixin';
+
+.tag_list {
+  width: 100%;
+  flex-wrap: wrap;
+  
+  .tag_item {
+    font-size: $font-small;
+    background-color: $color-common-soft;
+    color: $color-common;
+    border-radius: $border-radiues-button;
+    padding: 0.25rem 0.5rem;
+    width: fit-content;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: $color-common-hover-soft;
+    }
+  }
+}

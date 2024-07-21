@@ -1,0 +1,21 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.data_loader_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.data_loader_avatar {
+  border-radius: $border-radiues-button;
+  width: 4rem;
+  height: 3.5rem;
+}
+
+.data_loader_animation {
+  @include loader();
+}
+
+@include loader-animation();

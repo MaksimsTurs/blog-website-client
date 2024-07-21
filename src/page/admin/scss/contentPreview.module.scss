@@ -1,0 +1,32 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.content_author_avatar {
+  border-radius: $border-radius-container;
+  width: 3rem;
+  height: 3rem;
+}
+
+.content_author_name {
+  font-size: $font-large;
+  font-weight: bold;
+}
+
+.content_author_registrated {
+  font-size: $font-small;
+  color: $color-black-medium-soft;
+}
+
+.content_content {
+  @include text-overflow-ellipsis();
+}
+
+.content_no_data_about_author {
+  color: $color-error;
+  padding-bottom: 0.6rem;
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}

@@ -1,0 +1,30 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.edit_user_container {
+  @include absolute-left-top-zindex-width-height(0%, 0%, 3);
+  position: fixed;
+  background-color: $color-black-medium-soft;
+  transition: all $transition-time-fast;
+  opacity: 0;
+  visibility: hidden;
+  
+  .edit_user_body > div {
+    width: fit-content;
+    background-color: white;
+  }
+
+  .edit_user_log_out {
+    border: 1px solid #500 !important;
+    background-color: #500;
+    color: white;
+
+    &:hover > section { color: #500; }
+  }
+}
+
+.edit_user_container_visible {
+  transition: all $transition-time-fast;
+  opacity: 1;
+  visibility: visible;
+}

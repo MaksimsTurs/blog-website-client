@@ -1,0 +1,83 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.user_data_header {
+  overflow: hidden;
+  gap: 0;
+  padding: 0;
+
+  .user_data_img_loader {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 9px;
+  }
+
+  .user_data_header_top {
+    background: linear-gradient($color-common-hover, $color-common);
+    padding: 1rem;
+  }
+
+  .user_data_img_container {
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    
+    .user_data_img {
+      border-radius: $border-radius-container;
+      background-color: white;
+      border: 4px solid white;
+      object-fit: cover;
+      width: 6rem;
+      height: 6rem;
+    }
+
+    .user_data_role_container {
+      border-radius: $border-radius-container;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background-color: white;
+      padding: 0.25rem 1rem;
+
+      svg {
+        width: 0.95rem;
+        height: 0.95rem;
+      }
+    }
+  }
+
+  .user_data_header_edit_button {
+    border-radius: $border-radiues-button;
+    box-shadow: $box-shadow-button;
+    background-color: $color-common;
+    transition: all $transition-time-very-fast;
+    background: $color-common;
+    padding: 0.45rem;
+    color: white;
+    cursor: pointer;
+    
+    &:hover {
+      color: $color-common;
+      box-shadow: $box-shadow-button-hover;
+      transition: all $transition-time-very-fast;
+      background-color: white;
+    }
+  }
+
+  .user_data_header_bottom {
+    display: flex;
+    gap: 0.5rem;
+
+    section {
+      border-right: $border-container-soft;
+      flex-grow: 1;
+      padding: 0.5rem 1rem;
+
+      &:last-child { border-right: none; }
+
+      p:first-child { color: $color-black-medium-soft }
+
+      p:last-child { font-size: $font-small }
+    }
+  }
+}

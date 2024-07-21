@@ -1,0 +1,20 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.side_menu_loader {
+  border-left: 1px solid $border-container-soft;
+  padding: 4.5rem 0rem;
+  width: 10rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 2;
+  
+  .side_menu_loader_animation {
+    @include loader(0px);  
+  }
+}
+
+
+@include loader-animation();

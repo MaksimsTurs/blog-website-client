@@ -1,0 +1,24 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.burger_data_wrapper_container {
+  border-bottom: 1px solid $border-container-soft;
+  padding: 0rem 1rem 0.25rem 1rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .burger_data_wrapper_key {
+    transition: all $transition-time-fast;
+    color: $color-common-hover;
+    padding-bottom: 0.25rem;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      transition: all $transition-time-fast;
+      color: $color-common;
+    }
+  }
+}

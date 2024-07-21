@@ -1,0 +1,41 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.user_data_user_content {
+  padding: 0;
+  overflow: hidden;
+  height: fit-content; 
+
+  li:first-child {
+    border-bottom: $border-container-soft;
+    padding: 0.75rem 1rem;
+    cursor: auto;
+
+    &:hover { background-color: transparent; }
+
+    svg { width: $icon-medium; height: $icon-medium; }
+  }
+
+  > li {
+    padding: 0rem;
+
+    .user_data_link {
+      font-weight: bold;
+      overflow: hidden;
+      padding: 0.5rem 1rem;
+  
+      p {
+        @include text-overflow-ellipsis();
+  
+        &:last-child { font-size: $font-small; font-weight: normal; }
+      }
+      
+      &:hover {
+        background-color: $color-common-hover-soft;
+  
+        p:last-child { height: fit-content; }
+      }
+    }
+  }
+
+}

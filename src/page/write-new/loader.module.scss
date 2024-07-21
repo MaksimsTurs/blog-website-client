@@ -1,0 +1,29 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.write_new_loader_container {
+  width: 100%;
+  height: 100%;
+
+  .write_new_loader_body {
+    border-radius: $border-radius-container;
+    border: $border-container-soft;
+    padding: 1rem;
+    width: 50%;
+    height: fit-content;
+
+    button {
+      @include loader();
+      width: 3rem;
+      height: 2.5rem;
+    }
+
+    .write_new_loader_input {
+      @include loader();
+      height: 2rem;
+      width: 100%;
+    }
+  }
+}
+
+@include loader-animation();

@@ -1,0 +1,1 @@
+export type PaginationListProps = { pagesCount: number, listKey?: string }

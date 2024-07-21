@@ -1,0 +1,38 @@
+$font-xx-small: 0.5rem;
+$font-x-small: 0.625rem;
+$font-small: 0.81rem;
+$font-medium: 1rem;
+$font-large: 1.125rem;
+$font-x-large: 1.5rem;
+$font-xx-large: 2rem;
+
+$icon-xx-small: 0.5rem;
+$icon-x-small: 0.625rem;
+$icon-small: 0.81rem;
+$icon-medium: 1rem;
+$icon-large: 1.125rem;
+$icon-x-large: 1.5rem;
+$icon-xx-large: 2rem;
+
+$transition-time-very-fast: 0.1s;
+$transition-time-fast: 0.25s;
+$transition-time-slow: 1s;
+$transition-time-very-slow: 1.5s;
+
+$border-radius-container: 10px;
+$border-radiues-button: 5px;
+
+$color-common: #F48023;
+$color-common-soft: #f481232f;
+$color-common-hover: #1682FD;
+$color-common-hover-soft:rgba(22, 130, 253, 0.1);
+$color-error: #cb0000;
+$color-black-soft: rgba(0, 0, 0, 0.1);
+$color-black-medium-soft: rgba(0, 0, 0, 0.3);
+
+$box-shadow-container: rgba(0, 0, 0, 0.2) 1px 1px 2px;
+$box-shadow-button: 2px 2px 1px rgba(0, 0, 0, 0.2);
+$box-shadow-button-hover: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+$border-container: 1px solid black;
+$border-container-soft: 1px solid $color-black-soft;

@@ -1,0 +1,30 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: fit-content;
+  flex-wrap: wrap;
+  row-gap: 0.1rem;
+  column-gap: 0.5rem;
+  width: 100%;
+
+  .title {
+    width: 100%;
+  }
+
+  .img {
+    width: 14rem;
+    height: auto;
+  }
+
+  .link {
+    color: $color-common-hover;
+  }
+}
+
+video {
+  width: 25rem;
+  height: auto;
+}

@@ -1,0 +1,125 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+// ALIGN ITEM | JUSTIFY CONTENT | GAP
+
+.flex-row-normal-normal-small {
+  display: flex;
+  gap: 0.25rem
+}
+
+.flex-row-normal-normal-none {
+  display: flex;
+}
+
+.flex-row-normal-normal-medium {
+  display: flex;
+  gap: 0.5rem
+}
+
+.flex-row-normal-normal-big {
+  display: flex;
+  gap: 1rem
+}
+
+.flex-row-normal-center-medium {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem
+}
+
+.flex-row-normal-space-between-none {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-row-normal-space-between-medium {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.flex-row-center-space-between-none {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-row-center-space-between-big {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.flex-row-normal-center-none {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-row-normal-center-small {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem
+}
+
+.flex-row-center-normal-none {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row-center-normal-small {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.flex-row-center-normal-medium {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.flex-row-center-normal-big {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flex-row-center-center-none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row-center-center-medium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.flex-row-center-center-big {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.flex-row-normal-space-between-medium {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.flex-row-center-space-between-none {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-row-flex-start-normal-small {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+}

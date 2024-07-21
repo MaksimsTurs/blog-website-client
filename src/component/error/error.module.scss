@@ -1,0 +1,29 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.error_container {
+  height: 100%;
+
+  .error_body {
+    @include flex-column-alignitems-justifycontent(baseline);
+    color: $color-common;
+    max-width: 50rem;
+    height: fit-content;
+    
+    .error_error {
+      font-weight: bold;
+      text-shadow: 1px 1px black;
+
+      p:first-child { font-size: 4rem; }
+      
+      p:last-child { font-size: 1.5rem; }
+
+      svg {
+        filter: drop-shadow(1px 1px black);
+        transform: rotate(180deg);
+        width: 2rem;
+        height: auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.button {
+  @include flex-alignitems-justifycontent(center, center);
+  @include button-slide-right-animation(5rem, 2rem);
+  border-radius: $border-radiues-button;
+  box-shadow: $box-shadow-button;
+  transition: all $transition-time-fast;
+  padding: 1.1rem;
+  
+  .button_label {
+    gap: 0.5rem;
+    position: absolute;
+    z-index: 1;
+  }
+    
+  &:hover {
+    box-shadow: $box-shadow-button-hover;
+    transition: all $transition-time-very-fast;
+  }
+
+  svg {
+    width: $icon-large;
+    height: $icon-large;
+  }
+}

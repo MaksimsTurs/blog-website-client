@@ -1,0 +1,11 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.preview_loader {
+  @include loader(0px);
+  box-shadow: $box-shadow-container;
+  width: 100%;
+  height: 2rem;
+}
+
+@include loader-animation();

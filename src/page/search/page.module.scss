@@ -1,0 +1,49 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.search_filter_container {
+  height: fit-content;
+
+  .search_sort_type_title {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .search_sort_button {
+    transition: all $transition-time-very-fast;
+    border-radius: $border-radiues-button;
+    border: $border-container-soft;
+    gap: 0.5rem;
+    width: 8rem;
+    padding: 0.5rem;
+
+    &:hover {
+      color: $color-common;
+      transition: all $transition-time-very-fast;
+      border: 1px solid $color-common;
+    }
+  }
+
+  .search_sort_button_active {
+    color: $color-common;
+    transition: all $transition-time-very-fast;
+    border: 1px solid $color-common;
+  }
+
+  .search_sort_tag {
+    font-size: $font-small;
+    background-color: $color-common-soft;
+    color: $color-common;
+    border-radius: $border-radiues-button;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-common-hover-soft;
+    }
+  }
+
+  .search_filter_body_buttons > button {
+    width: 100% !important;
+  }
+}
