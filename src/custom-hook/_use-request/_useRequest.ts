@@ -1,8 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
-import { RequestContext } from "../use-request/requestProvider";
+import { RequestContext } from "./requestProvider";
 
-import type { _MutateParams, _UseRequestParams, _UseRequestReturn } from "./_useRequest.type";
-import type { RequestState, TRequestContext } from "../use-request/useRequest.type";
+import type { _MutateParams, _UseRequestParams, _UseRequestReturn, TRequestContext, RequestState } from "./_useRequest.type";
 import type { ServerResponseError } from "@/global.type";
 
 //isPending is true when any of async function execute.
@@ -29,7 +28,7 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
 
   async function mutate<C>(mutateParam: _MutateParams<C>) {
     const { key, request } = mutateParam
-    const state = context?.cache?.[mutateParam.key.join('-')] as unknown as RequestState<C>
+    const state = context?.cache?.[mutateParam.key.join('-')] as any
 
     try {
       context!.change!(prev => ({...prev, [key.join('-')]: {...state, isPending: false, isMutating: true }}))
@@ -58,23 +57,23 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
     const cache = context?.cache?.[cacheKey]?.data
 
     if(!cache && reqParam.request) {
-      context!.change!(prev => ({...prev, [cacheKey]: {...currState, isPending: true }}))
+      context!.change!(prev => ({...prev, [cacheKey]: { isFetching: true, isPending: true, isMutating: false }}))
       try {
         const response = await reqParam.request(reqParam.deps)
         if(reqParam.noCache) {
           local.current = response
-          context!.change!(prev => ({...prev, [cacheKey]: {...currState, isPending: false }}))
+          context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isPending: false, isMutating: false }}))
           return
         }
-        context!.change!(prev => ({...prev, [cacheKey]: {...currState, isPending: false, data: response }}))
+        context!.change!(prev => ({...prev, [cacheKey]: { data: response, isFetching: false, isPending: false, isMutating: false }}))
       } catch(error) {
         context!.change!(prev => ({
           ...prev, 
-          [cacheKey]: {...currState, isPending: false, error: error instanceof Error ? { code: 503, message: 'Service Unavailable!' } : JSON.parse(error as string) }
+          [cacheKey]: { isFetching: false, isMutating: false, isPending: false, error: error instanceof Error ? { code: 503, message: 'Service Unavailable!' } : JSON.parse(error as string) }
         }))
       }
     } else {
-      context!.change!(prev => ({...prev, [cacheKey]: {...currState, isPending: false, data: cache }}))
+      context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isMutating: false, isPending: false, data: cache }}))
     }
     initRender.current = false
   }

@@ -19,6 +19,7 @@ import Error from '@/component/error/error'
 import UserHeaderLoader from './component/userHeaderLoader'
 import UserContentLoader from './component/userContentLoader'
 import UserContentList from './component/userContentList'
+import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 export default function User() {
   const { id } = useParams()
@@ -29,6 +30,8 @@ export default function User() {
 
   const user = useRequest<User>({ deps: [`user-${id}`], request: async () => fetcher.get<User>(`/user/${id}`) })
   const userContent = useRequest<UserContentData>({ prev: [`user-${id}-content-${page > 0 ? page - 1 : page}`], deps: [`user-${id}-content-${page}`], request: async () => await fetcher.get(`/user/${id}/content/${page}`) })
+
+  useMetadata({ title: user.data?.name, description: `Hier kannst du detalierte daten von ${user.data?.name} ansehen.` })
 
   return(
     <Fragment>

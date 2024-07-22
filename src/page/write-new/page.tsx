@@ -30,6 +30,7 @@ import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
+import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
@@ -56,6 +57,16 @@ export default function WriteNewPost() {
     draftID ?
     creator.contentDraft.find(content => content._id === draftID) :
     undefined
+
+  const isPost: boolean = currContent?.contentType === 'post'
+
+  useMetadata({ 
+    title: 
+      isEdit && currContent ? `${isPost ? currContent.title : 'Comment'} ändern` :
+      draftID && currContent ? `${isPost ? currContent.title : 'Entwurf'} ändern` :
+      'Neue post schreiben',
+    description: 'Hier kannst neue post oder entwurfe schreiben oder ändern.'
+  })
 
   const key: string[] = currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
 

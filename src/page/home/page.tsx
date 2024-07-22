@@ -27,11 +27,14 @@ export default function Page() {
 
   const contentPerLoad: number = 10
   const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
-  const postStatisticPreviewType = searchParams.get('type')!
+  const postStatisticPreviewType: string | null = searchParams.get('type')!
 
   const loadMorePosts = async (): Promise<void> => {
-    searchParams.set({ 'posts-count': postsCount + contentPerLoad })
-    await mutate({ key: ['all-posts'], request: async () => await fetcher.get<Content[]>(`/home/${postsCount + contentPerLoad}`) })
+    const nextLoadCount: number = postsCount + contentPerLoad
+
+    searchParams.set({ 'posts-count': nextLoadCount })
+    await mutate({ key: ['all-posts'], request: async () => await fetcher.get<Content[]>(`/home/${nextLoadCount}`) })
+    
     if(!isFetching && !isMutating) setTimeout(() => window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight }), 100)
   }
 

@@ -7,18 +7,19 @@ import type { Content } from "@/global.type"
 
 import PostContainer from "@/component/post-container/postContainer"
 import Error from "@/component/error/error"
-import CommentContainer from "./component/commentContainer"
+// import CommentContainer from "./component/commentContainer"
 import PreviewAuthorData from './component/previewAuthorData'
 import PostContainerLoader from "@/component/loader/post-container-loader/postContainerLoader"
 import PreviewAuthorDataLoader from './component/previewAuthorDataLoader'
+import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
+import Empty from '@/component/empty/empty'
 
 import fetcher from "@/lib/fetcher/fetcher"
 import coockie from '@/lib/coockie/coockie'
 
 import useRequest from '@/custom-hook/_use-request/_useRequest'
-import useDocumentTitle from '@/custom-hook/use-metadata/useTitle'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
+import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 export default function Post() {
   const { id } = useParams()
@@ -26,7 +27,7 @@ export default function Post() {
   
   const { data, isPending, isMutating, isFetching, error } = useRequest<Content>({ deps: [`post-${id}`], request: async () => fetcher.get<Content>(`/post/${id}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) })
 
-  useDocumentTitle(data?.title)
+  useMetadata({ title: data?.title, description: 'Hier kannst du vollständige version von gewählte post sehen und ihn kommentieren.' })
   
   return(
     <Fragment>
@@ -37,7 +38,8 @@ export default function Post() {
            <Error code={error.code} message={error.message}/> : 
             <Fragment>
               {isPending ? <PostContainerLoader/> : <PostContainer post={data!} type="post"/>}
-              <CommentContainer page={page} postID={id!} isPostHidden={data?.isHidden || false}/>
+              <Empty option={{ height: 'FULL', flexCenterCenter: true }} label='Kommentar funktion ist zu zeit aus!'/>
+              {/* <CommentContainer page={page} postID={id!} isPostHidden={data?.isHidden || false}/> */}
             </Fragment>}
         </div>
         {isFetching ? <PreviewAuthorDataLoader/> : (data && data?.author) ? <PreviewAuthorData author={data!.author}/> : null}

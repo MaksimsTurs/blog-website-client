@@ -4,7 +4,10 @@ import '@/scss/global.scss'
 import PaginationLoader from "@/component/pagination/component/paginationLoader";
 import DataLoader from "./component/data-render/dataLoader";
 
+import useMetadata from '@/custom-hook/use-metadata/useMetadata';
+
 export default function Loader() {
+  useMetadata({ title: 'Admin panel' })
   return(
     <div style={{ width: '100%' }} className='flex-row-normal-normal-none'>
       <div style={{ paddingRight: '11rem', width: '100%' }} className='flex-column-normal-normal-medium'>

@@ -9,9 +9,10 @@ import ImageComponent from '@/component/image-component/image'
 
 import { Link } from "react-router-dom"
 import { X } from 'lucide-react'
+import { Eye, Heart, MessageCircle } from 'lucide-react';
 
-import type { User } from "@/global.type"
-import type { StatisticPreviewProps } from '../page.type'
+import type { GetPostStatistic, StatisticPreviewProps } from '../page.type'
+import type { KeyValueObject } from '@/global.type'
 
 import fetcher from "@/lib/fetcher/fetcher"
 import firstLetterToUpperCase from "@/lib/first-letter-to-upper/firstLetterToUpper"
@@ -25,7 +26,9 @@ export default function StatisticPreview({ type }: StatisticPreviewProps) {
   const postID: string = searchParams.get('post-id')!
   const currPage: number = parseInt(searchParams.get('list-page') || '0')
 
-  const { data, prev, isPending } = useRequest<{ pagesCount: number, items: ({ count: number } & User)[] }>({ 
+  const iconDictionary: KeyValueObject = { views: <Eye/>, likes: <Heart/>, comments: <MessageCircle/> }
+
+  const { data, prev, isPending } = useRequest<GetPostStatistic>({ 
     deps: [`preview-${type}-${postID}-${currPage}`], 
     prev: [`preview-${type}-${postID}-${currPage - 1 < 0 ? 0 : currPage - 1}`], 
     request: async () => fetcher.get(`/post/preview/${type}/${postID}/${currPage}`),
@@ -40,7 +43,10 @@ export default function StatisticPreview({ type }: StatisticPreviewProps) {
   return(
     <section className={`${scss.preview_container} main-content-container`}>
       <div className={`${scss.preview_header} flex-row-center-space-between-none`}>
-        <h4 className={scss.preview_type}>{firstLetterToUpperCase(type || '')}</h4>
+        <div className='flex-row-center-normal-medium'>
+          {iconDictionary[type]}
+          <h4 className={scss.preview_type}>{firstLetterToUpperCase(type || '')}</h4>
+        </div>
         <X onClick={closePreviewStatistic}/>
       </div>
       {isPending ? <PaginationListLoader/> : paginationLength > 1 ? <PaginationList pagesCount={paginationLength}/> : null}
