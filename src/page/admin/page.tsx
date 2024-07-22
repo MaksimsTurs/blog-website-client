@@ -45,7 +45,7 @@ export default function Admin() {
       <Modals/>
       {isMutating ? <MutatingLoader/> : null}
       {error?.code === 500 ? null :
-      error?.code === 403 || !data ? <Navigate to={'/'}/> :
+      error?.code === 403 ? <Navigate to={'/'}/> :
       <div style={{ paddingRight: '11rem', width: '100%' }} className='flex-column-normal-normal-medium'>
         {isPending ? <PaginationLoader/> : <Pagination pagesCount={pagesCount}/>}        
         {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true }} label={`Nothing found...`}/>}
