@@ -1,5 +1,5 @@
 export default {
-  baseURL: import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app/',
+  baseURL: import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app',
   formatURL: function(URL: string) {
     if(this.baseURL) return `${this.baseURL}${URL}`
     return URL
