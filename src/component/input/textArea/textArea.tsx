@@ -170,8 +170,6 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     }
   }, [defaultValue])
 
-  console.log(cursorPosition)
-
   return(
     <Fragment>
       {isUploading.current ? <MutatingLoader/> : null}

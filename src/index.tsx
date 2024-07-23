@@ -9,6 +9,7 @@ import { lazy, Suspense } from "react"
 import store from "./store/store"
 
 import Header from "./component/header/header"
+import ScrollTo from "./component/scroll-to-top/scrollTo"
 import SideMenu from "./component/side-menu/sideMenu"
 import RequestProvider from "./custom-hook/_use-request/requestProvider"
 import AuthProvider from "./custom-hook/useAuth/authProvider"
@@ -47,6 +48,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
                 <Route path="/admin/:tab" element={<Suspense fallback={<AdminLoader/>}><Admin/></Suspense>}/>
                 <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
               </Routes>
+              <ScrollTo/>
             </main>
           </div>
         </Provider>
