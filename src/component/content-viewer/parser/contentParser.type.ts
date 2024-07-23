@@ -4,6 +4,7 @@ export type ContentParser = {
   is: ContentIs
   have: LineHave
   parseAs: ContentParserParseLineAs
+  tools: ContentTools
 }
 
 export type ContentRegexp = {
@@ -16,10 +17,16 @@ export type ContentRegexp = {
   SECURE_PROTOCOL_REGEXP: RegExp
   SQUARE_BRACKETS_REGEXP: RegExp
   PAIR_BRACKETS_REGEXP: RegExp
+  TAG_BRACKET_REGEXP: RegExp
+}
+
+export type ContentTools = {
+  splitLineOnTags: (line: string) => string[]
 }
 
 export type ContentIs = {
   secureLink: (url: string) => boolean
+  imageTag: (line: string) => boolean
 }
 
 export type LineHave = {
@@ -28,6 +35,8 @@ export type LineHave = {
   bold: (line: string) => boolean
   header: (line: string) => boolean
   video: (line: string) => boolean
+  lineBreak: (line: string) => boolean
+  listItem: (line: string) => boolean
 }
 
 export type ContentParserParseLineAs = {
@@ -36,14 +45,19 @@ export type ContentParserParseLineAs = {
   bold: (line: string) => string
   header: (ine: string) => string
   video: (line: string) => string
+  lineBreak: () => string
+  listItem: (line: string) => string
+  paragraph: (line: string) => string
 }
 
 export enum ContentKind {
-  LINK = 'LINK',
-  IMG = 'IMG',
-  HEADER = 'HEADER',
-  BOLD = 'BOLD',
-  VIDEO = 'VIDEO'
+  LIST =      'LIST',
+  HEADER =    'HEADER',
+  BOLD =      'BOLD',
+  LINK =      'LINK',
+  IMG =       'IMG',
+  VIDEO =     'VIDEO',
+  PARAGRAPH = 'PARAGRAPH'
 }
 
 export type ContentTypesKeyValue = { [key in ContentKind]: string }

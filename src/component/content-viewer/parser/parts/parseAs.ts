@@ -1,17 +1,20 @@
-import type { ContentParserParseLineAs } from "../parseContent.type";
+import type { ContentParserParseLineAs } from "../contentParser.type";
 
-import is from "./is";
 import regexp from "./regexp";
-
-//Example for testing.
-// [Link;https://link] and this is #other# lin #[Link 2;https://link]# (img;https://www.datocms-assets.com/48401/1628644950-javascript.png)
+import tools from "./tools";
 
 export default {
-  bold: function(line: string) {
-    return line.replace(regexp.BOLD_REGEXP, '<b>$1</b>')
+  header: function(line) {
+    return line.replace(regexp.HEADER_REGEXP, '<h1 class="content_flex">$1</h1>')
   },
-  header: function(line: string) {
-    return line.replace(regexp.HEADER_REGEXP, '<h1 class="title">$1</h1>')
+  bold: function(line: string) {
+    return line.replace(regexp.BOLD_REGEXP, '<b class="content_flex">$1</b>')
+  },
+  lineBreak: function() {
+    return '<p class="break"></p>'
+  },
+  listItem: function(line: string) {
+    return line.replace(/.*/, `<ul class="content_flex list"><li>${line.replace('+', '')}</li></ul>`)
   },
   img: function(line: string) {
     const matchers = line.match(regexp.IMAGE_REGEXP)
@@ -20,7 +23,7 @@ export default {
     let parsed: string = line
 
     while(matchers?.[index]) {
-      const link = matchers[index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
+      const link: string[] = matchers[index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
       
       //link[1] is img src URL, link[0] is img alt text.
 
@@ -41,7 +44,7 @@ export default {
       
       //link[1] is link URL, link[0] is link text.
 
-      parsed = parsed.replace(matchers[index], `<a class="link" href="` + link[1] + `">` + link[0] + `</a>`)
+      parsed = parsed.replace(matchers[index], `<a class="link content_flex" href="` + link[1] + `">` + link[0] + `</a>`)
       index++
     }
 
@@ -50,14 +53,38 @@ export default {
   video: function(line: string) {
     let videoURL: string | undefined = line.replace(/\[(.+)\]/g, '$1')  
     
-    // if(!is.secureLink(videoURL)) videoURL = undefined
-
     return(
       `
-        <div style="width: 100%" class="flex-row-center-center-none">
+        <div style="width: 100%" class="video">
           <video controls src=${videoURL}></video>
         </div>
       `
     )
+  },
+  paragraph: function(line: string) {
+    let wrappedLine: string = ''
+
+    const lineParts: string[] = tools.splitLineOnTags(line)
+  
+    let part: string, partWords: string[]
+  
+    for(let index: number = 0; index <  lineParts.length; index++) {
+      part = lineParts[index]
+  
+      if(!regexp.TAG_BRACKET_REGEXP.test(part)) {
+        partWords = part.split(' ')
+  
+        for(let windex: number = 0; windex < partWords.length; windex++) {
+          if(partWords[windex].length === 0) continue
+          wrappedLine += `<p>${partWords[windex]}</p>`
+        }
+  
+        continue
+      }
+  
+      wrappedLine += part
+    }
+  
+    return wrappedLine
   }
 } as ContentParserParseLineAs

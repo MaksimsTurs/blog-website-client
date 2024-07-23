@@ -1,6 +1,6 @@
 {
   "name": "propagandist",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "type": "module",
   "engines": {
     "node": ">= 20.12.0",

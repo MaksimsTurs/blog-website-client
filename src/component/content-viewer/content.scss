@@ -1,30 +1,56 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
-.container {
+.content_flex {
   display: flex;
-  flex-direction: row;
-  height: fit-content;
   flex-wrap: wrap;
+  word-break: break-all;
   row-gap: 0.1rem;
   column-gap: 0.5rem;
-  width: 100%;
-
-  .title {
-    width: 100%;
-  }
-
-  .img {
-    width: 14rem;
-    height: auto;
-  }
-
-  .link {
-    color: $color-common-hover;
-  }
 }
 
-video {
-  width: 25rem;
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  height: fit-content;
+  word-break: break-all;
+  width: fit-content;
+  row-gap: 0.1rem;
+  column-gap: 0.5rem;
+}
+
+.link {
+  color: $color-common-hover;
+}
+
+.list {
+  color: $color-common;
+  list-style: disc;
+  font-size: 1rem;
+  margin-left: 0.9rem;
+  position: relative;
+  align-items: center;
+}
+
+.break {
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.img {
+  border-radius: 0px !important;
+  width: 14rem;
   height: auto;
+}
+
+.video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > video {
+    width: 25rem;
+    height: auto;
+  }
 }

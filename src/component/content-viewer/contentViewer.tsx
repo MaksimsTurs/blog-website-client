@@ -7,13 +7,15 @@ import type { ContentViewerProps } from "./contentViewer.type";
 import { useMemo } from "react";
 import { Pencil } from 'lucide-react'
 
-import parseContent from "@/component/content-viewer/parser/parseContent";
+import parse from "@/component/content-viewer/parser/parse";
 
 export default function ContentViewer({ content, className }: ContentViewerProps) {
-  const parsedContent = useMemo(() => parseContent(content || ''), [content])
+  console.time('Parsing time')
+  const parsedContent = useMemo(() => parse(content || ''), [content])
+  console.timeEnd('Parsing time')
 
   return(
-    <div className={`${scss.content_viewer_container} ${className} flex-column-flex-start-normal-none`} dangerouslySetInnerHTML={parsedContent ? { __html: parsedContent } : undefined}>
+    <div className={`${scss.content_viewer_container} ${className}`} dangerouslySetInnerHTML={parsedContent ? { __html: parsedContent } : undefined}>
       {parsedContent.length === 0 ? <div className={`${scss.content_viewer_post_empty} flex-row-center-center-big`}><Pencil /><p>Post is empty</p></div> : null}
     </div>
   )

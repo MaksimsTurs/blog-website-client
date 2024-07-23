@@ -1,4 +1,4 @@
-import { ContentTypesKeyValue } from "../parseContent.type";
+import { ContentTypesKeyValue } from "../contentParser.type";
 
 export default {
   BOLD: 'BOLD',
