@@ -6,7 +6,7 @@ import type { SimpleDataProps } from '../../page.type'
 import { Copy } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import parseContent from '@/component/content-viewer/parser/parseContent'
+import parse from '@/component/content-viewer/parser/parse'
 
 export default function SimpleData({ propKey, propValue, useParser, useCopyBoard }: SimpleDataProps) {
   const [isCopyied, setIsCopied] = useState<boolean | undefined>(undefined)
@@ -24,7 +24,7 @@ export default function SimpleData({ propKey, propValue, useParser, useCopyBoard
     <section className={`${scss.data_simple_container} flex-row-center-space-between-none`}>
       <p className={scss.data_simple_key}>{propKey}</p>
       <div className='flex-row-center-center-medium'>
-        {useParser ? <span className='flex-row-center-center-none' dangerouslySetInnerHTML={{ __html: parseContent(propValue) }}></span> : <p className={scss.data_simple_value}>{propValue}</p>}
+        {useParser ? <span className='flex-row-center-center-none' dangerouslySetInnerHTML={{ __html: parse(propValue) }}></span> : <p className={scss.data_simple_value}>{propValue}</p>}
         {useCopyBoard ? <Copy className={isCopyied ? scss.data_simple_copyied : ''} onClick={copyBoard} size={15}/> : null}
       </div>
     </section>
