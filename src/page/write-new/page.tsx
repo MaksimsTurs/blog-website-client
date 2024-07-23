@@ -147,7 +147,7 @@ export default function WriteNewPost() {
       {auth.isAuthPending ?
         <WriteNewLoader/> :
         <div className={`${scss.create_new_post_container} flex-row-normal-center-small`}>
-          {(currContent || true) ?
+          {(currContent || isAdminOrCreator) ?
             <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
               {currContent?.contentType !== 'comment' ?
                 <Fragment>

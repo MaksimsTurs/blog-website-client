@@ -29,6 +29,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   const asset = useRef<File>()
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const isUploading = useRef<boolean>(false)
+  const cursorPosition = useRef<number>(0)
 
   const searchParams = useSearchParams()
 
@@ -38,8 +39,10 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   let initRender: boolean = true
 
   const makeBold = (): void => {
-    const selectionStart = textAreaRef.current!.selectionStart
-    const selectionEnd = textAreaRef.current!.selectionEnd
+    const selectionStart: number = textAreaRef.current!.selectionStart
+    const selectionEnd: number = textAreaRef.current!.selectionEnd
+
+    cursorPosition.current = selectionEnd
 
     const contentSubstring = textAreaContent.substring(selectionStart, selectionEnd)
     const bolded = textAreaContent.replace(contentSubstring, `#${contentSubstring}#`)
@@ -50,8 +53,10 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   }
 
   const makeHeader = (): void => {
-    const selectionStart = textAreaRef.current!.selectionStart
-    const selectionEnd = textAreaRef.current!.selectionEnd
+    const selectionStart: number = textAreaRef.current!.selectionStart
+    const selectionEnd: number = textAreaRef.current!.selectionEnd
+
+    cursorPosition.current = selectionEnd
 
     const contentSubstring = textAreaContent.substring(selectionStart, selectionEnd)
 
@@ -63,7 +68,9 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   }
 
   const addLink = (): void => {
-    const selection = textAreaRef.current!.selectionEnd
+    const selection: number = textAreaRef.current!.selectionEnd
+
+    cursorPosition.current = selection
 
     const link = `${textAreaContent.substring(0, selection)}[LINK STRING;LINK URL]${textAreaContent.substring(selection, textAreaContent.length)}`
 
@@ -75,6 +82,8 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   const addImg = useCallback(async(): Promise<void> => {
     const res: KeyValueObject = areaValidation({ alt: /video/g.test(asset.current?.type || '') ? 'placeholder' : imgAlt, url: imgUrl, asset: asset.current })
     const selection: number = textAreaRef.current!.selectionEnd
+
+    cursorPosition.current = selection
     
     setErrors(res)
 
@@ -122,6 +131,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   }, [imgAlt, imgUrl, asset])
 
   const inputContent = (event: SyntheticEvent<HTMLTextAreaElement>): void => {
+    cursorPosition.current = event.currentTarget.selectionEnd
     setTextAreaContent(event.currentTarget.value)
     if(getValue) getValue(event.currentTarget.value)
   }
@@ -159,6 +169,8 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
       if(getValue) getValue(defaultValue || '')
     }
   }, [defaultValue])
+
+  console.log(cursorPosition)
 
   return(
     <Fragment>
