@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/node": "^20.14.11",
@@ -35,7 +35,7 @@
     "postcss-preset-env": "^9.6.0",
     "sass": "^1.77.8",
     "terser": "^5.31.3",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "sharp": "^0.33.4",
     "unplugin-detect-duplicated-deps": "^2.0.0",
     "unplugin-imagemin": "^0.5.20",
