@@ -5,7 +5,7 @@ import tools from "./tools";
 
 export default {
   header: function(line) {
-    return line.replace(regexp.HEADER_REGEXP, '<h1 class="content_flex">$1</h1>')
+    return line.replace(regexp.HEADER_REGEXP, '<h1 class="header content_flex">$1</h1>')
   },
   bold: function(line: string) {
     return line.replace(regexp.BOLD_REGEXP, '<b class="content_flex">$1</b>')

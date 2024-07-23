@@ -20,6 +20,11 @@
   column-gap: 0.5rem;
 }
 
+.header {
+  font-size: $font-xx-large;
+  font-weight: bolder;
+}
+
 .link {
   color: $color-common-hover;
 }
