@@ -45,8 +45,9 @@
 
 .img {
   border-radius: 0px !important;
-  width: 14rem;
-  height: auto;
+  object-fit: cover;
+  width: auto;
+  height: 10rem;
 }
 
 .video {
