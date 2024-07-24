@@ -3,4 +3,5 @@ package-lock.json
 output
 server
 passwords.txt
-saves.txt
+saves
+content

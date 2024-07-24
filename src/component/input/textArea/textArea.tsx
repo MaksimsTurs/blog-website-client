@@ -196,6 +196,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
           <textarea 
             className={scss.text_area}
             placeholder={placeholder} 
+            spellCheck={false}
             onChange={inputContent} 
             ref={textAreaRef} 
             value={textAreaContent} 

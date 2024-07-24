@@ -8,22 +8,39 @@ export default function parse(content: string): string {
 
   if(lines.length === 1) lines = content.split('\n')
 
-  for(let index: number = 0; index < lines.length; index++) {
-    if(ContentParser.have.lineBreak(lines[index])) {
-      parsed += ContentParser.parseAs.lineBreak()
+  for(let obj = { index: 0 }; obj.index < lines.length; obj.index++) {
+    if(ContentParser.have.lineIntendention(lines[obj.index])) {
+      parsed += ContentParser.parseAs.lineIntendention()
+      continue
+    }
+
+    if(ContentParser.have.img(lines[obj.index])) {
+      parsed += `<div class="container_full_width container container_flex">` + ContentParser.parseAs.img(obj, lines) + `</div>`
+      obj.index--
+      continue
+    }
+
+    if(ContentParser.have.video(lines[obj.index])) {
+      parsed += `<div class="container_full_width container">` + ContentParser.parseAs.video(lines[obj.index]) + `</div>`
       continue
     }
     
-    if(ContentParser.have.listItem(lines[index])) lines[index] = ContentParser.parseAs.listItem(lines[index])
-    if(ContentParser.have.header(lines[index]))   lines[index] = ContentParser.parseAs.header(lines[index])    
-    if(ContentParser.have.bold(lines[index]))     lines[index] = ContentParser.parseAs.bold(lines[index])
-    if(ContentParser.have.link(lines[index]))     lines[index] = ContentParser.parseAs.link(lines[index])
-    if(ContentParser.have.img(lines[index]))      lines[index] = ContentParser.parseAs.img(lines[index])
-    if(ContentParser.have.video(lines[index]))    lines[index] = ContentParser.parseAs.video(lines[index])
+    if(ContentParser.have.header(lines[obj.index])) {
+      parsed += ContentParser.parseAs.header(lines[obj.index])
+      continue
+    }    
+    
+    if(ContentParser.have.bold(lines[obj.index]))     lines[obj.index] = ContentParser.parseAs.bold(lines[obj.index])
+    if(ContentParser.have.link(lines[obj.index]))     lines[obj.index] = ContentParser.parseAs.link(lines[obj.index])
+    
+    if(ContentParser.have.listItem(lines[obj.index])) {
+      parsed += `<div class="container_full_width container list_container">` + ContentParser.parseAs.listItem(lines[obj.index]) + `</div>`
+      continue
+    }
 
-    if(!ContentParser.is.imageTag(lines[index]))  lines[index] = ContentParser.parseAs.paragraph(lines[index])
-    lines[index] = `<div class="container">` + lines[index] + `</div>`
-    parsed += lines[index]
+    lines[obj.index] = ContentParser.parseAs.paragraph(lines[obj.index])
+    lines[obj.index] = `<div class="container_flex container">` + lines[obj.index] + `</div><div style="width: 100%;"></div>`
+    parsed += lines[obj.index]
   }
 
   return parsed

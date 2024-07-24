@@ -23,7 +23,7 @@ export default {
     regexp.LINK_REGEXP.lastIndex = 0
     return regexp.VIDEO_REGEXP.test(line)
   },
-  lineBreak: function(line) {
+  lineIntendention: function(line) {
     return line[0] === '-'
   },
   listItem: function(line) {

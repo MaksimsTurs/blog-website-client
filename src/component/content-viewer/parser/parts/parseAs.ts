@@ -1,5 +1,6 @@
-import type { ContentParserParseLineAs } from "../contentParser.type";
+import type { ContentParserParseLineAs, LinkLikeDictionary } from "../contentParser.type";
 
+import have from "./have";
 import regexp from "./regexp";
 import tools from "./tools";
 
@@ -10,25 +11,27 @@ export default {
   bold: function(line: string) {
     return line.replace(regexp.BOLD_REGEXP, '<b class="content_flex">$1</b>')
   },
-  lineBreak: function() {
-    return '<p class="break"></p>'
+  lineIntendention: function() {
+    return '<div class="intendention"></div>'
   },
   listItem: function(line: string) {
     return line.replace(/.*/, `<ul class="content_flex list"><li>${line.replace('+', '')}</li></ul>`)
   },
-  img: function(line: string) {
-    const matchers = line.match(regexp.IMAGE_REGEXP)
+  img: function(obj, lines) {
+    let parsed: string = '', imgDictionary: LinkLikeDictionary = {}
 
-    let index: number = 0
-    let parsed: string = line
+    for(; obj.index < lines.length;) {
+      if(have.img(lines[obj.index])) {
+        const [text, url] = lines[obj.index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
+        imgDictionary[obj.index] = { text, link: url }
+        obj.index++
+      } else break
+    }
+    
+    const entries = Object.entries(imgDictionary)
 
-    while(matchers?.[index]) {
-      const link: string[] = matchers[index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
-      
-      //link[1] is img src URL, link[0] is img alt text.
-
-      parsed = parsed.replace(matchers[index], `<img class="img" src="` + link[1] + `"` + `alt="` + link[0] + `">`)
-      index++
+    for(let [_, value] of entries) {
+      parsed += `<img class="img" src="` + value.link + `"` + `alt="` + value.text + `">`
     }
 
     return parsed

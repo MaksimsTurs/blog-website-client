@@ -20,13 +20,19 @@ export type ContentRegexp = {
   TAG_BRACKET_REGEXP: RegExp
 }
 
+export type LinkLikeDictionary = {
+  [key: string]: { 
+    link: string, 
+    text: string 
+  }
+}
+
 export type ContentTools = {
   splitLineOnTags: (line: string) => string[]
 }
 
 export type ContentIs = {
   secureLink: (url: string) => boolean
-  imageTag: (line: string) => boolean
 }
 
 export type LineHave = {
@@ -35,17 +41,17 @@ export type LineHave = {
   bold: (line: string) => boolean
   header: (line: string) => boolean
   video: (line: string) => boolean
-  lineBreak: (line: string) => boolean
+  lineIntendention: (line: string) => boolean
   listItem: (line: string) => boolean
 }
 
 export type ContentParserParseLineAs = {
   link: (line: string) => string
-  img: (line: string) => string
+  img: (obj: { index: number }, lines: string[]) => string
   bold: (line: string) => string
   header: (ine: string) => string
   video: (line: string) => string
-  lineBreak: () => string
+  lineIntendention: () => string
   listItem: (line: string) => string
   paragraph: (line: string) => string
 }
