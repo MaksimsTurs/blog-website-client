@@ -34,8 +34,6 @@ export default function ImageComponent({ alt, classNames, src, styles }: ImageCo
     }, { once: true })
   }, [imgRef.current])
 
-  console.log(isHTTPProtocol, isLoaded, imgSourceRef)
-
   return (
     <Fragment>
       {!isHTTPProtocol && !isLoaded ? <CircleUserRound className={`${classNames?.img} ${scss.default_image}`} size={40}/> : (!isLoaded && isHTTPProtocol) && <ImageLoader className={classNames?.loader} style={styles?.loader}/> }

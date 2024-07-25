@@ -18,6 +18,7 @@ export type FileInputProps = {
   initValue?: string
   asset?: MutableRefObject<File | undefined>
   isChange?: boolean
+  supportedFormats?: ('image/webp' | 'image/jpg' | 'image/png' | 'image/jpeg' | 'video/mp4')[]
 } & Pick<InputProps['attributes'], 'name'>
 
 export type _InputProps = {

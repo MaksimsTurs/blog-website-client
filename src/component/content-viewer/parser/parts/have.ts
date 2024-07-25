@@ -7,9 +7,13 @@ export default {
     regexp.BOLD_REGEXP.lastIndex = 0
     return regexp.BOLD_REGEXP.test(line)
   },
-  header: function(line) {
-    regexp.HEADER_REGEXP.lastIndex = 0
-    return regexp.HEADER_REGEXP.test(line)
+  header1: function(line) {
+    regexp.HEADER_REGEXP_1.lastIndex = 0
+    return regexp.HEADER_REGEXP_1.test(line)
+  },
+  header2: function(line) {
+    regexp.HEADER_REGEXP_2.lastIndex = 0
+    return regexp.HEADER_REGEXP_2.test(line)
   },
   img: function(line) {
     regexp.IMAGE_REGEXP.lastIndex = 0

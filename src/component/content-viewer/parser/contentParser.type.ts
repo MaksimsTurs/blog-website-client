@@ -9,7 +9,8 @@ export type ContentParser = {
 
 export type ContentRegexp = {
   BOLD_REGEXP: RegExp 
-  HEADER_REGEXP: RegExp 
+  HEADER_REGEXP_1: RegExp
+  HEADER_REGEXP_2: RegExp 
   IMAGE_REGEXP: RegExp 
   LINK_REGEXP: RegExp
   VIDEO_REGEXP: RegExp
@@ -39,7 +40,8 @@ export type LineHave = {
   link: (line: string) => boolean
   img: (line: string) => boolean
   bold: (line: string) => boolean
-  header: (line: string) => boolean
+  header1: (line: string) => boolean
+  header2: (line: string) => boolean
   video: (line: string) => boolean
   lineIntendention: (line: string) => boolean
   listItem: (line: string) => boolean
@@ -49,7 +51,8 @@ export type ContentParserParseLineAs = {
   link: (line: string) => string
   img: (obj: { index: number }, lines: string[]) => string
   bold: (line: string) => string
-  header: (ine: string) => string
+  header1: (ine: string) => string
+  header2: (line: string) => string
   video: (line: string) => string
   lineIntendention: () => string
   listItem: (line: string) => string
@@ -58,7 +61,8 @@ export type ContentParserParseLineAs = {
 
 export enum ContentKind {
   LIST =      'LIST',
-  HEADER =    'HEADER',
+  HEADER1 =   'HEADER1',
+  HEADER2 =   'HEADER2',
   BOLD =      'BOLD',
   LINK =      'LINK',
   IMG =       'IMG',

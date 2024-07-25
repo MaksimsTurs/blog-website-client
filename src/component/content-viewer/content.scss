@@ -30,8 +30,14 @@
   align-items: center;
 }
 
-.header {
+.header_1 {
   font-size: $font-xx-large;
+  font-weight: bolder;
+  width: 100%;
+}
+
+.header_2 {
+  font-size: 1.2rem;
   font-weight: bolder;
   width: 100%;
 }

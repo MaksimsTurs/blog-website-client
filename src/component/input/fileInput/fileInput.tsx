@@ -8,13 +8,13 @@ import { Fragment, type SyntheticEvent, useEffect, useRef, useState } from 'reac
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
-export default function FileInput({ name, label, asset, initValue, isChange }: FileInputProps) {
+export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats }: FileInputProps) {
   const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(initValue)
 
   const inputRef = useRef<HTMLInputElement>(null), isVideo = useRef<boolean>(false)
   const searchParams = useSearchParams()
 
-  const supportedExtentions: string[] = ['image/webp', 'image/jpg', 'image/png', 'image/jpeg', 'video/mp4']
+  const supportedExtentions: string[] = supportedFormats || ['image/webp', 'image/jpg', 'image/png', 'image/jpeg']
 
   const upload = (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0]

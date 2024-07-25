@@ -10,7 +10,6 @@ import { Fragment, memo, SyntheticEvent, useCallback, useEffect, useRef, useStat
 import TextInput from '../textInput/textInput';
 import FileInput from '../fileInput/fileInput';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
-import ContentViewer from '@/component/content-viewer/contentViewer';
 import ModalError from '@/component/modal-error/modalError';
 
 import areaValidation from './areaValidation';
@@ -34,7 +33,6 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   const searchParams = useSearchParams()
 
   const isOpen: boolean = JSON.parse(searchParams.get('is-open') || 'false')
-  const isPreview: boolean = JSON.parse(searchParams.get('is-preview') || 'false')
 
   let initRender: boolean = true
 
@@ -97,10 +95,9 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
       try {
         uploadedURL = await uploadAsset(uploadedAsset)
-        console.log(uploadedURL.assetURL)
       } catch(error) {
-        isUploading.current = false
         setErrors({ 'upload-error': (errors as ServerResponseError).message })
+        isUploading.current = false
       }
 
       if(/video/g.test(asset.current?.type || '')) {
@@ -148,11 +145,6 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     searchParams.set({ 'is-open': true })
   }
 
-  const previewContent = (): void => {
-    const currPreviewState: boolean = JSON.parse(searchParams.get('is-preview') || 'false')
-    searchParams.set({ 'is-preview': currPreviewState ? false : true })
-  }
-
   const stopAdding = (): void => {
     setImgAlt('')
     setImgUrl(undefined)
@@ -160,7 +152,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     searchParams.set({ 'is-open': false })
     asset.current = undefined
     
-    if(getValue) getValue('')
+    if(getValue) getValue(textAreaContent)
   }
 
   useEffect(() => {
@@ -185,22 +177,19 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
           </div>
         </div>
         <section>
-          <button disabled={isPreview} onClick={makeBold} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Bold /></button>
-          <button disabled={isPreview} onClick={makeHeader} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading /></button>
-          <button disabled={isPreview} onClick={addLink} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Link2 /></button>
-          <button disabled={isPreview} onClick={openImgModal} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><FileImage /></button>
-          <button onClick={previewContent} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Eye /></button>
+          <button onClick={makeBold} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Bold /></button>
+          <button onClick={makeHeader} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading /></button>
+          <button onClick={addLink} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Link2 /></button>
+          <button onClick={openImgModal} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><FileImage /></button>
         </section>
-        {isPreview ? 
-          <ContentViewer content={textAreaContent}/> : 
-          <textarea 
-            className={scss.text_area}
-            placeholder={placeholder} 
-            spellCheck={false}
-            onChange={inputContent} 
-            ref={textAreaRef} 
-            value={textAreaContent} 
-            rows={(textAreaContent?.split(/\n/)?.length || 0) + 1}></textarea>}
+        <textarea 
+          className={scss.text_area}
+          placeholder={placeholder} 
+          spellCheck={false}
+          onChange={inputContent} 
+          ref={textAreaRef} 
+          value={textAreaContent} 
+          rows={(textAreaContent?.split(/\n/)?.length || 0) + 1}></textarea>
       </div>
     </Fragment>
   ) 

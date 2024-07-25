@@ -14,6 +14,16 @@ export default function parse(content: string): string {
       continue
     }
 
+    if(ContentParser.have.header1(lines[obj.index])) {
+      parsed += ContentParser.parseAs.header1(lines[obj.index])
+      continue
+    }
+
+    if(ContentParser.have.header2(lines[obj.index])) {
+      parsed += ContentParser.parseAs.header2(lines[obj.index])
+      continue
+    }
+
     if(ContentParser.have.img(lines[obj.index])) {
       parsed += `<div class="container_full_width container container_flex">` + ContentParser.parseAs.img(obj, lines) + `</div>`
       obj.index--
@@ -22,11 +32,6 @@ export default function parse(content: string): string {
 
     if(ContentParser.have.video(lines[obj.index])) {
       parsed += `<div class="container_full_width container">` + ContentParser.parseAs.video(lines[obj.index]) + `</div>`
-      continue
-    }
-    
-    if(ContentParser.have.header(lines[obj.index])) {
-      parsed += ContentParser.parseAs.header(lines[obj.index])
       continue
     }    
     

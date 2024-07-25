@@ -14,7 +14,7 @@ import ModalError from '@/component/modal-error/modalError'
 import Button from '@/component/button/button'
 import WriteNewLoader from './loader'
 
-import { Fragment, useRef } from "react"
+import { Fragment, useRef, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -31,6 +31,7 @@ import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
+import ContentViewer from '@/component/content-viewer/contentViewer'
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
@@ -69,6 +70,7 @@ export default function WriteNewPost() {
   })
 
   const key: string[] = currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
+  const [content, setContent] = useState<string>('')
 
   const { mutate, isMutating, error } = useRequest({ deps: key })
   
@@ -137,7 +139,7 @@ export default function WriteNewPost() {
   }
 
   const getTextAreaContentValue = (content: string): void => {
-    contentRef.current = content
+    setContent(content)
   }
 
   return(
@@ -146,8 +148,8 @@ export default function WriteNewPost() {
       {isMutating ? <MutatingLoader/> : null}
       {auth.isAuthPending ?
         <WriteNewLoader/> :
-        <div className={`${scss.create_new_post_container} flex-row-normal-center-small`}>
-          {(currContent || true) ?
+        <div className={`${scss.create_new_post_container} flex-row-normal-center-big`}>
+          {(currContent || isAdminOrCreator) ?
             <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
               {currContent?.contentType !== 'comment' ?
                 <Fragment>
@@ -162,6 +164,7 @@ export default function WriteNewPost() {
               </div>
             </FormWrapper> : 
             <Error code={404} underText='Content not found or you have not permission!' message='Not found!'/>}
+            <ContentViewer content={content}/>
         </div>}
     </Fragment>
   )

@@ -5,8 +5,11 @@ import regexp from "./regexp";
 import tools from "./tools";
 
 export default {
-  header: function(line) {
-    return line.replace(regexp.HEADER_REGEXP, '<h1 class="header content_flex">$1</h1>')
+  header1: function(line) {
+    return line.replace(regexp.HEADER_REGEXP_1, '<h1 class="header_1 content_flex">$1</h1>')
+  },
+  header2: function(line) {
+    return line.replace(regexp.HEADER_REGEXP_2, '<h2 class="header_2 content_flex">$1</h2>')
   },
   bold: function(line: string) {
     return line.replace(regexp.BOLD_REGEXP, '<b class="content_flex">$1</b>')
@@ -54,7 +57,7 @@ export default {
     return parsed
   },
   video: function(line: string) {
-    let videoURL: string | undefined = line.replace(/\[(.+)\]/g, '$1')  
+    let videoURL: string | undefined = line.replace(regexp.VIDEO_REGEXP, '$1')  
     
     return(
       `
