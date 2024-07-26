@@ -14,8 +14,8 @@ export default function parse(content: string): string {
       continue
     }
 
-    if(ContentParser.have.header1(lines[obj.index])) {
-      parsed += ContentParser.parseAs.header1(lines[obj.index])
+    if(ContentParser.have.quote(lines[obj.index])) {
+      parsed += ContentParser.parseAs.quote(lines[obj.index])
       continue
     }
 
@@ -24,29 +24,34 @@ export default function parse(content: string): string {
       continue
     }
 
+    if(ContentParser.have.header1(lines[obj.index])) {
+      parsed += ContentParser.parseAs.header1(lines[obj.index])
+      continue
+    }
+
     if(ContentParser.have.img(lines[obj.index])) {
-      parsed += `<div class="container_full_width container container_flex">` + ContentParser.parseAs.img(obj, lines) + `</div>`
+      parsed += ContentParser.parseAs.img(obj, lines)
       obj.index--
       continue
     }
 
     if(ContentParser.have.video(lines[obj.index])) {
-      parsed += `<div class="container_full_width container">` + ContentParser.parseAs.video(lines[obj.index]) + `</div>`
+      parsed += ContentParser.parseAs.video(lines[obj.index])
       continue
-    }    
-    
-    if(ContentParser.have.bold(lines[obj.index]))     lines[obj.index] = ContentParser.parseAs.bold(lines[obj.index])
-    if(ContentParser.have.link(lines[obj.index]))     lines[obj.index] = ContentParser.parseAs.link(lines[obj.index])
+    }  
     
     if(ContentParser.have.listItem(lines[obj.index])) {
-      parsed += `<div class="container_full_width container list_container">` + ContentParser.parseAs.listItem(lines[obj.index]) + `</div>`
+      parsed += ContentParser.parseAs.listItem(obj, lines)
       continue
     }
+    
+    if(ContentParser.have.bold(lines[obj.index]))  lines[obj.index] = ContentParser.parseAs.bold(lines[obj.index])
+    if(ContentParser.have.link(lines[obj.index]))  lines[obj.index] = ContentParser.parseAs.link(lines[obj.index])
 
     lines[obj.index] = ContentParser.parseAs.paragraph(lines[obj.index])
-    lines[obj.index] = `<div class="container_flex container">` + lines[obj.index] + `</div><div style="width: 100%;"></div>`
+    lines[obj.index] = `<div class="line flex-row-normal-normal-medium">` + lines[obj.index] + `</div>`
     parsed += lines[obj.index]
   }
 
-  return parsed
+  return `<div class="flex-column-normal-normal-small">` + parsed + `</div>`
 }

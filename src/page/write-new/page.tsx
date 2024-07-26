@@ -14,7 +14,7 @@ import ModalError from '@/component/modal-error/modalError'
 import Button from '@/component/button/button'
 import WriteNewLoader from './loader'
 
-import { Fragment, useRef, useState } from "react"
+import { Fragment, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -31,13 +31,11 @@ import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
-import ContentViewer from '@/component/content-viewer/contentViewer'
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
   const dispatch = useDispatch<AppDispatch>()
   const redirect = useNavigate()
-  const contentRef = useRef<string>('')
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
   const searchParams = useSearchParams()
   const auth = useAuth()
@@ -70,11 +68,11 @@ export default function WriteNewPost() {
   })
 
   const key: string[] = currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
-  const [content, setContent] = useState<string>('')
 
   const { mutate, isMutating, error } = useRequest({ deps: key })
   
   const tagsRef = useRef<string[]>(currContent?.tags || [])
+  const contentRef = useRef<string>('')
   
   const createNew = async(data: any): Promise<void> => {
     delete data.alt
@@ -126,7 +124,7 @@ export default function WriteNewPost() {
   const saveDraft = (): void => {
     const newDraftID: string = draftID || contentID || window.crypto.randomUUID()
       
-    dispatch(editOrinsertContentDraft({...currContent, content: contentRef.current, _id: newDraftID! }))
+    dispatch(editOrinsertContentDraft({...currContent, _id: newDraftID!, content: contentRef.current }))
       
     searchParams.set({ 'draft-id': newDraftID })
     searchParams.remove(['content-id'])
@@ -139,7 +137,7 @@ export default function WriteNewPost() {
   }
 
   const getTextAreaContentValue = (content: string): void => {
-    setContent(content)
+    contentRef.current = content
   }
 
   return(
@@ -160,11 +158,10 @@ export default function WriteNewPost() {
               <div className={scss.create_new_buttons_container}>
                 <Button label={isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
                 <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>
-                <Button label="Delete as draft" onClick={deleteDraft}/>
+                <Button label="Delete draft" onClick={deleteDraft}/>
               </div>
             </FormWrapper> : 
-            <Error code={404} underText='Content not found or you have not permission!' message='Not found!'/>}
-            <ContentViewer content={content}/>
+          <Error code={404} underText='Content not found or you have not permission!' message='Not found!'/>}
         </div>}
     </Fragment>
   )

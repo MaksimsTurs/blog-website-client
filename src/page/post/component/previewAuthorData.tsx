@@ -13,7 +13,7 @@ export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
 
   return(
     <div style={{ height: 'fit-content', flexShrink: 0 }} className='flex-column-center-normal-none main-content-container'>
-      <img src={author.avatar} alt={author.name} />
+      <img className={scss.author_avatar} src={author.avatar} alt={author.name} />
       <div className='flex-column-center-normal-none'>
         <Link to={`/user/${author._id}`} className={scss.author_name}>{author.name}</Link>
         <div className='flex-row-center-center-medium' style={{ color }}>

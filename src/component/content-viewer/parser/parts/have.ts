@@ -32,5 +32,9 @@ export default {
   },
   listItem: function(line) {
     return line[0] === '+'
+  },
+  quote: function(line) {
+    regexp.QUOTE_BRACKETS_REGEXP.lastIndex = 0
+    return regexp.QUOTE_BRACKETS_REGEXP.test(line)
   }
 } as LineHave

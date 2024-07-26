@@ -1,28 +1,55 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
-.container_flex {
-  display: flex;
-  flex-wrap: wrap;
-  word-break: break-all;
-  row-gap: 0.1rem;
-  column-gap: 0.5rem;
+.line { width: 100%; flex-wrap: wrap; row-gap: 0rem; line-height: 1.2rem; }
+
+.line_end { width: 100% }
+
+.intendention { padding: 0.5rem; width: 100%; }
+
+.header { font-weight: bolder; width: 100%; }
+
+.header_2 { font-size: $font-x-large; }
+
+.header_1 { font-size: $font-xx-large; }
+
+.img_with_context {
+  width: 100%;
+
+  > p {
+    width: fit-content;
+    height: fit-content;
+    color: rgb(133, 133, 133);
+    line-height: 1rem;
+  }
+
+  > img {
+    border-radius: 0px !important;
+    height: 18rem;
+    width: fit-content;
+    object-fit: cover;
+  }
 }
 
-.container_full_width {
-  width: 100% !important;
-  row-gap: 0rem;
-  column-gap: 0rem;
-}
-
-.container {
-  flex-direction: row;
-  height: fit-content;
+.img {
+  border-radius: 0px !important;
+  height: 12rem;
   width: fit-content;
+  object-fit: cover;
+}
+
+.video_container {
+  width: 100%;
+
+  video {
+    width: 25rem;
+    height: auto;
+  }
 }
 
 .list {
   color: $color-common;
+  width: 100%;
   list-style: disc;
   font-size: 1rem;
   margin-left: 0.9rem;
@@ -30,41 +57,38 @@
   align-items: center;
 }
 
-.header_1 {
-  font-size: $font-xx-large;
-  font-weight: bolder;
-  width: 100%;
-}
-
-.header_2 {
-  font-size: 1.2rem;
-  font-weight: bolder;
-  width: 100%;
-}
-
 .link {
   color: $color-common-hover;
 }
 
-.intendention {
-  padding: 0.5rem;
+.quote_container {
   width: 100%;
-}
-
-.img {
-  border-radius: 0px !important;
-  object-fit: cover;
-  width: fit-content;
-  height: 10rem;
-}
-
-.video {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > video {
-    width: 25rem;
-    height: auto;
+  
+  .quote_body {
+    color: $color-common-hover;
+    border-radius: $border-radius-container;
+    border: 1px solid $color-common-hover;
+    padding: 1rem;
+    position: relative;
+    max-width: 75%;
   }
+
+  .quote_name {
+    color: $color-common-hover;
+    font-size: 1.1rem;
+    font-weight: bold
+  }
+
+  .quote_svg {
+    @include absolute-left-top-zindex-width-height(0%, 0%);
+    transform: translate(-50%, -50%);
+    color: $color-common-hover;
+    fill: $color-common-hover;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .quote_start { left: 0%; top: 9%; }
+
+  .quote_end { left: 100%; top: 100%; }
 }

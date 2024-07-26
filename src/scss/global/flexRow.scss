@@ -3,13 +3,13 @@
 
 // ALIGN ITEM | JUSTIFY CONTENT | GAP
 
+.flex-row-normal-normal-none {
+  display: flex;
+}
+
 .flex-row-normal-normal-small {
   display: flex;
   gap: 0.25rem
-}
-
-.flex-row-normal-normal-none {
-  display: flex;
 }
 
 .flex-row-normal-normal-medium {

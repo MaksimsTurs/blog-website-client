@@ -7,7 +7,7 @@ export default function useOutsideClick(mainContainerRef: RefObject<HTMLElement>
 
   useEffect(() => {
     document.addEventListener('click', (event) => {
-      if(mainContainerRef.current?.contains(event.target as Node)) {
+      if(mainContainerRef && mainContainerRef.current?.contains(event.target as Node)) {
         for(let index: number = 0; index < buttonsRefs.length; index++) {
           if(buttonsRefs[index].current === event.target) setIsVisible(prev => !prev)
         }

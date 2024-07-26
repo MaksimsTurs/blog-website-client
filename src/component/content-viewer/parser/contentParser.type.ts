@@ -15,6 +15,7 @@ export type ContentRegexp = {
   LINK_REGEXP: RegExp
   VIDEO_REGEXP: RegExp
   DEFAULT_REGEXP: RegExp
+  QUOTE_BRACKETS_REGEXP: RegExp
   SECURE_PROTOCOL_REGEXP: RegExp
   SQUARE_BRACKETS_REGEXP: RegExp
   PAIR_BRACKETS_REGEXP: RegExp
@@ -23,8 +24,9 @@ export type ContentRegexp = {
 
 export type LinkLikeDictionary = {
   [key: string]: { 
-    link: string, 
-    text: string 
+    text: string
+    link?: string
+    context?: string 
   }
 }
 
@@ -45,18 +47,20 @@ export type LineHave = {
   video: (line: string) => boolean
   lineIntendention: (line: string) => boolean
   listItem: (line: string) => boolean
+  quote: (line: string) => boolean
 }
 
 export type ContentParserParseLineAs = {
   link: (line: string) => string
   img: (obj: { index: number }, lines: string[]) => string
+  listItem: (obj: { index: number }, lines: string[]) => string
   bold: (line: string) => string
   header1: (ine: string) => string
   header2: (line: string) => string
   video: (line: string) => string
   lineIntendention: () => string
-  listItem: (line: string) => string
   paragraph: (line: string) => string
+  quote: (line: string) => string
 }
 
 export enum ContentKind {
@@ -64,6 +68,7 @@ export enum ContentKind {
   HEADER1 =   'HEADER1',
   HEADER2 =   'HEADER2',
   BOLD =      'BOLD',
+  QUOTE =     'QUOTE',
   LINK =      'LINK',
   IMG =       'IMG',
   VIDEO =     'VIDEO',
