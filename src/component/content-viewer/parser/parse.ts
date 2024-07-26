@@ -42,6 +42,7 @@ export default function parse(content: string): string {
     
     if(ContentParser.have.listItem(lines[obj.index])) {
       parsed += ContentParser.parseAs.listItem(obj, lines)
+      obj.index--
       continue
     }
     
