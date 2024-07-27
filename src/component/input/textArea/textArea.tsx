@@ -19,6 +19,8 @@ import uploadAsset from './fetch/uploadAsset';
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 
+import localStorage from '@/lib/local-storage/localStorage';
+
 export default memo(function({ placeholder, defaultValue, getValue }: TextAreaProps) {
   const [textAreaContent, setTextAreaContent] = useState<string>(defaultValue)
   const [errors, setErrors] = useState<KeyValueObject>()
@@ -158,7 +160,12 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   }
 
   const showCurrentContent = (): void => {
-    if(isPreview) return searchParams.remove(['is-preview'])
+    if(isPreview) {
+      localStorage.set('scroll-position', document.body.scrollTop)
+      return searchParams.remove(['is-preview'])
+    }
+
+    document.body.scrollTo({ top: localStorage.get('scroll-position', '0') })
     return searchParams.set({ 'is-preview': true })
   }
 
