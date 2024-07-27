@@ -3,6 +3,7 @@
 
 .authorization_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 8%, 99);
+  position: fixed;
   right: 0%;
   backdrop-filter: blur(3px);
   pointer-events: none;

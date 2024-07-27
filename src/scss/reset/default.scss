@@ -1,7 +1,12 @@
 @import '../variabel';
 
 * {
-	font-family: "Fira Code", monospace;
+  // font-family: "Fira Code", monospace;
+	font-family: "Fira Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+	font-weight: 400;
+
 	user-select: none;
 	box-sizing: border-box;
 	padding: 0rem;

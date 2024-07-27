@@ -54,5 +54,9 @@ export default function parse(content: string): string {
     parsed += lines[obj.index]
   }
 
-  return `<div class="flex-column-normal-normal-small">` + parsed + `</div>`
+  parsed = `<div class="flex-column-normal-normal-small">` + parsed + `</div>`
+
+  if(!ContentParser.is.secureHTMLTag(parsed)) ContentParser.error.throw({ content: parsed, function: 'parse', message: 'HTML Contains handlers or script tag!' })
+
+  return parsed
 }

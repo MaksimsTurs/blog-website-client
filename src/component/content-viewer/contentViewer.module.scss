@@ -16,4 +16,12 @@
       height: 1rem;
     }
   }
+
+  .content_view_parse_error {
+    border-radius: $border-radius-container;
+    width: 100%;
+    background-color: rgb(129, 0, 0);
+    padding: 0.75rem;
+    color: white;
+  }
 }

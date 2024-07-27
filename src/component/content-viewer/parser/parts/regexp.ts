@@ -12,8 +12,11 @@ export default {
   HEADER_REGEXP_2: /#{3}(.*?)#{3}/,
   VIDEO_REGEXP: /\(\[(.+)\]\)/g,
   DEFAULT_REGEXP: /\[(.*?)\]/g,
-  SECURE_PROTOCOL_REGEXP: /((blob:?.+https?)|https):\/{1,2}/g,
   SQUARE_BRACKETS_REGEXP: /^\[(.*)\]$/g,
   PAIR_BRACKETS_REGEXP: /\((.*?)\)/g,
-  TAG_BRACKET_REGEXP: /<.*>(.*)<.*>/
+  TAG_BRACKET_REGEXP: /<.*>(.*)<.*>/,
+  //Secure regexp
+  HTTPS_PROTOCOL_REGEXP: /((blob:?.+https?)|https):\/{2}/g,
+  HTML_TAG_WITH_HANDLERS_REGEXP: /<.*? on.* .*?>/gm,
+  SCRIPT_TAG_REGEXP: /<script.*?>([\s\S]*?)<\/script>/gm
 } as ContentRegexp

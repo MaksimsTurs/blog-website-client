@@ -6,6 +6,7 @@ import is from "./parts/is";
 import have from "./parts/have";
 import parseAs from "./parts/parseAs";
 import tools from "./parts/tools";
+import error from "./parts/error";
 
 const ContentParser: ContentParser = {
   regexp,
@@ -13,7 +14,8 @@ const ContentParser: ContentParser = {
   is,
   have,
   parseAs,
-  tools
+  tools,
+  error
 }
 
 export default ContentParser

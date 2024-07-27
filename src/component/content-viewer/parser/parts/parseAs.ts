@@ -1,8 +1,10 @@
 import type { ContentParserParseLineAs, LinkLikeDictionary } from "../contentParser.type";
 
 import have from "./have";
+import is from "./is";
 import regexp from "./regexp";
 import tools from "./tools";
+import error from "./error";
 
 export default {
   lineIntendention: function() {
@@ -47,8 +49,15 @@ export default {
     for(; obj.index < lines.length;) {
       if(have.img(lines[obj.index])) {
         const [text, context, src] = lines[obj.index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
-        if(!src) imgDictionary[obj.index] = { text, link: context }
-        else imgDictionary[obj.index] = { text, link: src, context }
+
+        if(!src && is.secureURL(context)) {
+          imgDictionary[obj.index] = { text, link: context }
+        } else if(src && is.secureURL(src)) {
+          imgDictionary[obj.index] = { text, link: src, context }
+        } else {
+          error.throw({ content: lines[obj.index], function: 'parseAs.img', message: `"context": ${context} or "src": ${src} is not defined or not secure!` })
+        }
+        
         obj.index++
       } else break
     }
@@ -80,6 +89,10 @@ export default {
 
     while(matchers?.[index]) {
       const link: string[] = matchers[index].replace(regexp.SQUARE_BRACKETS_REGEXP, '$1').split(/;/)
+
+      if(!is.secureURL(link[1])) {
+         error.throw({ content: line, function: 'parseAs.link', message: `Type of URL "${link[1]}" is "${typeof link[1]}", URL is not string or URL is not secure!` })
+      }
       
       parsed = parsed.replace(matchers[index], `<a class="link content_flex" href="` + link[1] + `">` + link[0] + `</a>`)
       index++
@@ -89,6 +102,10 @@ export default {
   },
   video: function(line) {
     let videoURL: string | undefined = line.replace(regexp.VIDEO_REGEXP, '$1')  
+
+    if(!is.secureURL(videoURL)) {
+      error.throw({ content: line, function: 'parseAs.video', message: `Type of video URL "${videoURL}" is "${typeof videoURL}", video URL is not string or URL is not secure!` })
+    }
     
     return(
       `

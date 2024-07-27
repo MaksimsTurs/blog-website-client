@@ -5,6 +5,17 @@ export type ContentParser = {
   have: LineHave
   parseAs: ContentParserParseLineAs
   tools: ContentTools
+  error: ContentParserError
+}
+
+export type ContentParserError = {
+  throw: (information: ContentParserErrorInformation) => void
+}
+
+export type ContentParserErrorInformation = {
+  content: string
+  function: string
+  message: string
 }
 
 export type ContentRegexp = {
@@ -16,7 +27,9 @@ export type ContentRegexp = {
   VIDEO_REGEXP: RegExp
   DEFAULT_REGEXP: RegExp
   QUOTE_BRACKETS_REGEXP: RegExp
-  SECURE_PROTOCOL_REGEXP: RegExp
+  HTTPS_PROTOCOL_REGEXP: RegExp
+  HTML_TAG_WITH_HANDLERS_REGEXP: RegExp
+  SCRIPT_TAG_REGEXP: RegExp
   SQUARE_BRACKETS_REGEXP: RegExp
   PAIR_BRACKETS_REGEXP: RegExp
   TAG_BRACKET_REGEXP: RegExp
@@ -35,7 +48,8 @@ export type ContentTools = {
 }
 
 export type ContentIs = {
-  secureLink: (url: string) => boolean
+  secureURL: (url: string) => boolean
+  secureHTMLTag: (line: string) => boolean
 }
 
 export type LineHave = {

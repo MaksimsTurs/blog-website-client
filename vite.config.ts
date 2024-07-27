@@ -26,12 +26,12 @@ export default viteConfig(({ mode }) => {
 	}
 
 	const DEV_PLUGINS = [
-		webfontVite({	fonts: ['https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap'] }),
+		webfontVite({	fonts: ['https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:wght@400;700&display=swap'] }),
 		reactswcVite()
 	]
 
 	const PROD_PLUGINS = [
-		webfontVite({ fonts: ['https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap'] }),
+		webfontVite({ fonts: ['https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:wght@400;700&display=swap'] }),
 		reactswcVite(),
 		chunksplitVite(),
 		imageminVite(),
