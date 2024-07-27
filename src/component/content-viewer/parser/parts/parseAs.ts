@@ -17,7 +17,7 @@ export default {
     return line.replace(regexp.HEADER_REGEXP_1, '<h1 class="header header_1">$1</h1>')
   },
   bold: function(line) {
-    return line.replace(regexp.BOLD_REGEXP, '<b class="container_flex">$1</b>')
+    return line.replace(regexp.BOLD_REGEXP, '<b class="bold container_flex">$1</b>')
   },
   listItem: function(obj, lines) {
     let parsed: string = '', listDictionary: LinkLikeDictionary = {}, entries = []

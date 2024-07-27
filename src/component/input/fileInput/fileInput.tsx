@@ -19,6 +19,8 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
   const upload = (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0]
 
+    console.log(supportedExtentions, file.type)
+
     if(file.type.search('video') > -1) isVideo.current = true
     else isVideo.current = false
 

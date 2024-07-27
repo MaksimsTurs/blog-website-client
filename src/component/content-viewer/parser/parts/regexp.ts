@@ -7,7 +7,7 @@ export default {
   IMAGE_REGEXP: /\((.*?);(.*?);?(.*?)\)/g,
   //Name ; Text
   QUOTE_BRACKETS_REGEXP: /\(?(.*?)\)?\"{2}([^""]+?)\"{2}/gm,
-  BOLD_REGEXP: /#{1}(.*?)#{1}/g,
+  BOLD_REGEXP: /#(.*?)#/g,
   HEADER_REGEXP_1: /#{2}(.*?)#{2}/,
   HEADER_REGEXP_2: /#{3}(.*?)#{3}/,
   VIDEO_REGEXP: /\(\[(.+)\]\)/g,
