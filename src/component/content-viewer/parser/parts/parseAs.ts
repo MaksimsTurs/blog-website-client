@@ -69,14 +69,14 @@ export default {
         parsed += 
         `
           <div class="img_with_context flex-column-center-center-medium">
-            <img src="` + value.link + `"` + `alt="` + value.text + `">
+            <a target="_blank" href="` + value.link + `"><img src="` + value.link + `"` + `alt="` + value.text + `"></a>
             <p>` + value.context + `</p>
           </div>
         `
         continue
       }
 
-      parsed += `<img class="img" src="` + value.link + `"` + `alt="` + value.text + `">`
+      parsed += `<a target="_blank" href="` + value.link + `"><img class="img" src="` + value.link + `"` + `alt="` + value.text + `"></a>`
     }
 
     return `<div style="flex-wrap: wrap;" class="flex-row-center-center-none">` + parsed + `</div>`
@@ -94,7 +94,7 @@ export default {
          error.throw({ content: line, function: 'parseAs.link', message: `Type of URL "${link[1]}" is "${typeof link[1]}", URL is not string or URL is not secure!` })
       }
       
-      parsed = parsed.replace(matchers[index], `<a class="link content_flex" href="` + link[1] + `">` + link[0] + `</a>`)
+      parsed = parsed.replace(matchers[index], `<a target="_blank" class="link content_flex" href="` + link[1] + `">` + link[0] + `</a>`)
       index++
     }
 

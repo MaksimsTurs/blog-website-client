@@ -34,6 +34,7 @@
 }
 
 .img {
+  display: block;
   border-radius: 0px !important;
   height: 12rem;
   width: fit-content;
@@ -70,6 +71,7 @@
     color: $color-common-hover;
     border-radius: $border-radius-container;
     border: 1px solid $color-common-hover;
+    margin: 1rem 0rem;
     padding: 1rem;
     position: relative;
     width: 75%;
