@@ -8,7 +8,7 @@ const initState: CreatorState = {
   contentDraft: localStorage.get('content-draft', '[]')  
 }
 
-const creatorSlice = createSlice({
+const slice = createSlice({
   name: 'creator',
   initialState: initState,
   reducers: {
@@ -30,5 +30,5 @@ const creatorSlice = createSlice({
   }
 })
 
-export const { editOrinsertContentDraft, removeContentDraft } = creatorSlice.actions
-export default creatorSlice.reducer
+export const { editOrinsertContentDraft, removeContentDraft } = slice.actions
+export default slice.reducer

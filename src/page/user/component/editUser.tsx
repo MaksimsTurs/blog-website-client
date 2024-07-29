@@ -6,7 +6,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { useRef } from 'react';
 
 import useForm from '@/custom-hook/useForm/useForm';
-import useHavePermission from '@/custom-hook/use-have-permission/useHavePermission';
+import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 import useAuth from '@/custom-hook/useAuth/useAuth';
 import useRequest from '@/custom-hook/_use-request/_useRequest';
 

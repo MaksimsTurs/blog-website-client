@@ -25,7 +25,7 @@ export default function ModalError({ error, removeError }: ModalErrorProps) {
 
   useEffect(() => {
     if(error) searchParams.set({ 'is-error-modal-open': true })
-  }, [error])
+  }, [])
 
   return(
     <div style={{ display: (isErrorModalOpen && error) ? 'flex' : 'none' }} className={`${scss.modal_error_container} flex-row-center-center-none`}>

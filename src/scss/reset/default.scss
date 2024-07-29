@@ -1,7 +1,7 @@
 @import '../variabel';
 
 * {
-  font-family: "Fira Code", monospace;
+	font-family: "Fira Code", monospace;
 	// font-family: "Fira Sans", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
@@ -11,6 +11,10 @@
 	margin: 0rem;
 	border: none;
 }
+
+.font-fira-code { font-family: "Fira Code", monospace; }
+
+.font-fira-sans { font-family: "Fira Sans", sans-serif; }
 
 *,
 *:before,

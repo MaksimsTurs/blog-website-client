@@ -6,7 +6,7 @@ import { Home, Search, Shield, SquarePen } from 'lucide-react'
 import { useSelector } from 'react-redux'
 
 import useAuth from '@/custom-hook/useAuth/useAuth'
-import useHavePermission from '@/custom-hook/use-have-permission/useHavePermission'
+import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
 import SideMenuLoader from './component/sideMenuLoader'
 
@@ -16,7 +16,7 @@ import type { RootState } from '@/store/store'
 export default function SideMenu() {
   const { pathname } = useLocation()
   const auth = useAuth()
-  const permission = useHavePermission()
+  const permission = usePermitor()
 
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
   const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
@@ -26,14 +26,14 @@ export default function SideMenu() {
     { title: 'Search', path: '/search', icon: <Search /> },
   ]
 
-  if(permission.isHaveRole(['Admin']).result()) {
+  if(permission.role(['Admin']).permited()) {
     paths.push(
       { title: 'Admin', path: '/admin/post', icon: <Shield /> },
       { title: 'Write post', path: '/write-post', icon: <SquarePen /> }
     )
   }
 
-  if(permission.isHaveRole(['Creator']).result()) {
+  if(permission.role(['Creator']).permited()) {
     paths.push({ title: 'Write post', path: '/write-post', icon: <SquarePen /> })
   }
 

@@ -1,7 +1,11 @@
-// import useAuth from "@/custom-hook/useAuth/useAuth";
+import type { ProtectedRouteProps } from "./protectedRoute.type";
+import type { PropsWithChildren } from "react";
 
-// export default function ProtectedRoute() {
-//   const auth = useAuth()
+import { Fragment } from "react";
 
-//   if()
-// }
+import usePermitor from "@/custom-hook/use-permitor/useHavePermission";
+
+export default function ProtectedRoute({ exeptetRoles, children }: PropsWithChildren<ProtectedRouteProps>) {
+  const res = usePermitor().role(exeptetRoles).permited()
+  return <Fragment>{res ? children : null}</Fragment>
+}

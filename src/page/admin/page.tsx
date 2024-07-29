@@ -3,6 +3,7 @@ import '@/scss/global.scss'
 
 import useRequest from '@/custom-hook/_use-request/_useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
+import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
 import fetcher from '@/lib/fetcher/fetcher'
 import inObject from '@/lib/in-object/inObject'
@@ -27,6 +28,11 @@ import { useParams, Navigate } from 'react-router-dom'
 export default function Admin() {
   const { tab } = useParams()
   const searchParams = useSearchParams()
+  const permitor = usePermitor()
+
+  if(!permitor.role(['Admin']).permited()) {
+    return <Navigate to='/'/>
+  }
 
   const currPage: number = parseInt(searchParams.get('page') || '0')
 
@@ -44,8 +50,7 @@ export default function Admin() {
       <ModalError error={error}/>
       <Modals/>
       {isMutating ? <MutatingLoader/> : null}
-      {error?.code === 500 ? null :
-      error?.code === 403 ? <Navigate to={'/'}/> :
+      {error ? null :
       <div style={{ paddingRight: '11rem', width: '100%' }} className='flex-column-normal-normal-medium'>
         {isPending ? <PaginationLoader/> : <Pagination pagesCount={pagesCount}/>}        
         {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true }} label={`Nothing found...`}/>}

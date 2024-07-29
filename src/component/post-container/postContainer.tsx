@@ -19,7 +19,7 @@ import DateParser from '@/lib/date-parser/dateParser';
 import useAuth from '@/custom-hook/useAuth/useAuth';
 import useRequest from '@/custom-hook/_use-request/_useRequest';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
-import useHavePermission from '@/custom-hook/use-have-permission/useHavePermission';
+import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';

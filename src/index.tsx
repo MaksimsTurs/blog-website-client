@@ -29,6 +29,7 @@ import UserLoader from './page/user/loader'
 import AdminLoader from './page/admin/loader'
 
 import Error from "./component/error/error"
+import ProtectedRoute from "./component/protected-route/protectedRoute"
 
 createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
@@ -42,11 +43,15 @@ createRoot(document.getElementById("root") as HTMLElement).render(
               <Routes>
                 <Route path="/" element={<Suspense fallback={<HomeLoader/>}><Home /></Suspense>} />
                 <Route path="/post/:id" element={<Suspense fallback={<PostLoader/>}><Post /></Suspense>} />
-                <Route path="/write-post" element={<Suspense fallback={<WriteNewPostLoader/>}><WriteNewPost /></Suspense>} />
                 <Route path="/search" element={<Suspense fallback={<SearchLoader/>}><Search/></Suspense>}/>
                 <Route path="/user/:id" element={<Suspense fallback={<UserLoader/>}><User/></Suspense>}/>
-                <Route path="/admin/:tab" element={<Suspense fallback={<AdminLoader/>}><Admin/></Suspense>}/>
                 <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
+                <ProtectedRoute exeptetRoles={['Admin', 'Creator']}>
+                  <Route path="/write-post" element={<Suspense fallback={<WriteNewPostLoader/>}><WriteNewPost /></Suspense>} />
+                </ProtectedRoute>
+                <ProtectedRoute exeptetRoles={['Admin']}>
+                  <Route path="/admin/:tab" element={<Suspense fallback={<AdminLoader/>}><Admin/></Suspense>}/>
+                </ProtectedRoute>
               </Routes>
               <ScrollTo/>
             </main>

@@ -37,6 +37,7 @@ export default function useAuth() {
     },
     out: function(): void {
       userContext?.updateUserState({ isAuthPending: false, isLoading: false })
+      coockie.set('PR_TOKEN', 'undefined')
     },
     clearError: function(): void {
       useEffect(() => {

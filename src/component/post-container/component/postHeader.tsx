@@ -6,7 +6,7 @@ import { PostHeaderProps } from '../postContainer.type'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Pencil, Trash2, UserX } from 'lucide-react'
 
-import useHavePermission from '@/custom-hook/use-have-permission/useHavePermission'
+import useHavePermission from '@/custom-hook/use-permitor/useHavePermission'
 import useRequest from '@/custom-hook/_use-request/_useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
