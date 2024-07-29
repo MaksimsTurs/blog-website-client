@@ -46,12 +46,20 @@ createRoot(document.getElementById("root") as HTMLElement).render(
                 <Route path="/search" element={<Suspense fallback={<SearchLoader/>}><Search/></Suspense>}/>
                 <Route path="/user/:id" element={<Suspense fallback={<UserLoader/>}><User/></Suspense>}/>
                 <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
-                <ProtectedRoute exeptetRoles={['Admin', 'Creator']}>
-                  <Route path="/write-post" element={<Suspense fallback={<WriteNewPostLoader/>}><WriteNewPost /></Suspense>} />
-                </ProtectedRoute>
-                <ProtectedRoute exeptetRoles={['Admin']}>
-                  <Route path="/admin/:tab" element={<Suspense fallback={<AdminLoader/>}><Admin/></Suspense>}/>
-                </ProtectedRoute>
+                <Route path="/write-post" element={
+                  <Suspense fallback={<WriteNewPostLoader/>}>
+                    <ProtectedRoute exeptetRoles={['Admin', 'Creator']}>
+                      <WriteNewPost />
+                    </ProtectedRoute>
+                  </Suspense>
+                }/>
+                <Route path="/admin/:tab" element={
+                  <Suspense fallback={<AdminLoader/>}>
+                    <ProtectedRoute exeptetRoles={['Admin']}>
+                      <Admin/>
+                    </ProtectedRoute>
+                  </Suspense>
+                }/>
               </Routes>
               <ScrollTo/>
             </main>
