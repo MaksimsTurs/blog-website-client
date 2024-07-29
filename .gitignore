@@ -1,7 +1,10 @@
 node_modules
 package-lock.json
+
 output
+
 server
-passwords.txt
-saves
+
 content
+
+passwords.txt

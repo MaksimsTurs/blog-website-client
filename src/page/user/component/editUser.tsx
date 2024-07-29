@@ -29,7 +29,7 @@ export default function EditUser({ isVisible, _id, setIsVisible }: EditUserProps
   const redirect = useNavigate()
   const auth = useAuth()
   const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isAdminOrIDEqual = useHavePermission().isHaveRoleOrIsIDEqual(['Admin'], _id).result()
+  const isAdminOrIDEqual: boolean = useHavePermission().role(['Admin']).equal('_id', _id).permited()
 
   const updateUser = (data: User): void => {
     if(isAdminOrIDEqual) {

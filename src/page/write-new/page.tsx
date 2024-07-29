@@ -86,7 +86,7 @@ export default function WriteNewPost() {
       key,
       request: async function(option) {
         if(isEdit) {
-          const updated = await fetcher.post<Content>(`/admin/update/${currContent?.contentType}`, {...data, tags: tagsRef.current, id: contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+          const updated = await fetcher.post<Content>(`/admin/update/${currContent?.contentType}`, {...data, content: contentRef.current, tags: tagsRef.current, id: contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
           localStorage.remove(updated._id!)
 
@@ -110,11 +110,11 @@ export default function WriteNewPost() {
         }
 
         //Insert post
-        const post = await fetcher.post<Content>(`/insert/post`, {...data, tags: tagsRef.current }, { 'Authorization': `Bearer ${auth?.user?.token}` })
+        const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, { 'Authorization': `Bearer ${auth?.user?.token}` })
         const state = option.state as Content[] || []
 
         redirect(`/post/${post._id}`)
-        return state.length % 10 === 0 ? state : [...state || [], post]
+        return [...state || [], post]
       }
     })
   }
@@ -144,7 +144,7 @@ export default function WriteNewPost() {
 
   return(
     <Fragment>
-      <ModalError error={toError}/>
+      {toError ? <ModalError error={toError}/> : null}
       {isMutating ? <MutatingLoader/> : null}
       {auth.isAuthPending ?
         <WriteNewLoader/> :

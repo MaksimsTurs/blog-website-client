@@ -80,16 +80,16 @@ export default function PostModal() {
       const maxLikesPage: number = Math.ceil(currLikes.length / 10)
 
       return(
-        <div style={{ width: '30rem', position: 'relative' }} className='flex-column-normal-normal-small'>
+        <div style={{ width: '50rem', position: 'relative' }} className='flex-column-normal-normal-small'>
           <DataEditModalWrapper>
-            <FormWrapper style={{ border: 'none', width: '30rem', boxShadow: 'none', padding: '1rem' }} onSubmit={submit(editPost)} buttonLabel='Change post data'>
+            <FormWrapper style={{ border: 'none', width: '50rem', height: '20rem', boxShadow: 'none', padding: '1rem' }} onSubmit={submit(editPost)} buttonLabel='Change post data'>
               <TextInput name='title' placeholder='Write new post title' defaultValue={props.data.title }/>
               <CheckBoxInput name='isHidden' label={props.data.isHidden ? 'Show post' : 'Hidde post'} defaultValue={true}/>
               <TextTagInput placeholder='Write new post tags' getTags={getTags} value={props.data.tags}/>
               <TextArea placeholder='Write new post content' defaultValue={props.data.content} getValue={getContent}/>
             </FormWrapper>
           </DataEditModalWrapper>
-          <div style={{ background: 'white', padding: '1rem', borderRadius: '6px', position: 'absolute', right: '-12.5%', zIndex: '-1', top: '-2%' }} className='flex-column-normal-normal-small'>
+          <div style={{ background: 'white', padding: '1rem', borderRadius: '6px', position: 'absolute', right: '-7%', zIndex: '-1', top: '-1.3%' }} className='flex-column-normal-normal-small'>
             <AdminActionButton optionAction={{ actionType: 'remove' }}/>
             <AdminActionButton optionAction={{ actionType: 'edit' }}/>
           </div>

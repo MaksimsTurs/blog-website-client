@@ -38,8 +38,8 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const isHomePage: boolean = pathname === '/'
   const isLiked: boolean = post.likedBy.includes(auth.user?._id || '')
   
-  const isContentCreator: boolean = permission.isHaveRoleAndIsIDEqual(['Creator'], post?.author?._id).result()
-  const isAdmin: boolean = permission.isHaveRole(['Admin']).result()
+  const isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited()
+  const isAdmin: boolean = permission.role(['Admin']).permited()
   const isHidden: boolean = post.isHidden
   
   const postID: string = (type === 'preview' || type === 'post') ? post._id : id!
@@ -83,7 +83,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
             <div className={scss.post_content_container}>
               <h4>{post.title}</h4>
               <p className={scss.post_content_date}>{DateParser.getDifference(post.createdAt)}</p>
-              <ContentViewer className={scss.post_short_view} content={post.content}/>
+              <ContentViewer content={post.content}/>
             </div> : null}
           {type === 'preview' ? 
             <div className={scss.post_content_container}>

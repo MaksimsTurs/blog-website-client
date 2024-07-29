@@ -29,7 +29,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
   const redirect = useNavigate()
   const { pathname } = useLocation()
   
-  const isAdminOrCreator: boolean = permission.isHaveRoleOrIsIDEqual(['Admin', 'Creator'], user?._id)?.result()
+  const isAdminOrCreator: boolean = permission.role(['Admin', 'Creator']).equal('_id', user?._id).permited()
   const isPostPage: boolean = pathname.search('/post/') > -1
   const isHomePage: boolean = pathname.search('/') > -1
   const isSearchPage: boolean = pathname.search('/search') > -1
@@ -45,17 +45,17 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
         []
 
     //User have no permmissin
-    if(!permission.isHaveRole(['Creator', 'Admin']).result()) {
+    if(!permission.role(['Creator', 'Admin']).permited()) {
       return changeError(key, { code: 403, message: 'You have no edit and remove permission!' })
     }
 
     if(action === 'edit') {
-      if(permission.isHaveRole(['Creator']).result()) {
+      if(permission.role(['Creator']).permited()) {
         localStorage.set(contentID, { content, tags, title, contentType: typeForAPI, onPage: page, onPost: postID })
         return redirect(`/write-post?is-edit=true&content-id=${contentID}`)
       } 
 
-      if(permission.isHaveRole(['Admin']).result()) {
+      if(permission.role(['Admin']).permited()) {
         return redirect(`/admin/${typeForAPI}?id=${contentID}&${typeForAPI}-edit-modal=true`)
       }
     }

@@ -6,9 +6,14 @@
 	
   a { font-weight: bold; width: fit-content; }
 
-	h4 { font-size: $font-x-large; }
+	h4 { font-size: $font-xx-large; font-weight: bolder; }
 
-	.post_short_view { font-size: 0.9rem; }
+	.post_short_view { 
+		position: relative;
+		font-size: 0.9rem; 
+		max-height: 10rem;
+		overflow: hidden;
+	}
 
 	.post_content_date {
 		font-size: $font-small;

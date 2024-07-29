@@ -8,8 +8,8 @@
   
   .preview_header {
     border-bottom: $border-container-soft;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
   
     svg {
       width: $icon-medium;
@@ -22,7 +22,7 @@
 
   a {
     border-radius: $border-radius-container;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     cursor: pointer;
 
     img {

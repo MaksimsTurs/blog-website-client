@@ -12,7 +12,7 @@ export default function UserContentList({ userContent, user }: UserContentListPr
   return(
     <ul className={`${scss.user_data_user_content} main-content-container flex-column-normal-normal-small`}>
       <li className='flex-row-center-normal-medium'><MessageSquareText />{user.name} content</li>
-      {(userContent.content || []).length > 0 ? <PaginationList pagesCount={userContent.pagesCount || 0}/> : null}
+      {userContent.pagesCount > 1 ? <PaginationList pagesCount={userContent.pagesCount || 0}/> : null}
       {(userContent.content || []).length === 0 ? 
       <Empty option={{ size: 'SMALL', flexCenterCenter: true }} label='This author have no content!'/> : 
       userContent.content!.map(content => {
@@ -29,7 +29,7 @@ export default function UserContentList({ userContent, user }: UserContentListPr
          </li>
         )
       })}
-      {(userContent.content || []).length > 0 ? <PaginationList pagesCount={userContent.pagesCount || 0}/> : null}
-    </ul>
+      {userContent.pagesCount > 1 ? <PaginationList pagesCount={userContent.pagesCount || 0}/> : null}
+   </ul>
   )
 }
