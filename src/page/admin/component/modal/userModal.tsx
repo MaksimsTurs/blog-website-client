@@ -29,6 +29,7 @@ import fetcher from '@/lib/fetcher/fetcher';
 import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON';
 import coockie from '@/lib/coockie/coockie';
 import inObject from '@/lib/in-object/inObject';
+import { Fragment } from 'react/jsx-runtime';
 
 export default function UserModal() {
   const searchParams = useSearchParams()
@@ -77,7 +78,7 @@ export default function UserModal() {
       const maxMyLikesPage: number = Math.ceil(currMyLikes.length / 10)
 
       return (
-        <div style={{ width: '30rem', position: 'relative' }} className='flex-column-normal-normal-small'>
+        <Fragment>
           <DataEditModalWrapper>
             <FormWrapper style={{ border: 'none', width: '25rem', boxShadow: 'none', padding: '1rem' }} buttonLabel='Change user data' onSubmit={submit(editUser)}>
               <TextInput name='name' placeholder='Write new user name' defaultValue={props.data.name}/>
@@ -94,46 +95,48 @@ export default function UserModal() {
               <FileInput label='Change user avatar' name='avatar' isChange={isMutating}/>
             </FormWrapper>
           </DataEditModalWrapper>
-          <div style={{ background: 'white', padding: '1rem', borderRadius: '6px', position: 'absolute', right: '-12.5%', zIndex: '-1', top: '-2%' }} className='flex-column-normal-normal-small'>
-            <AdminActionButton optionAction={{ actionType: 'remove' }}/>
-            <AdminActionButton optionAction={{ actionType: 'edit' }}/>
-          </div>
-          <SimpleData propKey="ID:" propValue={props.data._id} useCopyBoard/>
-          <SimpleData propKey="Email:" propValue={props.data.email} useCopyBoard/>
-          <SimpleData propKey="Name:" propValue={props.data.name}/>
-          <SimpleData propKey="Role:" propValue={props.data.role}/>
-          <SimpleData propKey="Registrated:" propValue={DateParser.getDifference(props.data.createdAt)}/>
-          <SimpleData propKey="Ban for:" propValue={DateParser.getDifference(props.data.ban) || 'Not baned!'}/>
-          <DataBurgerWrapper propKey={`${props.data.name} content:`}>
-            <ul className={scss.user_modal_user_content}>
-              {maxMyContentPage > 1 ? <PaginationList pagesCount={maxMyContentPage} listKey='user-content'/> : null}
-              {currMyContent.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have no content!'/> :
-              currMyContent.map(content => 
-                <Link to={`/admin/${inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
+          <div style={{ width: '30rem', position: 'relative' }} className='flex-column-normal-normal-small'>
+            <div style={{ background: 'white', padding: '1rem', borderRadius: '6px', position: 'absolute', right: '-12.5%', zIndex: '-1', top: '-2%' }} className='flex-column-normal-normal-small'>
+              <AdminActionButton optionAction={{ actionType: 'remove' }}/>
+              <AdminActionButton optionAction={{ actionType: 'edit' }}/>
+            </div>
+            <SimpleData propKey="ID:" propValue={props.data._id} useCopyBoard/>
+            <SimpleData propKey="Email:" propValue={props.data.email} useCopyBoard/>
+            <SimpleData propKey="Name:" propValue={props.data.name}/>
+            <SimpleData propKey="Role:" propValue={props.data.role}/>
+            <SimpleData propKey="Registrated:" propValue={DateParser.getDifference(props.data.createdAt)}/>
+            <SimpleData propKey="Ban for:" propValue={DateParser.getDifference(props.data.ban) || 'Not baned!'}/>
+            <DataBurgerWrapper propKey={`${props.data.name} content:`}>
+              <ul className={scss.user_modal_user_content}>
+                {maxMyContentPage > 1 ? <PaginationList pagesCount={maxMyContentPage} listKey='user-content'/> : null}
+                {currMyContent.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have no content!'/> :
+                currMyContent.map(content => 
+                  <Link to={`/admin/${inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
+                    <li key={content._id} className='flex-column-normal-normal-none'>
+                      <h5>{content.title}</h5>
+                      <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Likes:</p><p>{content.likedBy.length}</p></section>
+                      {content.viewedBy ? <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Views:</p><p>{content.viewedBy.length}</p></section> : null}
+                      {content.comments ? <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Comments:</p><p>{content.comments.length}</p></section> : null}
+                    </li>
+                  </Link>)}
+              </ul>
+            </DataBurgerWrapper>
+            <DataBurgerWrapper propKey={`${props.data.name} likes:`}>
+              <ul className={scss.user_modal_user_content}>
+                {maxMyLikesPage > 1 ? <PaginationList pagesCount={maxMyLikesPage} listKey='my-likes'/> : null}
+                {currMyLikes.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have not liked some one content!'/> :
+                currMyLikes.map(content => 
                   <li key={content._id} className='flex-column-normal-normal-none'>
                     <h5>{content.title}</h5>
                     <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Likes:</p><p>{content.likedBy.length}</p></section>
-                    {content.viewedBy ? <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Views:</p><p>{content.viewedBy.length}</p></section> : null}
-                    {content.comments ? <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Comments:</p><p>{content.comments.length}</p></section> : null}
+                    <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Views:</p><p>{content.viewedBy!.length}</p></section>
+                    <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Comments:</p><p>{content.comments!.length}</p></section>
                   </li>
-                </Link>)}
-            </ul>
-          </DataBurgerWrapper>
-          <DataBurgerWrapper propKey={`${props.data.name} likes:`}>
-            <ul className={scss.user_modal_user_content}>
-              {maxMyLikesPage > 1 ? <PaginationList pagesCount={maxMyLikesPage} listKey='my-likes'/> : null}
-              {currMyLikes.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have not liked some one content!'/> :
-              currMyLikes.map(content => 
-                <li key={content._id} className='flex-column-normal-normal-none'>
-                  <h5>{content.title}</h5>
-                  <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Likes:</p><p>{content.likedBy.length}</p></section>
-                  <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Views:</p><p>{content.viewedBy!.length}</p></section>
-                  <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Comments:</p><p>{content.comments!.length}</p></section>
-                </li>
-              )}
-            </ul>
-          </DataBurgerWrapper>
-        </div>
+                )}
+              </ul>
+            </DataBurgerWrapper>
+          </div>
+        </Fragment>
       )}}/>
   )
 }

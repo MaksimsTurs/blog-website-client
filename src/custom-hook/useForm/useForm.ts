@@ -21,11 +21,11 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
 
   const targetRef = useRef<HTMLFormElement | null>(null)
   const isWasSubmitted = useRef<boolean>(false)
+  const isValid = useRef<boolean>(false)
 
   function reset() {
-    if(!isWasSubmitted) throw new Error('Form must be submitted first!')
-
-    resetRecursive(targetRef.current!.children)
+    if(!isWasSubmitted) console.error('Form must be submitted first!')
+    if(isValid.current) resetRecursive(targetRef.current!.children)
   }
 
   function submit(target: (data: T) => any): any {
@@ -41,11 +41,11 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
         const formData = Object.fromEntries(new FormData(event.currentTarget).entries())
 
         const validationResult = formValidator(validationOptionArray, formData)
-        const isValid = Object.values(validationResult).filter(maybeResult => maybeResult).length === 0 ? true : false
+        isValid.current = Object.values(validationResult).filter(maybeResult => maybeResult).length === 0 ? true : false
 
         setFormState(prev => ({...prev, errors: validationResult }))
 
-        if(isValid) target(formData as T)
+        if(isValid.current) target(formData as T)
       }
     })
   }

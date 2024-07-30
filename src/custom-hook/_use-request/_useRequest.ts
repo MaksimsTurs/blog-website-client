@@ -49,7 +49,7 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
       }
       context?.change?.(prev => ({...prev, [key.join('-')]: {...state, isPending: false, isMutating: false, data: response }}))
     } catch(error) {
-      context!.change!(prev => ({...prev, [key.join('-')]: {...state, isPending: false, isMutating: false, error: JSON.parse(error as string) }}))
+      context!.change!(prev => ({...prev, [key.join('-')]: {...state, isPending: false, isMutating: false, error: error instanceof Error ? { code: 503, message: 'Service Unavailable!' } : JSON.parse(error as string) }}))
     }
   }
 

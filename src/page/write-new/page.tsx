@@ -30,6 +30,7 @@ import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
+import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
@@ -68,7 +69,7 @@ export default function WriteNewPost() {
     description: 'Hier kannst neue post oder entwurfe schreiben oder ändern.'
   })
 
-  const key: string[] = currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
+  const key: string[] = currContent?.isFromAdmin ? [] : currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
 
   const { mutate, isMutating, error } = useRequest({ deps: key })
 
@@ -86,7 +87,7 @@ export default function WriteNewPost() {
       key,
       request: async function(option) {
         if(isEdit) {
-          const updated = await fetcher.post<Content>(`/admin/update/${currContent?.contentType}`, {...data, content: contentRef.current, tags: tagsRef.current, id: contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+          const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
           localStorage.remove(updated._id!)
 
@@ -94,8 +95,14 @@ export default function WriteNewPost() {
           if(currContent?.contentType === 'post') {
             const state = option.state as Content[] || []
   
-            option.removeCache(`post-${updated._id}`)
-            redirect(`/post/${updated._id}`)
+            option.removeCache(`/post-${updated._id}`)
+
+            for(let index: number = (currContent?.onPage || 0) + 1; index >= 0; index--) {
+              option.removeCache(`${currContent.contentType}-${index}`)
+            }
+
+            if(!currContent.isFromAdmin) redirect(`/post/${updated._id}`)
+            else redirect(`/admin/${currContent.contentType}`)
   
             return state.map(post => post._id === updated._id ? updated : post)
           }
@@ -104,8 +111,13 @@ export default function WriteNewPost() {
           if(currContent?.contentType === 'comment') {
             const state = option.state as PostCommentsData || { pagesCount: 0, comments: [] }
   
-            redirect(`/post/${currContent?.onPost}?page=${currContent?.onPage}`)
-            return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
+            if(!currContent.isFromAdmin) {
+              redirect(`/post/${currContent?.onPost}?page=${currContent?.onPage}`)
+              return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
+            }
+
+            redirect('/admin')
+            return undefined
           }
         }
 
@@ -154,6 +166,7 @@ export default function WriteNewPost() {
               <Fragment>
                 <TextInput name='title' defaultValue={currContent?.title} placeholder='Post title'/>
                 <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
+                <CheckBoxInput name='isHidden' label='Hidde post' defaultValue={currContent?.isHidden}/>
               </Fragment> : null}
             <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
             <div className={scss.create_new_buttons_container}>

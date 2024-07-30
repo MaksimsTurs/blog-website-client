@@ -10,7 +10,7 @@ export default function TextInput({ name, defaultValue, placeholder, errors, onI
 
   return(
     <div className={scss.text_input_container}>
-      <input name={name} defaultValue={defaultValue} onInput={onInput} placeholder={placeholder} type={type || 'text'} className={inputClassName}/>
+      <input tabIndex={-1} name={name} defaultValue={defaultValue} onInput={onInput} placeholder={placeholder} type={type || 'text'} className={inputClassName}/>
       <CircleX className={iconClassName}/>
       <div className={scss.text_input_error_text_container}>
         <span>{errors?.[name]}</span>

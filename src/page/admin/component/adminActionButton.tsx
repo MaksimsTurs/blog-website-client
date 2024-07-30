@@ -15,8 +15,9 @@ import useRequest from '@/custom-hook/_use-request/_useRequest'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
 import firstLetterToUpperCase from '@/lib/first-letter-to-upper/firstLetterToUpper'
+import localStorage from '@/lib/local-storage/localStorage'
 
-export default function AdminActionButton({ optionAction }: AdminActionButtonProps) {
+export default function AdminActionButton({ optionAction, contentData }: AdminActionButtonProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
@@ -33,7 +34,10 @@ export default function AdminActionButton({ optionAction }: AdminActionButtonPro
 
   const action = (): void => {
     if(optionAction.actionType === 'edit') {
-      return searchParams.set({ [`${tab}-edit-modal`]: true })
+      if(!contentData) return searchParams.set({ 'user-edit-modal': true })
+
+      localStorage.set(contentData._id!, {...contentData, isFromAdmin: true, contentType: toPreview, onPage: currPage })
+      return redirect(`/write-post?is-edit=true&content-id=${contentData._id}`)
     }
     
     mutate<ContentData<Content>>({

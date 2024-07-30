@@ -56,8 +56,8 @@
 .text_area_container {
   display: flex;
   flex-direction: column;
-  width: 58rem;
-
+  width: 100%;
+  
   .text_area {
     border-radius: $border-radius-container;
     border: $border-container-soft;

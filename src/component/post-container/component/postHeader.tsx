@@ -24,12 +24,13 @@ import ImageComponent from '@/component/image-component/image'
 
 export default function PostHeader({ user, createdAt, type, contentID, postID, content, tags, title, isHidden }: PostHeaderProps) {
   const permission = useHavePermission()
-  const { mutate, changeError } = useRequest({ deps: [] })
   const searchParams = useSearchParams()
   const redirect = useNavigate()
+  const { mutate, changeError } = useRequest({ deps: [] })
   const { pathname } = useLocation()
   
-  const isAdminOrCreator: boolean = permission.role(['Admin', 'Creator']).equal('_id', user?._id).permited()
+  const isAdminOrCreator: boolean = permission.roleOrEqual(['Admin', 'Creator'], '_id', user?._id).permited()
+
   const isPostPage: boolean = pathname.search('/post/') > -1
   const isHomePage: boolean = pathname.search('/') > -1
   const isSearchPage: boolean = pathname.search('/search') > -1
@@ -51,7 +52,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
 
     if(action === 'edit') {
       if(permission.role(['Creator']).permited()) {
-        localStorage.set(contentID, { content, tags, title, contentType: typeForAPI, onPage: page, onPost: postID })
+        localStorage.set(contentID, { content, tags, title, isHidden, contentType: typeForAPI, onPage: page, onPost: postID })
         return redirect(`/write-post?is-edit=true&content-id=${contentID}`)
       } 
 

@@ -2,10 +2,10 @@
 @import '@/scss/variabel';
 
 .content_viewer_container {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
+  flex-grow: 1;
 
   .content_viewer_post_empty {
     color: $color-black-medium-soft;

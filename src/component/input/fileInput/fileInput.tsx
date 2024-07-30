@@ -19,8 +19,6 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
   const upload = (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0]
 
-    console.log(supportedExtentions, file.type)
-
     if(file.type.search('video') > -1) isVideo.current = true
     else isVideo.current = false
 
@@ -42,7 +40,7 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
 
   return(
     <Fragment>
-      <input ref={inputRef} accept={supportedExtentions.join(',')} id={name} name={name} type='file' onChange={upload}/>
+      <input tabIndex={-1} ref={inputRef} accept={supportedExtentions.join(',')} id={name} name={name} type='file' onChange={upload}/>
       {!uploadedAsset ? 
         <label className={scss.file_input_label} htmlFor={name}>
           <section className={scss.file_input_text}><FileImage /><p>{label}</p></section>

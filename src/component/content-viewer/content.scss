@@ -2,17 +2,17 @@
 @import '@/scss/variabel';
 
 .line { 
-  width: 100%; 
+  flex-grow: 1;
   flex-wrap: wrap; 
   row-gap: 0rem; 
   line-height: 1.2rem; 
 }
 
-.line_end { width: 100% }
+.line_end { flex-grow: 1; }
 
-.intendention { padding: 0.5rem; width: 100%; }
+.intendention { padding: 0.5rem; flex-grow: 1; }
 
-.header { font-weight: bolder; width: 100%; }
+.header { font-weight: bolder; flex-grow: 1; }
 
 .header_2 { font-size: $font-x-large; }
 
@@ -21,7 +21,7 @@
 .bold { font-weight: bold; }
 
 .img_with_context {
-  width: 100%;
+    flex-grow: 1;
 
   > p {
     width: fit-content;
@@ -71,7 +71,7 @@
 }
 
 .quote_container {
-  width: 100%;
+  flex-grow: 1;
   
   .quote_body {
     color: $color-common-hover;
