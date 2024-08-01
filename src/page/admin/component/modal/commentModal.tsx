@@ -28,6 +28,17 @@ export default function CommentModal() {
       const currLikes: User[] = (props.data.likedBy.slice(likesStart, likesEnd) || []) as unknown as User[]
 
       const maxLikesPage: number = Math.ceil((props.data.likedBy?.length || 0) / 10)
+
+      const createdAtDifference: string = DateParser
+        .getDifference(props.data.createdAt)
+        .getSortDate({
+          year: '[year] year [month] months ago!',
+          month: '[month] month [day] days ago!',
+          day: '[day] day [hour] hours ago!',
+          hour: '[hour] hour [minute] minutes ago!',
+          minute: 'days [minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
     
       return (
         <div className='flex-column-normal-normal-small'>
@@ -47,7 +58,7 @@ export default function CommentModal() {
               <div className={`${scss.comment_author_data_body} flex-column-normal-normal-none`}>
                 <p>{props.data.author.name}</p>
                 <p>{props.data.author.role}</p>
-                <p>{DateParser.getDifference(props.data.author.createdAt)}</p>
+                <p>{createdAtDifference}</p>
                 <p>{props.data.author.email}</p>
               </div> 
             </Link>}

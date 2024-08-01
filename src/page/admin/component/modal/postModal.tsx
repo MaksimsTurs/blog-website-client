@@ -36,6 +36,17 @@ export default function PostModal() {
       const maxViewsPage: number = Math.ceil(currViews.length / 10)
       const maxLikesPage: number = Math.ceil(currLikes.length / 10)
 
+      const createdAtDifference: string = DateParser
+        .getDifference(props.data.createdAt)
+        .getSortDate({
+          year: '[year] year [month] months ago!',
+          month: '[month] month [day] days ago!',
+          day: '[day] day [hour] hours ago!',
+          hour: '[hour] hour [minute] minutes ago!',
+          minute: 'days [minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
+
       return(
         <div style={{ width: '50rem', position: 'relative' }} className='flex-column-normal-normal-small'>
           <div style={{ background: 'white', padding: '1rem', borderRadius: '6px', position: 'absolute', right: '-7%', zIndex: '-1', top: '-1.3%' }} className='flex-column-normal-normal-small'>
@@ -50,7 +61,7 @@ export default function PostModal() {
                 <div className={`${scss.post_author_data_body} flex-column-normal-normal-none`}>
                   <p>{props.data.author.name}</p>
                   <p>{props.data.author.role}</p>
-                  <p>{DateParser.getDifference(props.data.author.createdAt)}</p>
+                  <p>{createdAtDifference}</p>
                   <p>{props.data.author.email}</p>
                 </div> 
               </Link>}

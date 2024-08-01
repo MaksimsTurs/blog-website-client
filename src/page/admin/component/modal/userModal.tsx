@@ -77,6 +77,28 @@ export default function UserModal() {
       const maxMyContentPage: number = Math.ceil(currMyContent.length / 10)
       const maxMyLikesPage: number = Math.ceil(currMyLikes.length / 10)
 
+      const createdAtDifference: string = DateParser
+        .getDifference(props.data.createdAt)
+        .getSortDate({
+          year: '[year] year [month] months ago!',
+          month: '[month] month [day] days ago!',
+          day: '[day] day [hour] hours ago!',
+          hour: '[hour] hour [minute] minutes ago!',
+          minute: 'days [minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
+
+      const banedToTime: string = DateParser
+        .getDifference(props.data.ban)
+        .getSortDate({
+          year: '[year] year [month] months ago!',
+          month: '[month] month [day] days ago!',
+          day: '[day] day [hour] hours ago!',
+          hour: '[hour] hour [minute] minutes ago!',
+          minute: 'days [minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
+
       return (
         <Fragment>
           <DataEditModalWrapper>
@@ -104,8 +126,8 @@ export default function UserModal() {
             <SimpleData propKey="Email:" propValue={props.data.email} useCopyBoard/>
             <SimpleData propKey="Name:" propValue={props.data.name}/>
             <SimpleData propKey="Role:" propValue={props.data.role}/>
-            <SimpleData propKey="Registrated:" propValue={DateParser.getDifference(props.data.createdAt)}/>
-            <SimpleData propKey="Ban for:" propValue={DateParser.getDifference(props.data.ban) || 'Not baned!'}/>
+            <SimpleData propKey="Registrated:" propValue={createdAtDifference}/>
+            <SimpleData propKey="Ban for:" propValue={banedToTime}/>
             <DataBurgerWrapper propKey={`${props.data.name} content:`}>
               <ul className={scss.user_modal_user_content}>
                 {maxMyContentPage > 1 ? <PaginationList pagesCount={maxMyContentPage} listKey='user-content'/> : null}
