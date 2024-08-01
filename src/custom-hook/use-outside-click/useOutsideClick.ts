@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react";
 
-import type { RefObject } from "react"
+import type { RefObject } from "react";
 
-export default function useOutsideClick(mainContainerRef: RefObject<HTMLElement>, buttonsRefs: RefObject<HTMLElement>[]) {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+import { useSearchParams } from "react-router-dom";
 
+export default function useOutsideClick(key: string, modalContainer: RefObject<HTMLElement>): boolean {
+  const [searchParams, setSearchParams] = useSearchParams()
+  
   useEffect(() => {
-    document.addEventListener('click', (event) => {
-      if(mainContainerRef && mainContainerRef.current?.contains(event.target as Node)) {
-        for(let index: number = 0; index < buttonsRefs.length; index++) {
-          if(buttonsRefs[index].current === event.target) setIsVisible(prev => !prev)
-        }
-        return
-      } else {
-        setIsVisible(false)
+    modalContainer.current?.addEventListener('click', (event: any) => {
+      if(event.target === event.currentTarget) {
+        setSearchParams(prev => {
+          prev.set(key, String(!prev.get(key)))
+          return prev
+        })
       }
     })
   }, [])
 
-  return { isVisible, setIsVisible }
+  return JSON.parse(searchParams.get(key) || 'false')
 }

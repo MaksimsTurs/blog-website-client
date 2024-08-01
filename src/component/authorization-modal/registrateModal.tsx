@@ -1,8 +1,8 @@
 import scss from './authorizationModal.module.scss'
 
 import useForm from '@/custom-hook/useForm/useForm'
-import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useAuth from '@/custom-hook/useAuth/useAuth'
+import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
 import type { User } from '@/global.type'
 
@@ -13,8 +13,13 @@ import FileInput from '../input/fileInput/fileInput'
 import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON'
 import generateDefaultAvatar from '@/lib/generate-default-avatar/generateDefaultAvatar'
 
+import { MODALS_KEYS } from '@/conts'
+
+import { useRef } from 'react'
+
 export default function RegistrationModal() {
-  const searchParams = useSearchParams()
+  const mainContainerRef = useRef<HTMLDivElement>(null)
+  const isOpen: boolean = useOutsideClick(MODALS_KEYS['REGISTRATE-MODAL'], mainContainerRef)
   const auth = useAuth()
   const { submit, reset, formState: { errors }} = useForm<User>([
     ['email', 'isPattern:^[^\\s@]+@[^\\s@]+\.[^\\s@]+$:Email is incorrect!'],
@@ -23,19 +28,19 @@ export default function RegistrationModal() {
     ['confirmPassword', ['isMin:8:Password is to short!']]
   ])
 
-  const isOpenReg: boolean = JSON.parse(searchParams.get('registration-modal') || 'false')
-
   const registrate = (data: User) => {
     const formData = createFormDataFromJSON(data)
+
     if((formData.get('avatar') as File).size === 0) formData.set('avatar', generateDefaultAvatar(data.name))
+    
     auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
-    // reset()
+    reset()
   }
 
   auth.clearError()
 
   return(
-    <div className={isOpenReg ? scss.authorization_modal_container : scss.authorization_modal_container_hidden}>
+    <div ref={mainContainerRef} className={isOpen ? scss.authorization_modal_container : scss.authorization_modal_container_hidden}>
       <FormWrapper isPending={auth.isLoading} buttonLabel='Registrate' errors={auth.error?.message ? [auth.error.message] : []} className={scss.authorization_modal_body} onSubmit={submit(registrate)}>
         <TextInput errors={errors} name='name'  placeholder='You name'/>
         <TextInput errors={errors} name='email' placeholder='You e-mail' type='email'/>

@@ -37,7 +37,7 @@ export default function ImageComponent({ alt, classNames, src, styles }: ImageCo
   return (
     <Fragment>
       {!isHTTPProtocol && !isLoaded ? <CircleUserRound className={`${classNames?.img} ${scss.default_image}`} size={40}/> : (!isLoaded && isHTTPProtocol) && <ImageLoader className={classNames?.loader} style={styles?.loader}/> }
-      <img ref={imgRef} src={src} alt={alt} className={classNames?.img} style={{...styles?.img, display: (isHTTPProtocol ? imgSourceRef.current : undefined || isLoaded) ? 'block' : 'none' }}/>
+      <img ref={imgRef} src={src} alt={alt} className={classNames?.img} style={{...styles?.img, display: (isHTTPProtocol && imgSourceRef.current || isLoaded) ? 'block' : 'none' }}/>
     </Fragment>
   )
 }

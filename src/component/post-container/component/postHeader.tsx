@@ -29,7 +29,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
   const { mutate, changeError } = useRequest({ deps: [] })
   const { pathname } = useLocation()
   
-  const isAdminOrCreator: boolean = permission.roleOrEqual(['Admin', 'Creator'], '_id', user?._id).permited()
+  const isAdminOrCreator: boolean = permission.roleAndEqual(['Admin', 'Creator'], '_id', user?._id).permited()
 
   const isPostPage: boolean = pathname.search('/post/') > -1
   const isHomePage: boolean = pathname.search('/') > -1
@@ -103,6 +103,17 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
     })
   }
 
+  const createdAtDifference: string = DateParser
+    .getDifference(createdAt)
+    .getSortDate({
+      year: '[year] year [month] months ago!',
+      month: '[month] month [day] days ago!',
+      day: '[day] day [hour] hours ago!',
+      hour: '[hour] hour [minute] minutes ago!',
+      minute: 'days [minute] minutes [second] seconds ago!',
+      second: '[second] seconds ago!'
+    })
+
   return(
     <div className={`${scss.post_header} flex-row-center-space-between-none`}>
       {user ? 
@@ -110,7 +121,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
          <ImageComponent src={user?.avatar} alt={user?.name || 'User avatar'}/>
          <div className={scss.post_author}>
            <Link to={`/user/${user?._id}`}>{user?.name}</Link>
-           <p className={scss.post_create_date}>{DateParser.getDifference(createdAt)}</p>  
+           <p className={scss.post_create_date}>{createdAtDifference}</p>  
         </div>
       </div> :
       <div className={`${scss.post_header_author_not_defined} flex-row-center-normal-medium`}>

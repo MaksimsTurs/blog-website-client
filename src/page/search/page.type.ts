@@ -10,7 +10,6 @@ export type SortedPosts = {
 }
 
 export type SortData = {
-  tags: string[]
   title: string
   content: string
   author: string

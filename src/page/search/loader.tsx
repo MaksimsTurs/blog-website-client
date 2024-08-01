@@ -15,7 +15,7 @@ export default function SearchLaoder() {
         <PostContainerLoader/>
         <PostContainerLoader/>
       </div>
-      <div style={{ width: '20rem', height: 'fit-content' }} className='main-content-container flex-column-normal-normal-medium'>
+      <div style={{ height: 'fit-content' }} className='main-content-container flex-column-normal-normal-medium'>
       <div className='flex-row-normal-normal-medium'>
         <div style={{ width: '5rem' }} className={scss.search_loader_div}></div>
         <div style={{ width: '5rem' }} className={scss.search_loader_div}></div>

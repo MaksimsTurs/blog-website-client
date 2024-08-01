@@ -1,3 +1,4 @@
+import scss from './page.module.scss'
 import '@/scss/global.scss'
 
 import { useParams } from "react-router-dom"
@@ -32,7 +33,7 @@ export default function Post() {
   return(
     <Fragment>
       {isMutating ? <MutatingLoader/> : null}
-      <div style={{ height: '100%' }} className='flex-row-normal-normal-medium'>
+      <div className={`${scss.post_page_container} flex-row-normal-normal-medium`}>
         <div style={{ flexGrow: '1' }} className='flex-column-normal-normal-medium'>
           {error ? 
            <Error code={error.code} message={error.message}/> : 

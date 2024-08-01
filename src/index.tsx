@@ -37,7 +37,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       <RequestProvider>
         <Provider store={store}>
           <Header />
-          <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1rem 0rem 0rem', flexGrow: '1' }}>
+          <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1' }}>
             <SideMenu />
             <main>
               <Routes>

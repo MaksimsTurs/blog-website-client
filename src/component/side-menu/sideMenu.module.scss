@@ -1,12 +1,30 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
+@import './scss/media-query/sideMenu.media-query.scss';
+
+.aside_menu_extra_width {
+  width: 15rem !important;
+  box-shadow: $box-shadow-container;
+}
+
+.aside_menu_container_hidden {
+  transition: all $transition-time-fast;
+  left: -50% !important;
+}
 
 .aside_menu_container {
+  padding-left: 12rem;
+}
+
+.aside_menu_body {
   border-right: $border-container-soft;
+  transition: all $transition-time-fast;
+  background-color: white;
   position: fixed;
   height: 100%;
   width: 11rem;
   padding: 4.5rem 0rem;
+  left: 0%;
   z-index: 2;
   
   .aside_menu_default_link {
@@ -19,9 +37,16 @@
   }   
   
   .aside_menu_text_wrapper { @include text-overflow-ellipsis(); }
+
+  .aside_menu_user_avatar {
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
   
-  a {
+  a, button {
     transition: all $transition-time-very-fast;
+    text-align: left;
     padding: 0.45rem 2rem;
     font-size: 0.9rem;
           

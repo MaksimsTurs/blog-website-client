@@ -1,5 +1,7 @@
+import type { Fetcher } from "./fetcher.type"
+
 export default {
-  baseURL: import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app',
+  baseURL: import.meta.env.DEV ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app',
   formatURL: function(URL: string) {
     if(this.baseURL) return `${this.baseURL}${URL}`
     return URL
@@ -25,11 +27,11 @@ export default {
   },
   post: async function<T>(URL: string, body?: any, headers?: any) { 
     const init = this.formatInit(body, headers)
-    const response = await fetch(this.formatURL(URL), { method: 'POST', body: init.body, headers: init.headers })
+    const response = await fetch(this.formatURL(URL), { method: 'POST', body: init.body, headers: init.headers})
     const data = await response.json()
 
     if(!response.ok) throw JSON.stringify(data)
     
     return await data as T
   }
-}
+} as Fetcher

@@ -20,7 +20,7 @@ export default function FormWrapper({
   const buttonClassName: string = isPending ? `${scss.form_button_pending} ${scss.form_button}` : scss.form_button
 
   return(
-    <form onSubmit={onSubmit} className={`${className} flex-column-normal-normal-none`}>
+    <form tabIndex={-1} onSubmit={onSubmit} className={`${className} flex-column-normal-normal-none`}>
       {title ? <h3>{title}</h3> : null}
       <div style={style} className={`${scss.form_body} main-content-container flex-column-center-center-medium`}>
         {children}

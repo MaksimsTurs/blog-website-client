@@ -9,7 +9,6 @@ export default function ScrollTo() {
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
-      
       setIsOnTop(document.body.getBoundingClientRect().top === 0)
     })
   }, [])

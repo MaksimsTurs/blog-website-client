@@ -22,12 +22,9 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 export default function StatisticPreview({ type }: StatisticPreviewProps) {
   const searchParams = useSearchParams()
-
   const postID: string = searchParams.get('post-id')!
   const currPage: number = parseInt(searchParams.get('list-page') || '0')
-
   const iconDictionary: KeyValueObject = { views: <Eye/>, likes: <Heart/>, comments: <MessageCircle/> }
-
   const { data, prev, isPending } = useRequest<GetPostStatistic>({ 
     deps: [`preview-${type}-${postID}-${currPage}`], 
     prev: [`preview-${type}-${postID}-${currPage - 1 < 0 ? 0 : currPage - 1}`], 
@@ -41,28 +38,30 @@ export default function StatisticPreview({ type }: StatisticPreviewProps) {
   }
 
   return(
-    <section className={`${scss.preview_container} main-content-container`}>
-      <div className={`${scss.preview_header} flex-row-center-space-between-none`}>
-        <div className='flex-row-center-normal-medium'>
-          {iconDictionary[type]}
-          <h4 className={scss.preview_type}>{firstLetterToUpperCase(type || '')}</h4>
+    <section className={scss.preview_container}>
+      <div className={`${scss.preview_body} main-content-container`}>
+        <div className={`${scss.preview_header} flex-row-center-space-between-none`}>
+          <div className='flex-row-center-normal-medium'>
+            {iconDictionary[type]}
+            <h4 className={scss.preview_type}>{firstLetterToUpperCase(type || '')}</h4>
+          </div>
+          <X onClick={closePreviewStatistic}/>
         </div>
-        <X onClick={closePreviewStatistic}/>
+        {isPending ? <PaginationListLoader/> : paginationLength > 1 ? <PaginationList pagesCount={paginationLength}/> : null}
+        {isPending ? <StatisticPreviewLoader/> :
+        <div style={{ paddingTop: paginationLength > 1 ? '0.5rem' : '0rem' }} className={scss.preview_item_count_list}>
+          {data?.items?.length === 0 ? <Empty label='Nothing found!'/> :
+          data?.items?.map(item => (
+            <Link to={`/user/${item._id}`} className='flex-row-center-space-between-none' key={Math.random() * 200}>
+              <div className='flex-row-center-normal-medium'>
+                <ImageComponent src={item.avatar} alt={item.name}/>
+                <p>{item.name}</p>
+              </div>
+              <p className={scss.preview_item_count}>{item.count}</p>
+            </Link>
+          ))}
+        </div>}
       </div>
-      {isPending ? <PaginationListLoader/> : paginationLength > 1 ? <PaginationList pagesCount={paginationLength}/> : null}
-      {isPending ? <StatisticPreviewLoader/> :
-      <div style={{ paddingTop: paginationLength > 1 ? '0.5rem' : '0rem' }} className={scss.preview_item_count_list}>
-        {data?.items?.length === 0 ? <Empty label='Nothing found!'/> :
-        data?.items?.map(item => (
-          <Link to={`/user/${item._id}`} className='flex-row-center-space-between-none' key={Math.random() * 200}>
-            <div className='flex-row-center-normal-medium'>
-              <ImageComponent src={item.avatar} alt={item.name}/>
-              <p>{item.name}</p>
-            </div>
-            <p className={scss.preview_item_count}>{item.count}</p>
-          </Link>
-        ))}
-      </div>}
     </section>
   )
 }

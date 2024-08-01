@@ -2,14 +2,25 @@ import scss from '../scss/previewAuthorData.module.scss'
 import '@/scss/global.scss'
 
 import { Link } from "react-router-dom"
+import { ShieldHalf } from 'lucide-react'
 
 import DateParser from '@/lib/date-parser/dateParser'
 
 import type { PreviewAuthorDataProps } from '../page.type'
-import { ShieldHalf } from 'lucide-react'
 
 export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
   const color = author.role === 'Admin' ? '#F48023' : '#1682FD'
+
+  const createdAtDifference: string = DateParser
+    .getDifference(author.createdAt)
+    .getSortDate({
+      year: '[year] year [month] months ago!',
+      month: '[month] month [day] days ago!',
+      day: '[day] day [hour] hours ago!',
+      hour: '[hour] hour [minute] minutes ago!',
+      minute: 'days [minute] minutes [second] seconds ago!',
+      second: '[second] seconds ago!'
+    })
 
   return(
     <div style={{ height: 'fit-content', flexShrink: 0 }} className='flex-column-center-normal-none main-content-container'>
@@ -20,7 +31,7 @@ export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
           <ShieldHalf size={17}/>
           <p className={scss.author_role}>{author.role}</p>
         </div>
-        <p className={scss.author_registrate_data}>{DateParser.getDifference(author.createdAt)}</p>
+        <p className={scss.author_registrate_data}>{createdAtDifference}</p>
       </div>
     </div>
   )

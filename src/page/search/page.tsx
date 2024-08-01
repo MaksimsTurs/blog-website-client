@@ -9,10 +9,10 @@ import Pagination from '@/component/pagination/pagination'
 import PostContainer from '@/component/post-container/postContainer'
 import SortInput from './component/sortInput';
 import PaginationLoader from '@/component/pagination/component/paginationLoader';
-import TagPreview from '@/component/tag-preview/tagPreview';
+import TextTagInput from '@/component/input/text-tag-input/textTagInput';
 
-import { ArrowDownWideNarrow, ArrowUpNarrowWide, Eye, Heart, MessageCircle } from 'lucide-react';
-import { Fragment, useState } from 'react';
+import { ArrowDownWideNarrow, ArrowUpNarrowWide, Eye, Filter, Heart, MessageCircle } from 'lucide-react';
+import { Fragment, useRef, useState } from 'react';
 
 import type { SortData, SortOption, SortedPosts } from './page.type';
 
@@ -22,26 +22,29 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
 
-const sortOptions = [
-  { name: 'Likes', icon: <Heart size={17}/> },
-  { name: 'Views', icon: <Eye size={17}/> },
-  { name: 'Comments', icon: <MessageCircle size={17}/> }
-]
+import { MODALS_KEYS } from '@/conts';
+import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 
 export default function Search() {
   const searchParams = useSearchParams()
-
   const selectedTag: string | null = searchParams.get('tag')
-
-  const [sortData, setSortData] = useState<SortData>({ tags: selectedTag ? [selectedTag] : [] , author: '', content: '', title: '' })
+  const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
+  const modalContainerRef = useRef<HTMLDivElement>(null)
+  const is930px: boolean = window.matchMedia('(width <= 930px)').matches
+  const isOpen: boolean = !is930px ? true : useOutsideClick(MODALS_KEYS['IS-FILTER-MODAL-OPEN'], modalContainerRef)
+  const [sortData, setSortData] = useState<SortData>({ author: '', content: '', title: '' })
   const [sortOption, setSortOption] = useState<SortOption>()
-
   const page: number = parseInt(searchParams.get('page') || '0')
+  const sortOptions = [
+    { name: 'Likes', icon: <Heart size={17}/> },
+    { name: 'Views', icon: <Eye size={17}/> },
+    { name: 'Comments', icon: <MessageCircle size={17}/> }
+  ]
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
     deps: [`sort-${page}`],
     noCache: true,
-    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...sortData, sortOption }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
+    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...sortData, sortOption, tags: tagRef.current }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
   })
 
   const changeSort = (name: string): void => {
@@ -50,19 +53,22 @@ export default function Search() {
     else setSortOption({ [name]: 'descending' })
   }
 
-  const removeTag = (_tag: string): void => {
-    setSortData(prev => ({...prev, tags: sortData.tags.filter((_, index) => index !== prev.tags.indexOf(_tag)) }))
+  const getTags = (tags: string[]): void => {
+    tagRef.current = tags
   }
 
   const changeSortData = (name: string, value: any): void => {
-    if(name === 'tags') setSortData(prev => ({...prev, tags: value.split(',') }))
-    else setSortData(prev => ({...prev, [name]: value }))
+    setSortData(prev => ({...prev, [name]: value }))
   }
 
   const resetSort = (): void => {
-    setSortData({ tags: [], author: '', content: '', title: '' })
+    setSortData({ author: '', content: '', title: '' })
     setSortOption(undefined)
     searchParams.set({ 'page': 0 })
+  }
+
+  const openFilterModal = (): void => {
+    searchParams.set({ [MODALS_KEYS['IS-FILTER-MODAL-OPEN']]: true })
   }
 
   const getSorted = (): void => {
@@ -73,36 +79,38 @@ export default function Search() {
   return(
     <Fragment>
       {error ? <Error code={error.code} message={error.message}/> : 
-      <div className='flex-row-normal-normal-medium'>
-        <div style={{ width: '100%', height: '100%' }} className='flex-column-normal-normal-small'>
-          {data ? <Pagination pagesCount={data.pagesCount}/> : <PaginationLoader/>}
+      <div style={{ height: '100%' }} className='flex-row-normal-normal-medium'>
+        <div style={{ width: '100%', minHeight: '100%' }} className='flex-column-normal-normal-small'>
+          {is930px ? <Filter onClick={openFilterModal} className={scss.search_filter_modal_button}/> : null}
+          {isPending ? <PaginationLoader/> : data && data.pagesCount >= 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
           {isPending ? <HomeLoader/> : 
-          data && data.posts.length === 0 ? <Empty option={{ flexCenterCenter: true }} label='Nothing found!'/> : 
+          data && data.posts.length === 0 ? <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label='Nothing found!'/> : 
           data && data.posts.map(post => <PostContainer key={post._id} post={post} type="preview"/>)}
-          {data ? <Pagination pagesCount={data.pagesCount}/> : <PaginationLoader/>}
+          {isPending ? <PaginationLoader/> : data && data.pagesCount >= 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
         </div>
-        <div className={`${scss.search_filter_container} main-content-container flex-column-normal-normal-small`}>
-          <p className={scss.search_sort_type_title}>Sort by</p>
-          <div className='flex-row-normal-normal-small'>
-            {sortOptions.map(option => (
-              <button
-                key={option.name}
-                onClick={() => changeSort(option.name)}
-                className={sortOption?.[option.name] ? `${scss.search_sort_button} ${scss.search_sort_button_active} flex-row-center-center-medium` : `${scss.search_sort_button} flex-row-center-center-medium`}>
-                {option.icon}
-                <p>{option.name}</p>
-                {sortOption?.[option.name] === 'descending' ? <ArrowDownWideNarrow size={14}/> : sortOption?.[option.name] === 'ascending' ?  <ArrowUpNarrowWide size={14}/> : null }
-              </button>
-            ))}
-          </div>
-          <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='content'/>
-          <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='author'/>
-          <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='title'/>
-          <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='tags'/>
-          <TagPreview removeTag={removeTag} tags={sortData.tags}/>
-          <div className={`${scss.search_filter_body_buttons} flex-row-normal-normal-small`}>
-            <Button onClick={getSorted} label="Sort"/>
-            <Button onClick={resetSort} label="Reset"/>
+        <div ref={modalContainerRef} className={isOpen ? scss.search_filter_container : `${scss.search_filter_container} ${scss.search_filter_container_hidden}`}>
+          <div className='main-content-container flex-column-normal-normal-small'>
+            <p className={scss.search_sort_type_title}>Sort by</p>
+            <div className='flex-column-normal-normal-small'>
+              {sortOptions.map(option => (
+                <button
+                  key={option.name}
+                  onClick={() => changeSort(option.name)}
+                  className={sortOption?.[option.name] ? `${scss.search_sort_button} ${scss.search_sort_button_active} flex-row-center-center-medium` : `${scss.search_sort_button} flex-row-center-center-medium`}>
+                  {option.icon}
+                  <p>{option.name}</p>
+                  {sortOption?.[option.name] === 'descending' ? <ArrowDownWideNarrow size={14}/> : sortOption?.[option.name] === 'ascending' ?  <ArrowUpNarrowWide size={14}/> : null }
+                </button>
+              ))}
+            </div>
+            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='content'/>
+            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='author'/>
+            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='title'/>
+            <TextTagInput getTags={getTags} placeholder='Find by tags'/>
+            <div className={`${scss.search_filter_body_buttons} flex-row-normal-normal-small`}>
+              <Button onClick={getSorted} label="Sort"/>
+              <Button onClick={resetSort} label="Reset"/>
+            </div>
           </div>
         </div>
       </div>}

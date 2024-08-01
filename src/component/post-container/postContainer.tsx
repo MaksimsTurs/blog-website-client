@@ -74,6 +74,17 @@ export default function PostContainer({ post, type }: PostContainerProps) {
     })
   }
 
+  const createdAtDifference: string = DateParser
+    .getDifference(post.createdAt)
+    .getSortDate({
+      year: '[year] year [month] months ago!',
+      month: '[month] month [day] days ago!',
+      day: '[day] day [hour] hours ago!',
+      hour: '[hour] hour [minute] minutes ago!',
+      minute: 'days [minute] minutes [second] seconds ago!',
+      second: '[second] seconds ago!'
+    })
+
   return(
     <Fragment>
       {isHomePage && !isContentCreator && !isAdmin && isHidden ? null :
@@ -82,13 +93,13 @@ export default function PostContainer({ post, type }: PostContainerProps) {
           {type === 'post' ? 
             <div className={scss.post_content_container}>
               <h4>{post.title}</h4>
-              <p className={scss.post_content_date}>{DateParser.getDifference(post.createdAt)}</p>
+              <p className={scss.post_content_date}>{createdAtDifference}</p>
               <ContentViewer content={post.content}/>
             </div> : null}
           {type === 'preview' ? 
             <div className={scss.post_content_container}>
               <Link to={`/post/${post._id}`}>{post.title}</Link>
-              <ContentViewer className={scss.post_short_view} content={post.content}/>
+              <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 450)}/>
             </div> : null}
           {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
             <div className='flex-row-center-space-between-none'>

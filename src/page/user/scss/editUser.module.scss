@@ -3,15 +3,35 @@
 
 .edit_user_container {
   @include absolute-left-top-zindex-width-height(0%, 0%, 3);
-  position: fixed;
   background-color: $color-black-medium-soft;
   transition: all $transition-time-fast;
+  position: fixed;
   opacity: 0;
   visibility: hidden;
   
-  .edit_user_body > div {
+  .edit_user_body {
+    border-radius: $border-radius-container;
     width: fit-content;
     background-color: white;
+
+    .edit_user_header {
+      border-bottom: 1px solid $color-black-soft;
+      padding-bottom: 0.5rem;
+      width: 100%;
+
+      .edit_user_icon {
+       color: rgb(145, 145, 145); 
+      }
+
+      svg:last-child {
+        color: rgb(145, 145, 145); 
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+
+        &:hover { color: $color-error; }
+      }
+    }
   }
 
   .edit_user_log_out {

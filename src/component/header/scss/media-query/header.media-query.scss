@@ -1,0 +1,14 @@
+@media(width <= 830px) {
+  .header_user_action_container, .header_user_container {
+    display: none;
+  }
+
+  .header_website_name {
+    width: 100%;
+    text-align: center;
+  }
+
+  .header_side_menu_button {
+    display: flex !important;
+  }
+}

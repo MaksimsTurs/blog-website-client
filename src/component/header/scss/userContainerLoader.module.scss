@@ -1,5 +1,6 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
+@import './media-query/userContainerLoader.media-query.scss';
 
 .loader_element_animation {
   @include loader();

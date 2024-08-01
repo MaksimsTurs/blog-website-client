@@ -8,14 +8,31 @@ import { Settings, ShieldHalf, UserRound } from 'lucide-react'
 import DateParser from '@/lib/date-parser/dateParser'
 import ImageComponent from '@/component/image-component/image'
 
-export default function UserDataHeader({ user, setIsVisible }: UserDataHeaderProps) {
+import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
+import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
+import { MODALS_KEYS } from '@/conts'
+
+export default function UserDataHeader({ user }: UserDataHeaderProps) {
+  const isCurrentUser: boolean = usePermitor().equal('_id', user._id).permited()
   const isAdmin: boolean = user?.role === 'Admin'
   const roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
   const roleColor: string = isAdmin ? "#F48023" : "#1682FD"
+  const searchParams = useSearchParams()
 
   const openUpdateModal = (): void => {
-    setIsVisible(true)
+    searchParams.set({ [MODALS_KEYS['IS-EDIT-USER-MODAL-OPEN']]: true })
   }
+
+  const createdAtDifference: string = DateParser
+    .getDifference(user.createdAt)
+    .getSortDate({
+      year: '[year] year [month] months ago!',
+      month: '[month] month [day] days ago!',
+      day: '[day] day [hour] hours ago!',
+      hour: '[hour] hour [minute] minutes ago!',
+      minute: 'days [minute] minutes [second] seconds ago!',
+      second: '[second] seconds ago!'
+    })
 
   return(
     <div className={`${scss.user_data_header} main-content-container flex-column-normal-normal-small`}>
@@ -24,7 +41,7 @@ export default function UserDataHeader({ user, setIsVisible }: UserDataHeaderPro
           <ImageComponent classNames={{ img: scss.user_data_img, loader: scss.user_data_img_loader }} src={user.avatar} alt={user.name}/>
           <div style={{ color: roleColor }} className={`${scss.user_data_role_container} flex-row-center-normal-small`}>{roleIcon}<p>{user.role}</p></div>
         </div>
-        <Settings className={scss.user_data_header_edit_button} size={30} onClick={openUpdateModal}/>
+        {isCurrentUser && <Settings className={scss.user_data_header_edit_button} size={30} onClick={openUpdateModal}/>}
       </div>
       <div className={scss.user_data_header_bottom}>
         <section>
@@ -33,7 +50,7 @@ export default function UserDataHeader({ user, setIsVisible }: UserDataHeaderPro
         </section>
         <section>
           <p>Registrated</p>
-          <p>{DateParser.getDifference(user.createdAt)}</p>
+          <p>{createdAtDifference}</p>
         </section>
         <section>
           <p>Contents</p>

@@ -34,7 +34,9 @@ export type TextAreaProps = {
   getValue?: (string: string) => any
 } & Pick<_InputProps, 'placeholder' | 'defaultValue'>
 
-export type TextInputProps = Partial<Pick<_InputProps, 'type'>> & Pick<_InputProps, 'onInput' | 'defaultValue' | 'errors' | 'name' | 'placeholder'>
+export type TextInputProps = {
+  value?: string
+} & Partial<Pick<_InputProps, 'type'>> & Pick<_InputProps, 'onInput' | 'defaultValue' | 'errors' | 'name' | 'placeholder'>
 
 export type TextTagInputProps = { getTags(tags: string[]): void } & Pick<InputProps['attributes'], 'placeholder' | 'value'>
 

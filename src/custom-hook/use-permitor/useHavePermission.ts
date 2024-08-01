@@ -16,17 +16,17 @@ export default function usePermitor() {
       return this
     },
     equal: function(key: keyof UserSessionData, equal?: string) {
-      if(user?.[key] === equal) permitorArray.push(1)
+      if(user?.[key] !== equal) permitorArray.push(1)
 
       return this
     },
     roleAndEqual: function(toHave: UserRoles[], key: keyof UserSessionData, equal?: string) {
-      if(user?.[key] === equal && toHave.includes(user?.role || 'User')) permitorArray.push(1)
+      if(!(user?.[key] === equal && toHave.includes(user?.role || 'User'))) permitorArray.push(1)
 
       return this  
     },
     roleOrEqual: function(toHave: UserRoles[], key: keyof UserSessionData, equal?: string) {
-      if(user?.[key] === equal || toHave.includes(user?.role || 'User')) permitorArray.push(1)
+      if(!(user?.[key] === equal || toHave.includes(user?.role || 'User'))) permitorArray.push(1)
 
       return this  
     },

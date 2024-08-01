@@ -1,0 +1,10 @@
+@import '@/scss/mixin';
+
+@media(width <= 830px) {
+  .authorization_modal_container {
+    position: fixed;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+  }
+}

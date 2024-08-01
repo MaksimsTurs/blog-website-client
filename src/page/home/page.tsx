@@ -20,14 +20,14 @@ import useRequest from '@/custom-hook/_use-request/_useRequest'
 
 export default function Page() {
   const searchParams = useSearchParams()
+  const contentPerLoad: number = 10
+  const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
+  const postStatisticPreviewType: string | null = searchParams.get('type')
+  const is830px: boolean = window.matchMedia('(width <= 830px)').matches
   const { isFetching, isMutating, data, error, mutate } = useRequest({ 
     deps: ['all-posts'], 
     request: async () => await fetcher.get<Content[]>(`/home/${postsCount}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
   })
-
-  const contentPerLoad: number = 10
-  const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
-  const postStatisticPreviewType: string | null = searchParams.get('type')!
 
   const loadMorePosts = async (): Promise<void> => {
     const nextLoadCount: number = postsCount + contentPerLoad
@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <Fragment>
       {isMutating ? <MutatingLoader/> : null}
-      <div style={{ height: '100%', marginRight: postStatisticPreviewType ? '17rem' : '0rem' }} className='flex-row-normal-normal-medium'>
+      <div style={{ height: '100%', marginRight: is830px ? '0rem' : postStatisticPreviewType ? '17rem' : '0rem' }} className='flex-row-normal-normal-medium'>
         <div style={{ flexGrow: 1 }} className='flex-column-normal-normal-small'>
           {isFetching ? <Loader/> : 
           error ? <Error underText='Go back or reload the page!' code={error.code} message={error.message}/> :
@@ -52,7 +52,7 @@ export default function Page() {
             {data.length % contentPerLoad === 0 ? <div className='flex-row-center-center-none'><Button onClick={loadMorePosts} label='Load More'/></div> : null}
           </Fragment>}
         </div>
-        {postStatisticPreviewType ? <StatisticPreview type={postStatisticPreviewType}/> : null}
+        {postStatisticPreviewType && <StatisticPreview type={postStatisticPreviewType}/>}
       </div>
     </Fragment>
   )

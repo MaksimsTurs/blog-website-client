@@ -11,8 +11,16 @@
 	.post_short_view { 
 		position: relative;
 		font-size: 0.9rem; 
-		max-height: 10rem;
-		overflow: hidden;
+
+		> div {
+			word-break: break-all;
+			display: -webkit-box;
+			line-clamp: 2;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;  
+			 text-overflow: ellipsis;
+			 overflow: hidden;
+		}
 	}
 
 	.post_content_date {

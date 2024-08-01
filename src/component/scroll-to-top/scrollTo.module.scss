@@ -1,13 +1,14 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
+@import './media-query/scrollTo.media-query.scss';
 
 .scroll_to_container {
   @include absolute-left-top-zindex-width-height(95%, 90%);
-  position: fixed;
   background-color: $color-common;
   border-radius: $border-radiues-button;
   transition: all $transition-time-very-fast;
   box-shadow: $box-shadow-button;
+  position: fixed;
   border: 1px solid transparent;
   width: fit-content;
   height: fit-content;

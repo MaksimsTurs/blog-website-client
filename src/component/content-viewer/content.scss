@@ -6,6 +6,7 @@
   flex-wrap: wrap; 
   row-gap: 0rem; 
   line-height: 1.2rem; 
+  font-size: clamp(0.7rem, 2.5vw, 1rem);
 }
 
 .line_end { flex-grow: 1; }
@@ -59,10 +60,10 @@
   color: $color-common;
   width: 100%;
   list-style: disc;
-  font-size: 1rem;
   margin-left: 0.9rem;
   position: relative;
   align-items: center;
+  font-size: clamp(0.7rem, 2.5vw, 1rem);
 }
 
 .link {
@@ -77,6 +78,7 @@
     color: $color-common-hover;
     border-radius: $border-radius-container;
     border: 1px solid $color-common-hover;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
     margin: 1rem 0rem;
     padding: 1rem;
     position: relative;
