@@ -5,27 +5,19 @@ import { useRef, useState } from "react";
 
 import formValidator from "./validation/formValidator";
 
-function resetRecursive(collection: HTMLCollection) {
-  for(let index: number = 0; index < collection.length; index++) {
-    const child = collection[index]
-    if(child.children.length > 0) return resetRecursive(child.children)
-    
-    const _maybeInput = child as HTMLInputElement
-
-    if(_maybeInput.type) _maybeInput.value = ''
-  }
-}
-
 export default function useForm<T>(validationOptionArray: ValidationOptionStringData<T>[]) {
   const [formState, setFormState] = useState<FormState>({ errors: undefined })
 
   const targetRef = useRef<HTMLFormElement | null>(null)
-  const isWasSubmitted = useRef<boolean>(false)
   const isValid = useRef<boolean>(false)
 
-  function reset() {
-    if(!isWasSubmitted) console.error('Form must be submitted first!')
-    if(isValid.current) resetRecursive(targetRef.current!.children)
+  function reset(): void {
+    if(!targetRef.current) console.error('Form must be submitted first!')
+    if(isValid.current) {
+      const inputs: HTMLCollectionOf<HTMLInputElement> = targetRef.current!.getElementsByTagName('input')
+
+      for(let index: number = 0; index < inputs.length; index++) inputs[index].value = ''
+    }
   }
 
   function submit(target: (data: T) => any): any {
@@ -36,7 +28,6 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
         event.preventDefault()
 
         targetRef.current = event.currentTarget
-        isWasSubmitted.current = true
 
         const formData = Object.fromEntries(new FormData(event.currentTarget).entries())
 

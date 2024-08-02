@@ -1,8 +1,14 @@
 @import '../variabel';
 
 * {
-	font-family: "Fira Code", monospace;
+	// font-family: "Fira Code", monospace;
 	// font-family: "Fira Sans", sans-serif;
+	// font-family: "Work Sans", sans-serif;
+	// font-family: "Roboto Slab", serif;
+	// font-family: "Sofia Sans", sans-serif;
+	// font-family: "Public Sans", sans-serif;
+	// font-family: "Inter", sans-serif;
+	font-family: inherit;
   font-optical-sizing: auto;
   font-style: normal;
 	user-select: none;
@@ -11,10 +17,6 @@
 	margin: 0rem;
 	border: none;
 }
-
-.font-fira-code { font-family: "Fira Code", monospace; }
-
-.font-fira-sans { font-family: "Fira Sans", sans-serif; }
 
 *,
 *:before,
@@ -58,7 +60,6 @@ a:hover {
 }
 
 button {
-	font-family: $font-medium;
 	background-color: transparent;
 	border: none;
 	cursor: pointer;

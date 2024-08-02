@@ -24,12 +24,12 @@ import useRequest from '@/custom-hook/_use-request/_useRequest';
 
 import { Link } from 'react-router-dom';
 import { ShieldHalf, SquarePen, UserRound } from 'lucide-react'
+import { Fragment } from 'react/jsx-runtime';
 
 import fetcher from '@/lib/fetcher/fetcher';
 import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON';
 import coockie from '@/lib/coockie/coockie';
 import inObject from '@/lib/in-object/inObject';
-import { Fragment } from 'react/jsx-runtime';
 
 export default function UserModal() {
   const searchParams = useSearchParams()

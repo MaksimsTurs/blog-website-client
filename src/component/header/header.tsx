@@ -2,7 +2,7 @@ import scss from './header.module.scss'
 import '@/scss/global.scss'
 
 import { Link } from 'react-router-dom'
-import { UserPlus, X } from 'lucide-react'
+import { AlignJustify, UserPlus, X } from 'lucide-react'
 import { Fragment } from 'react/jsx-runtime'
 
 import useAuth from '@/custom-hook/useAuth/useAuth'
@@ -47,13 +47,7 @@ export default function Header() {
       <header className={`${scss.header_container} flex-row-center-space-between-none`}>
         <div style={{ width: '100%' }} className='flex-row-center-normal-none'>
           <button onClick={changeSideMenuVisibility} className={scss.header_side_menu_button}>
-            {isSideMenuOpen ? 
-            <X/> :
-            <Fragment>
-              <span></span>
-              <span></span>
-              <span></span>
-            </Fragment>}
+            {isSideMenuOpen ? <X/> : <AlignJustify />}
           </button>
           <Link className={scss.header_website_name} to='/'>Ruzzkyi Mir</Link>
         </div>

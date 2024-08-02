@@ -45,6 +45,13 @@
   gap: 0.5rem;
 }
 
+.flex-row-center-space-between-medium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .flex-row-center-space-between-none {
   display: flex;
   align-items: center;

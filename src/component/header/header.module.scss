@@ -23,15 +23,7 @@
     flex-direction: column;
     gap: 0.2rem;
     
-    svg {
-      color: $color-common;
-    }
-
-    > span {
-      background-color: $color-common;
-      height: 0.2rem;
-      width: 1.5rem;
-    }
+    svg { color: $color-common; }
   }
 
   .header_user_action_container {

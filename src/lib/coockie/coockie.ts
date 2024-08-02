@@ -16,7 +16,7 @@ const coockie = {
     return parse()[key]
   },
   set: function(key: string, value: any) {
-    document.cookie = `${key}=${value};path=/;expires=${Date.now() * 60 * 60 * 24 * 7};`
+    document.cookie = `${key}=${value};path=/;max-age=${Date.now() * 60 * 60 * 24 * 7};`
   }
 }
 

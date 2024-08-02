@@ -78,6 +78,7 @@
     color: $color-common-hover;
     border-radius: $border-radius-container;
     border: 1px solid $color-common-hover;
+    box-shadow: $box-shadow-button;
     font-size: clamp(0.7rem, 2.5vw, 1rem);
     margin: 1rem 0rem;
     padding: 1rem;

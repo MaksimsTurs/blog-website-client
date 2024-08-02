@@ -2,7 +2,7 @@ import scss from './sideMenu.module.scss'
 import '@/scss/global.scss'
 
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Search, Shield, SquarePen, UserPlus } from 'lucide-react'
+import { Home, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react/jsx-runtime'
 
@@ -31,6 +31,7 @@ export default function SideMenu() {
   const paths = [
     { title: 'Home', path: '/', icon: <Home /> },
     { title: 'Search', path: '/search', icon: <Search /> },
+    { title: 'Settings', path: '/setting', icon: <Settings /> }
   ]
 
   if(permission.role(['Admin']).permited()) {
