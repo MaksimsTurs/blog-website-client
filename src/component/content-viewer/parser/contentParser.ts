@@ -1,7 +1,7 @@
 import type { ContentParser } from "./contentParser.type";
 
 import regexp from "./parts/regexp";
-import is from "./parts/is";
+import secure from "./parts/secure";
 import have from "./parts/have";
 import parseAs from "./parts/parseAs";
 import benchmark from "./parts/benchmark";
@@ -10,7 +10,7 @@ import kind from "./parts/kind";
 
 const ContentParser: ContentParser = {
   regexp,
-  is,
+  secure,
   have,
   kind,
   parseAs,

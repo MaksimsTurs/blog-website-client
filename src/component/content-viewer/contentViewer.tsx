@@ -7,7 +7,7 @@ import type { ContentViewerProps } from "./contentViewer.type";
 import { useEffect, useState } from "react";
 import { Pencil, X } from 'lucide-react'
 
-import ContentParseError from './parser/contentParseError';
+import ContentParseError from './parser/contentParsingError';
 import ContentParser from './parser/contentParser';
 
 export default function ContentViewer({ content, className }: ContentViewerProps) {
@@ -16,7 +16,7 @@ export default function ContentViewer({ content, className }: ContentViewerProps
 
   useEffect(() => {
     try {
-      setParsed(ContentParser.benchmark.benchParsing(content || ''))
+      setParsed(ContentParser.benchmark.getParsingBenchmarkResultAndParsedContent(content || ''))
       setParseError('')
     } catch(error) {
       setParseError((error as ContentParseError).message)

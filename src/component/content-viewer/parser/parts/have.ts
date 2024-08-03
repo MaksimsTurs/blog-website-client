@@ -27,10 +27,10 @@ export default {
     regexp.LINK_REGEXP.lastIndex = 0
     return regexp.VIDEO_REGEXP.test(line)
   },
-  lineIntendention: function(line) {
+  intendention: function(line) {
     return line[0] === '-'
   },
-  listItem: function(line) {
+  list: function(line) {
     return line[0] === '+'
   },
   quote: function(line) {

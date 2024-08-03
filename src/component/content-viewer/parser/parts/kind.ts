@@ -4,7 +4,7 @@ export default {
   HEADER_1: 'HEADER_1',
   HEADER_2: 'HEADER_2',
   LINE: 'LINE',
-  LINE_END: 'LINE_END',
+  INTENDENTION: 'INTENDENTION',
   BOLD: 'BOLD',
   QUOTE: 'QUOTE',
   IMG: 'IMG',

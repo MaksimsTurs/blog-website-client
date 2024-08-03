@@ -1,12 +1,12 @@
 import type { ContentParserParseLineAs, LinkLikeDictionary } from "../contentParser.type";
 
 import have from "./have";
-import is from "./is";
+import secure from "./secure";
 import regexp from "./regexp";
 import error from "./error";
 
 export default {
-  lineIntendention: function() {
+  intendention: function() {
     return '<div class="intendention"></div>'
   },
   header2: function(line) {
@@ -18,12 +18,12 @@ export default {
   bold: function(line) {
     return line.replace(regexp.BOLD_REGEXP, '<b class="bold container_flex">$1</b>')
   },
-  listItem: function(obj, lines) {
+  list: function(obj, lines) {
     let parsed: string = '', listDictionary: LinkLikeDictionary = {}, entries = []
 
     //Collect all list items
     for(; obj.index < lines.length;) {
-      if(have.listItem(lines[obj.index])) {
+      if(have.list(lines[obj.index])) {
         let text = lines[obj.index].replace('+', '')
 
         if(have.link(text)) text = this.link(text)
@@ -49,9 +49,9 @@ export default {
       if(have.img(lines[obj.index])) {
         const [text, context, src] = lines[obj.index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
 
-        if(!src && is.secureURL(context)) {
+        if(!src && secure.URL(context)) {
           imgDictionary[obj.index] = { text, link: context }
-        } else if(src && is.secureURL(src)) {
+        } else if(src && secure.URL(src)) {
           imgDictionary[obj.index] = { text, link: src, context }
         } else {
           error.throw({ content: lines[obj.index], function: 'parseAs.img', message: `"context": ${context} or "src": ${src} is not defined or not secure!` })
@@ -89,7 +89,7 @@ export default {
     while(matchers?.[index]) {
       const link: string[] = matchers[index].replace(regexp.SQUARE_BRACKETS_REGEXP, '$1').split(/;/)
 
-      if(!is.secureURL(link[1])) {
+      if(!secure.URL(link[1])) {
          error.throw({ content: line, function: 'parseAs.link', message: `Type of URL "${link[1]}" is "${typeof link[1]}", URL is not string or URL is not secure!` })
       }
       
@@ -102,7 +102,7 @@ export default {
   video: function(line) {
     let videoURL: string | undefined = line.replace(regexp.VIDEO_REGEXP, '$1')  
 
-    if(!is.secureURL(videoURL)) {
+    if(!secure.URL(videoURL)) {
       error.throw({ content: line, function: 'parseAs.video', message: `Type of video URL "${videoURL}" is "${typeof videoURL}", video URL is not string or URL is not secure!` })
     }
     

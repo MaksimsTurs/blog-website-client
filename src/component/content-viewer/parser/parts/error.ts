@@ -1,6 +1,6 @@
 import { ContentParserError } from "../contentParser.type";
 
-import ContentParseError from "../contentParseError";
+import ContentParseError from "../contentParsingError";
 
 export default {
   throw: function(information) {
