@@ -20,6 +20,7 @@ import uploadAsset from './fetch/uploadAsset';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 
 import localStorage from '@/lib/local-storage/localStorage';
+import countDuplicate from '@/lib/count-duplicate/countDuplicate';
 
 export default memo(function({ placeholder, defaultValue, getValue }: TextAreaProps) {
   const [textAreaContent, setTextAreaContent] = useState<string>(defaultValue)
@@ -184,7 +185,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
     const shortCutMap: KeyValueObject = {
       'KeyL': function() {
-        const isMultiple: boolean = shortCutPressedKeys.length > 1
+        const isMultiple: boolean = countDuplicate(shortCutPressedKeys, 'KeyL') > 1
 
         lineStart = textAreaRef.current!.selectionStart
         lineEnd = textAreaRef.current!.value.indexOf('\n', isMultiple ? textAreaRef.current!.selectionEnd : textAreaRef.current!.selectionStart)
@@ -197,8 +198,8 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
         }
 
         if(isMultiple) {
-          for(let index: number = lineEnd + 1; index < textAreaRef.current!.value.length; index++) {
-            if(textAreaRef.current!.value[index] === '\n' || index === textAreaRef.current!.value.length) {
+          for(let index: number = lineEnd + 1; index < textAreaContent.length; index++) {
+            if(textAreaRef.current!.value[index] === '\n' || index === textAreaContent.length) {
               lineEnd = index
               break
             }
@@ -207,6 +208,13 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
         textAreaRef.current!.selectionStart = lineStart
         textAreaRef.current!.selectionEnd = lineEnd
+      },
+      'KeyA': function() {
+        textAreaRef.current!.selectionStart = 0
+        textAreaRef.current!.selectionEnd = textAreaContent.length
+      },
+      'KeyC': async function() {
+        await navigator.clipboard.writeText(textAreaContent.slice(textAreaRef.current!.selectionStart, textAreaRef.current!.selectionEnd))
       }
     }
 
@@ -219,6 +227,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     }
 
     const keyDown = (event: KeyboardEvent): void => {
+      console.log(event.code)
       if(event.ctrlKey && document.activeElement === textAreaRef.current) {
         event.preventDefault()
         if(shortCutMap?.[event.code]) {
