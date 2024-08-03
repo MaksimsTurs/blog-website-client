@@ -42,7 +42,7 @@ const App = () => {
   return(
     <Fragment>
       <Header />
-      <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1' }}>
+      <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1', backgroundColor: 'white' }}>
         <SideMenu />
         <main>
           <Routes>
