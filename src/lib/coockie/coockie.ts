@@ -1,4 +1,4 @@
-import type { KeyValueObject } from "@/global.type"
+  import type { KeyValueObject } from "@/global.type"
 
 function parse(): KeyValueObject {
   let coockies = {}
@@ -16,7 +16,7 @@ const coockie = {
     return parse()[key]
   },
   set: function(key: string, value: any) {
-    document.cookie = `${key}=${value};path=/;max-age=${Date.now() * 60 * 60 * 24 * 7};`
+    document.cookie = `${key}=${value};Path=/;Max-Age=${60 * 60 * 24 * 7};`
   }
 }
 

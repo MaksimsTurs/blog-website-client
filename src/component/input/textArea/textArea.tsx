@@ -176,6 +176,62 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     }
   }, [defaultValue])
 
+  useEffect(() => {
+    let shortCutPressedKeys: string[] = []
+
+    let lineStart: number = 0
+    let lineEnd: number = 0
+
+    const shortCutMap: KeyValueObject = {
+      'KeyL': function() {
+        const isMultiple: boolean = shortCutPressedKeys.length > 1
+
+        lineStart = textAreaRef.current!.selectionStart
+        lineEnd = textAreaRef.current!.value.indexOf('\n', isMultiple ? textAreaRef.current!.selectionEnd : textAreaRef.current!.selectionStart)
+    
+        for(let index: number = lineStart; index >= 0; index--) {
+          if(textAreaRef.current!.value[index] === '\n' || index === 0) {
+            lineStart = index
+            break
+          }
+        }
+
+        if(isMultiple) {
+          for(let index: number = lineEnd + 1; index < textAreaRef.current!.value.length; index++) {
+            if(textAreaRef.current!.value[index] === '\n' || index === textAreaRef.current!.value.length) {
+              lineEnd = index
+              break
+            }
+          }
+        }
+
+        textAreaRef.current!.selectionStart = lineStart
+        textAreaRef.current!.selectionEnd = lineEnd
+      }
+    }
+
+    const keyUp = (event: KeyboardEvent): void => {
+      if(event.code === 'ControlLeft') {
+        shortCutPressedKeys = []
+        lineStart = 0
+        lineEnd = 0
+      }
+    }
+
+    const keyDown = (event: KeyboardEvent): void => {
+      if(event.ctrlKey && document.activeElement === textAreaRef.current) {
+        event.preventDefault()
+        if(shortCutMap?.[event.code]) {
+          shortCutPressedKeys.push(event.code)
+          shortCutMap[event.code]()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', keyDown)
+    document.addEventListener('keyup', keyUp)
+  }, [])
+
   return(
     <Fragment>
       {isUploading.current ? <MutatingLoader/> : null}

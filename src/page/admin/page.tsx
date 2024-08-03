@@ -30,9 +30,7 @@ export default function Admin() {
   const searchParams = useSearchParams()
   const permitor = usePermitor()
 
-  if(!permitor.role(['Admin']).permited()) {
-    return <Navigate to='/'/>
-  }
+  if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
 
   const currPage: number = parseInt(searchParams.get('page') || '0')
 
@@ -46,21 +44,21 @@ export default function Admin() {
   const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar', 'email'])
 
   return(
-    <div className='flex-row-normal-normal-none'>
+    <div style={{ height: '100%' }} className='flex-row-normal-normal-none'>
       <ModalError error={error}/>
       <Modals/>
       {isMutating ? <MutatingLoader/> : null}
       {error ? null :
-      <div style={{ paddingRight: '11rem', width: '100%' }} className='flex-column-normal-normal-medium'>
-        {isPending ? <PaginationLoader/> : <Pagination pagesCount={pagesCount}/>}        
-        {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true }} label={`Nothing found...`}/>}
+      <div style={{ paddingRight: '11rem', width: '100%', height: '100%' }} className='flex-column-normal-normal-medium'>
+        {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
+        {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label={`Nothing found...`}/>}
         {isPending ? 
          <DataLoader/> : 
          <div className={scss.admin_list_container}>
            {data && data.data.map(item => isRenderUser ? <UserPreview key={item._id} user={item as User}/> : <ContentPreview key={item._id} contentData={item as Content} authorData={(item as Content).author}/>)}
          </div>}
-        {isPending ? <PaginationLoader/> : <Pagination pagesCount={pagesCount}/>}        
-      </div>}
+         {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
+        </div>}
       <AdminSideMenu/>
     </div>
   )

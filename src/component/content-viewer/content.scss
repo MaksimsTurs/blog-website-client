@@ -7,6 +7,9 @@
   row-gap: 0rem; 
   line-height: 1.2rem; 
   font-size: clamp(0.7rem, 2.5vw, 1rem);
+  word-break: break-word;
+  clear: both;
+  display: inline-block;
 }
 
 .line_end { flex-grow: 1; }
@@ -68,6 +71,7 @@
 
 .link {
   color: $color-common-hover;
+  display: contents;
   font-weight: normal !important;
 }
 

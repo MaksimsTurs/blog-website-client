@@ -3,7 +3,6 @@ import type { ContentParserParseLineAs, LinkLikeDictionary } from "../contentPar
 import have from "./have";
 import is from "./is";
 import regexp from "./regexp";
-import tools from "./tools";
 import error from "./error";
 
 export default {
@@ -114,30 +113,6 @@ export default {
         </div>
       `
     )
-  },
-  paragraph: function(line) {
-    const lineParts: string[] = tools.splitLineOnTags(line)
-  
-    let part: string, partWords: string[], wrappedLine: string = ''
-  
-    for(let index: number = 0; index <  lineParts.length; index++) {
-      part = lineParts[index]
-  
-      if(!regexp.TAG_BRACKET_REGEXP.test(part)) {
-        partWords = part.split(' ')
-  
-        for(let windex: number = 0; windex < partWords.length; windex++) {
-          if(partWords[windex].length === 0) continue
-          wrappedLine += `<p>${partWords[windex]}</p>`
-        }
-  
-        continue
-      }
-  
-      wrappedLine += part
-    }
-  
-    return wrappedLine
   },
   quote: function(line) {
     const name: string = line.replace(regexp.QUOTE_BRACKETS_REGEXP, '$1')

@@ -31,7 +31,7 @@ export default function SideMenu() {
   const paths = [
     { title: 'Home', path: '/', icon: <Home /> },
     { title: 'Search', path: '/search', icon: <Search /> },
-    { title: 'Settings', path: '/setting', icon: <Settings /> }
+    { title: 'Settings', path: '/setting', icon: <Settings /> },
   ]
 
   if(permission.role(['Admin']).permited()) {

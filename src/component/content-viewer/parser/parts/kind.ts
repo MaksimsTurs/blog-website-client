@@ -1,13 +1,14 @@
-import { ContentTypesKeyValue } from "../contentParser.type";
+import { ContentParser } from "../contentParser.type";
 
 export default {
+  HEADER_1: 'HEADER_1',
+  HEADER_2: 'HEADER_2',
+  LINE: 'LINE',
+  LINE_END: 'LINE_END',
   BOLD: 'BOLD',
-  HEADER1: 'HEADER1',
-  HEADER2: 'HEADER2',
-  PARAGRAPH: 'PARAGRAPH',
   QUOTE: 'QUOTE',
   IMG: 'IMG',
   LINK: 'LINK',
   LIST: 'LIST',
   VIDEO: 'VIDEO'
-} as ContentTypesKeyValue
+} as ContentParser['kind']

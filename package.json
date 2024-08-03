@@ -1,6 +1,6 @@
 {
-  "name": "propagandist",
-  "version": "0.10.24",
+  "name": "ruzzkiy-mir",
+  "version": "0.11.24",
   "type": "module",
   "engines": {
     "node": ">= 20.12.0",

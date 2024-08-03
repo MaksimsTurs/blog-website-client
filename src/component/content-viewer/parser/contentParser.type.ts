@@ -1,15 +1,13 @@
+import type { KeyValueObject } from "@/global.type"
+
 export type ContentParser = {
   regexp: ContentRegexp
-  kind: ContentTypesKeyValue
   is: ContentIs
+  kind: ContentTypesDictionary<ContentKinds>
   have: LineHave
   parseAs: ContentParserParseLineAs
-  tools: ContentTools
+  benchmark: ContentParserBenchmark
   error: ContentParserError
-}
-
-export type ContentParserError = {
-  throw: (information: ContentParserErrorInformation) => void
 }
 
 export type ContentParserErrorInformation = {
@@ -43,13 +41,23 @@ export type LinkLikeDictionary = {
   }
 }
 
-export type ContentTools = {
-  splitLineOnTags: (line: string) => string[]
+export type ContentParserError = {
+  throw: (information: ContentParserErrorInformation) => void
+}
+
+export type ContentParserBenchmark = {
+  parsingTime: number
+  parsingCounts: ContentTypesDictionary<number>
+  times: KeyValueObject
+  benchParsing: (content: string) => string
+  benchStart: (key: string) => void
+  benchEnd: (key: string) => void
+  benchCount: (key: string) => void
 }
 
 export type ContentIs = {
   secureURL: (url: string) => boolean
-  secureHTMLTag: (line: string) => boolean
+  secureDOM: (line: string) => boolean
 }
 
 export type LineHave = {
@@ -73,20 +81,19 @@ export type ContentParserParseLineAs = {
   header2: (line: string) => string
   video: (line: string) => string
   lineIntendention: () => string
-  paragraph: (line: string) => string
   quote: (line: string) => string
 }
 
-export enum ContentKind {
-  LIST =      'LIST',
-  HEADER1 =   'HEADER1',
-  HEADER2 =   'HEADER2',
-  BOLD =      'BOLD',
-  QUOTE =     'QUOTE',
-  LINK =      'LINK',
-  IMG =       'IMG',
-  VIDEO =     'VIDEO',
-  PARAGRAPH = 'PARAGRAPH'
-}
+export type ContentKinds =
+  'HEADER_1' |
+  'HEADER_2' |
+  'LINE' |
+  'LINE_END' |
+  'LIST' |
+  'BOLD' |
+  'QUOTE' |
+  'LINK' |
+  'IMG' |
+  'VIDEO'
 
-export type ContentTypesKeyValue = { [key in ContentKind]: string }
+export type ContentTypesDictionary<T> = { [key: string]: T }
