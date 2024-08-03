@@ -109,7 +109,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
       month: '[month] month [day] days ago!',
       day: '[day] day [hour] hours ago!',
       hour: '[hour] hour [minute] minutes ago!',
-      minute: 'days [minute] minutes [second] seconds ago!',
+      minute: '[minute] minutes [second] seconds ago!',
       second: '[second] seconds ago!'
     })
 
