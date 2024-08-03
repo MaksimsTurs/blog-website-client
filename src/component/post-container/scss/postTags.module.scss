@@ -3,6 +3,7 @@
 
 .post_tags {
   font-size: $font-small;
+  flex-wrap: wrap;
   margin-top: 0.5rem;
 
   a {
