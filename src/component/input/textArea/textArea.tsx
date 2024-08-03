@@ -184,7 +184,8 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     let lineEnd: number = 0
 
     const shortCutMap: KeyValueObject = {
-      'KeyL': function() {
+      'KeyL': function(event: KeyboardEvent) {
+        event.preventDefault()
         const isMultiple: boolean = countDuplicate(shortCutPressedKeys, 'KeyL') > 1
 
         lineStart = textAreaRef.current!.selectionStart
@@ -208,13 +209,6 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
         textAreaRef.current!.selectionStart = lineStart
         textAreaRef.current!.selectionEnd = lineEnd
-      },
-      'KeyA': function() {
-        textAreaRef.current!.selectionStart = 0
-        textAreaRef.current!.selectionEnd = textAreaContent.length
-      },
-      'KeyC': async function() {
-        await navigator.clipboard.writeText(textAreaContent.slice(textAreaRef.current!.selectionStart, textAreaRef.current!.selectionEnd))
       }
     }
 
@@ -227,12 +221,10 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     }
 
     const keyDown = (event: KeyboardEvent): void => {
-      console.log(event.code)
       if(event.ctrlKey && document.activeElement === textAreaRef.current) {
-        event.preventDefault()
         if(shortCutMap?.[event.code]) {
           shortCutPressedKeys.push(event.code)
-          shortCutMap[event.code]()
+          shortCutMap[event.code](event)
         }
       }
     }
