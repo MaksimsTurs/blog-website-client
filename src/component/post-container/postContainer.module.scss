@@ -6,17 +6,16 @@
 	
   a { font-weight: bold; width: fit-content; }
 
-	h4 { font-size: $font-xx-large; font-weight: bolder; }
+	.post_title { font-size: $font-xx-large; font-weight: bolder; }
 
 	.post_short_view { 
 		position: relative;
-		font-size: 0.9rem; 
 
 		> div {
 			word-break: break-all;
 			display: -webkit-box;
-			line-clamp: 2;
-			-webkit-line-clamp: 2;
+			line-clamp: 1;
+			-webkit-line-clamp: 1;
 			-webkit-box-orient: vertical;  
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -27,6 +26,13 @@
 		font-size: $font-small;
 		color: $color-black-medium-soft;
 		margin-bottom: 0.5rem;
+	}
+}
+
+.post_tags_statistic_container {
+	@media(width <= 650px) {
+		flex-direction: column;
+		align-items: flex-start;
 	}
 }
 

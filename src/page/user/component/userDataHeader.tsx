@@ -10,6 +10,7 @@ import ImageComponent from '@/component/image-component/image'
 
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
+
 import { MODALS_KEYS } from '@/conts'
 
 export default function UserDataHeader({ user }: UserDataHeaderProps) {
@@ -26,11 +27,11 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
   const createdAtDifference: string = DateParser
     .getDifference(user.createdAt)
     .getSortDate({
-      year: '[year] year [month] months ago!',
-      month: '[month] month [day] days ago!',
-      day: '[day] day [hour] hours ago!',
-      hour: '[hour] hour [minute] minutes ago!',
-      minute: 'days [minute] minutes [second] seconds ago!',
+      year: '[year] years [month] months ago!',
+      month: '[month] months [day] days ago!',
+      day: '[day] days [hour] hours ago!',
+      hour: '[hour] hours [minute] minutes ago!',
+      minute: '[minute] minutes [second] seconds ago!',
       second: '[second] seconds ago!'
     })
 
@@ -38,7 +39,7 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
     <div className={`${scss.user_data_header} main-content-container flex-column-normal-normal-small`}>
       <div className={`${scss.user_data_header_top} flex-row-normal-center-none`}>
         <div className={`${scss.user_data_img_container} flex-column-normal-normal-small`}>
-          <ImageComponent classNames={{ img: scss.user_data_img, loader: scss.user_data_img_loader }} src={user.avatar} alt={user.name}/>
+          <ImageComponent classNames={{ img: scss.user_data_img, svg: scss.user_data_img, loader: scss.user_data_img_loader }} src={user.avatar} alt={user.name}/>
           <div style={{ color: roleColor }} className={`${scss.user_data_role_container} flex-row-center-normal-small`}>{roleIcon}<p>{user.role}</p></div>
         </div>
         {isCurrentUser && <Settings className={scss.user_data_header_edit_button} size={30} onClick={openUpdateModal}/>}

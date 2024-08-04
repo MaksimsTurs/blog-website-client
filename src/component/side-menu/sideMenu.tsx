@@ -16,34 +16,37 @@ import SideMenuLoader from './component/sideMenuLoader'
 import type { CreatorState } from '@/store/creator/creator.type'
 import type { RootState } from '@/store/store'
 
+const adminPaths = [
+  { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
+  { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> }
+]
+
+const creatorPaths = [
+  { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> }
+]
+
+const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
+const is830px: boolean = window.matchMedia('(width <= 830px)').matches
+
 export default function SideMenu() {
   const { pathname } = useLocation()
   const searchParams = useSearchParams()
   const auth = useAuth()
   const permission = usePermitor()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
-  const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
 
   const isPostPage: boolean = pathname.search(/post/) > -1
-  const is830px: boolean = window.matchMedia('(width <= 830px)').matches
   const isSideMenuOpen: boolean = is830px ? JSON.parse(searchParams.get('is-side-menu-open') || 'false') : true
-  
+
   const paths = [
     { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
     { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
     { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
   ]
 
-  if(permission.role(['Admin']).permited()) {
-    paths.push(
-      { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
-      { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> }
-    )
-  }
+  if(permission.role(['Admin']).permited()) paths.push(...adminPaths)
 
-  if(permission.role(['Creator']).permited()) {
-    paths.push({ title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> })
-  }
+  if(permission.role(['Creator']).permited()) paths.push(...creatorPaths)
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
     searchParams.set({ [`${modal}-modal`]: !JSON.parse(searchParams.get(`${modal}-modal`) || 'false') })
@@ -57,7 +60,7 @@ export default function SideMenu() {
         <div className='flex-column-normal-normal-none'>
           <p className={scss.aside_menu_title}>User</p>
           <Link to={`/user/${auth.user?._id}`} className={'flex-row-center-normal-medium'}>
-            <ImageComponent classNames={{ img: scss.aside_menu_user_avatar }} src={auth.user?.avatar} alt={auth.user?.name || 'User avatar'}/>
+            <ImageComponent classNames={{ svg: scss.aside_menu_user_avatar, img: scss.aside_menu_user_avatar }} src={auth.user?.avatar} alt={auth.user?.name || 'User avatar'}/>
             <p>{auth.user?.name}</p>
           </Link>
         </div> :

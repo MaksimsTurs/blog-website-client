@@ -9,7 +9,8 @@ let currSetting: WebsiteSetting = localStorage.get<WebsiteSetting>('website-sett
 
 if(!currSetting) {
   const _default: WebsiteSetting = {
-    font: 'Fira Code, monospace'
+    font: 'Fira Code, monospace',
+    isDarkMode: false
   }
 
   currSetting = _default
@@ -26,9 +27,13 @@ const websiteSettingSlice = createSlice({
     changeWebsiteFont: (state, { payload }: PayloadAction<WebsiteSetting['font']>) => {
       state.font = payload
       localStorage.set('website-setting', state)
+    },
+    changeDarkMode: (state, { payload }: PayloadAction<boolean>) => {
+      state.isDarkMode = payload
+      localStorage.set('website-setting', state)
     }
   }
 })
 
-export const { changeWebsiteFont } = websiteSettingSlice.actions
+export const { changeWebsiteFont, changeDarkMode } = websiteSettingSlice.actions
 export default websiteSettingSlice.reducer

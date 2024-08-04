@@ -5,8 +5,8 @@
   flex-grow: 1;
   flex-wrap: wrap; 
   row-gap: 0rem; 
-  line-height: 1.2rem; 
-  font-size: clamp(0.7rem, 2.5vw, 1rem);
+  line-height: clamp(0.9rem, 2.5vw, 1.2rem); 
+  font-size: clamp(0.7rem, 2.5vw, $font-medium);
   word-break: break-word;
   clear: both;
   display: inline-block;

@@ -117,7 +117,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
     <div className={`${scss.post_header} flex-row-center-space-between-none`}>
       {user ? 
       <div className='flex-row-center-normal-medium'>
-         <ImageComponent styles={{ img: { width: '2rem', height: '2rem' }}} src={user?.avatar} alt={user?.name || 'User avatar'}/>
+         <ImageComponent styles={{ svg: { width: '2rem', height: '2rem' }, img: { width: '2rem', height: '2rem' }}} src={user?.avatar} alt={user?.name || 'User avatar'}/>
          <div className={scss.post_author}>
            <Link to={`/user/${user?._id}`}>{user?.name}</Link>
            <p className={scss.post_create_date}>{createdAtDifference}</p>  

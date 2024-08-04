@@ -12,6 +12,7 @@ import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import ModalError from '@/component/modal-error/modalError'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
 import Button from '@/component/button/button'
+import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import WriteNewLoader from './loader'
 
 import { Fragment, useRef } from "react"
@@ -30,7 +31,6 @@ import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
-import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {

@@ -1,4 +1,5 @@
 export type WebsiteSetting = {
+  isDarkMode: boolean
   font: 
     'Fira Code, monospace' | 
     'Fira Sans, sans-serif' |

@@ -3,41 +3,31 @@ import scss from './image.module.scss'
 import type { ImageComponentProps } from './image.type'
 
 import { CircleUserRound } from 'lucide-react'
-import { Fragment, memo, useEffect, useRef, useState } from 'react'
+import { Fragment, memo, useEffect, useState } from 'react'
 
 import ImageLoader from './imageLoader'
 
 export default memo(function ImageComponent({ alt, classNames, src, styles }: ImageComponentProps) {
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
-
-  const imgSourceRef = useRef<string | undefined>('default')
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  const isHTTPProtocol: boolean = (imgSourceRef.current?.search(/http(s)/) || -1) > -1
+  const [imageState, setImageState] = useState<{ isLoading: boolean, source?: string }>({ isLoading: true })
   
   useEffect(() => {
-    if(!imgRef.current) return
-      
-    imgRef.current.addEventListener('loadstart', () => {
-      setIsLoaded(false)
-    })
+    const checkImageSource = async (): Promise<void> => {
+      try {
+        await fetch(src || '')
+        setImageState({ isLoading: false, source: src })
+      } catch(error) {
+        console.error(error)
+        setImageState({ isLoading: false })
+      }
+    }
 
-    imgRef.current.addEventListener('load', (event) => {
-      const image = event.target as HTMLImageElement
-      imgSourceRef.current = src
-      setIsLoaded(image.complete)
-    }, { once: true })
-
-    imgRef.current.addEventListener('error', () => {
-      imgSourceRef.current = undefined
-      setIsLoaded(false)
-    }, { once: true })
-  }, [imgRef.current])
+    checkImageSource()
+  }, [])
 
   return (
     <Fragment>
-      {!isHTTPProtocol && !isLoaded ? <CircleUserRound className={`${classNames?.img} ${scss.default_image}`}/> : (!isLoaded && isHTTPProtocol) && <ImageLoader className={classNames?.loader} style={styles?.loader}/> }
-      <img ref={imgRef} src={src} alt={alt} className={classNames?.img} style={{...styles?.img, display: (isHTTPProtocol && imgSourceRef.current || isLoaded) ? 'block' : 'none' }}/>
+      {imageState.isLoading ? <ImageLoader className={classNames?.loader} style={styles?.loader}/> : !imageState.source ? <CircleUserRound className={`${classNames?.img} ${scss.default_image}`}/> : null}
+      <img src={src} alt={alt} className={classNames?.img} style={{...styles?.img, display: imageState.source && !imageState.isLoading ? 'block' : 'none' }}/>
     </Fragment>
   )
 })

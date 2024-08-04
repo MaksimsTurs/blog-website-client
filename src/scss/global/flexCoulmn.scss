@@ -20,6 +20,12 @@
   gap: 0.25rem;
 }
 
+.flex-column-normal-normal-big {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .flex-column-center-center-big {
   display: flex;
   flex-direction: column;

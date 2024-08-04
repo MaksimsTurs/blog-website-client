@@ -18,11 +18,11 @@ import { Fragment } from 'react'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/_use-request/_useRequest'
 
+const contentPerLoad: number = 10
+const is830px: boolean = window.matchMedia('(width <= 830px)').matches
+
 export default function Page() {
   const searchParams = useSearchParams()
-
-  const contentPerLoad: number = 10
-  const is830px: boolean = window.matchMedia('(width <= 830px)').matches
   
   const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
   const postStatisticPreviewType: string | null = searchParams.get('type')

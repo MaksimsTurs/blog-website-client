@@ -8,6 +8,8 @@ import { changeWebsiteFont } from '@/store/website-setting/setting'
 import type { AppDispatch, RootState } from '@/store/store'
 import type { WebsiteSetting } from '@/store/website-setting/setting.type'
 
+import SettingWrapper from './component/settingWrapper'
+
 export default function Settings() {
   const fonts: WebsiteSetting['font'][] = [
     'Fira Code, monospace', 
@@ -27,9 +29,7 @@ export default function Settings() {
 
   return(
     <div className='flex-column-normal-normal-medium'>
-      <div className={scss.setting_option_container}>
-        <h5 className={scss.setting_option_name}>Font</h5>
-        <p className={scss.setting_description}>Font of page and post content.</p>
+      <SettingWrapper title='Font' description='Font of page and post content.'>
         <ul className='flex-column-normal-normal-medium'>
           {fonts.map(font => (
             <li key={font} className='flex-row-center-space-between-medium'>
@@ -38,7 +38,7 @@ export default function Settings() {
             </li>
           ))}
         </ul>
-      </div>
+      </SettingWrapper>
     </div>
   )
 }

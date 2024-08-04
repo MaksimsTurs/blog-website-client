@@ -92,7 +92,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
           {(type === 'comment' || type === 'preview') ? <PostHeader tags={post.tags || []} title={post.title || ''} content={post.content} isHidden={post.isHidden} postID={postID} contentID={post._id} type={type} createdAt={post.createdAt} user={post?.author}/> : null}
           {type === 'post' ? 
             <div className={scss.post_content_container}>
-              <h4>{post.title}</h4>
+              <h4 className={scss.post_title}>{post.title}</h4>
               <p className={scss.post_content_date}>{createdAtDifference}</p>
               <ContentViewer content={post.content}/>
             </div> : null}
@@ -102,7 +102,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
               <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 450)}/>
             </div> : null}
           {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
-            <div className='flex-row-center-space-between-medium'>
+            <div className={`${scss.post_tags_statistic_container} flex-row-center-space-between-medium`}>
               {((type === 'post' || type === 'preview') && post.tags) ? <PostTags tags={post.tags}/> : null}
               <div className='flex-row-center-normal-big'>
               {type === 'preview' ? 

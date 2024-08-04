@@ -31,6 +31,8 @@ const sortOptions = [
   { name: 'Comments', icon: <MessageCircle size={17}/> }
 ]
 
+const is930px: boolean = window.matchMedia('(width <= 930px)').matches
+
 export default function Search() {
   const modalContainerRef = useRef<HTMLDivElement>(null)
   const [sortData, setSortData] = useState<SortData>({ author: '', content: '', title: '' })
@@ -43,7 +45,6 @@ export default function Search() {
   
   const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
   
-  const is930px: boolean = window.matchMedia('(width <= 930px)').matches
   const isOpen: boolean = !is930px ? true : useOutsideClick(MODALS_KEYS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
