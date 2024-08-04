@@ -67,9 +67,9 @@ const App = () => {
               </Suspense>
             }/>
           </Routes>
-          <ScrollTo/>
         </main>
       </div>
+      <ScrollTo/>
     </Fragment>
   )
 }

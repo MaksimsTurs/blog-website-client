@@ -29,20 +29,20 @@ export default function SideMenu() {
   const isSideMenuOpen: boolean = is830px ? JSON.parse(searchParams.get('is-side-menu-open') || 'false') : true
   
   const paths = [
-    { title: 'Home', path: '/', icon: <Home /> },
-    { title: 'Search', path: '/search', icon: <Search /> },
-    { title: 'Settings', path: '/setting', icon: <Settings /> },
+    { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
+    { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
+    { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
   ]
 
   if(permission.role(['Admin']).permited()) {
     paths.push(
-      { title: 'Admin', path: '/admin/post', icon: <Shield /> },
-      { title: 'Write post', path: '/write-post', icon: <SquarePen /> }
+      { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
+      { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> }
     )
   }
 
   if(permission.role(['Creator']).permited()) {
-    paths.push({ title: 'Write post', path: '/write-post', icon: <SquarePen /> })
+    paths.push({ title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> })
   }
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
@@ -64,11 +64,11 @@ export default function SideMenu() {
         is830px &&
         <Fragment>
           <button className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('login')}>
-            <UserPlus/>
+            <UserPlus className={scss.aside_menu_icon}/>
             <p>Login</p>
           </button>
           <button className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
-            <UserPlus/>
+            <UserPlus className={scss.aside_menu_icon}/>
             <p>Registrate</p>
           </button>
         </Fragment>}

@@ -1,27 +1,36 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
-@import './media-query/scrollTo.media-query.scss';
 
 .scroll_to_container {
-  @include absolute-left-top-zindex-width-height(95%, 90%);
-  background-color: $color-common;
-  border-radius: $border-radiues-button;
-  transition: all $transition-time-very-fast;
-  box-shadow: $box-shadow-button;
+  @include absolute-left-top-zindex-width-height(0%, 0%);
   position: fixed;
-  border: 1px solid transparent;
-  width: fit-content;
-  height: fit-content;
-  cursor: pointer;
+  pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 1rem 1.5rem;
 
   svg { width: 2rem; height: 2rem; color: white; padding: 0.35rem; }
   
-  &:hover {
-    box-shadow: $box-shadow-button-hover;
+  .scroll_to_body {
+    background-color: $color-common;
+    border-radius: $border-radiues-button;
     transition: all $transition-time-very-fast;
-    border: 1px solid $color-common-hover;
-    background-color: white;
+    box-shadow: $box-shadow-button;
+    position: fixed;
+    border: 1px solid transparent;
+    width: fit-content;
+    height: fit-content;
+    pointer-events: all;
+    cursor: pointer;
 
-    svg { color: $color-common-hover; }
+    &:hover {
+      box-shadow: $box-shadow-button-hover;
+      transition: all $transition-time-very-fast;
+      border: 1px solid $color-common-hover;
+      background-color: white;
+
+      svg { color: $color-common-hover; }
+    }
   }
 }

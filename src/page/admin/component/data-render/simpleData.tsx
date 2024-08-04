@@ -5,10 +5,9 @@ import type { SimpleDataProps } from '../../page.type'
 
 import { Copy } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import ContentViewer from '@/component/content-viewer/contentViewer'
-
-export default function SimpleData({ propKey, propValue, useParser, useCopyBoard }: SimpleDataProps) {
+export default function SimpleData({ propKey, propValue, useLink, useCopyBoard }: SimpleDataProps) {
   const [isCopyied, setIsCopied] = useState<boolean | undefined>(undefined)
 
   const copyBoard = async (): Promise<void> => {
@@ -24,7 +23,7 @@ export default function SimpleData({ propKey, propValue, useParser, useCopyBoard
     <section className={`${scss.data_simple_container} flex-row-center-space-between-none`}>
       <p className={scss.data_simple_key}>{propKey}</p>
       <div className='flex-row-center-center-medium'>
-        {useParser ? <ContentViewer className={scss.data_simple_content} content={propValue}/> : <p className={scss.data_simple_value}>{propValue}</p>}
+        {useLink ? <Link className={scss.data_simple_value} to={propValue}>{propValue}</Link> : <p className={scss.data_simple_value}>{propValue}</p>}
         {useCopyBoard ? <Copy className={isCopyied ? scss.data_simple_copyied : ''} onClick={copyBoard} size={15}/> : null}
       </div>
     </section>

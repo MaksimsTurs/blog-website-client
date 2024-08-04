@@ -18,5 +18,11 @@ export default function ScrollTo() {
     window.scrollTo({ behavior: 'smooth', top })
   }
 
-  return <div className={`${scss.scroll_to_container} flex-row-center-center-none`}>{isOnTop ? <ChevronDown onClick={() => scrollTo('bottom')}/> : <ChevronUp onClick={() => scrollTo('top')}/>}</div>
+  return(
+    <div className={scss.scroll_to_container}>
+      <div className={`${scss.scroll_to_body} flex-row-center-center-none`}>
+        {isOnTop ? <ChevronDown onClick={() => scrollTo('bottom')}/> : <ChevronUp onClick={() => scrollTo('top')}/>}  
+      </div>
+    </div>
+  )
 }

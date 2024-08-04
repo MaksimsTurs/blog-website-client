@@ -1,3 +1,5 @@
+import type { KeyValueObject } from "@/global.type"
+
 export type ContentParser = {
   regexp: ContentRegexp
   secure: ContentSecure
@@ -92,7 +94,8 @@ export type LinkLikeDictionary = {
 
 export type ContentParserBenchmark = {
   parsingTime: number
-  kindCount: ContentTypesDictionary<ContentKinds, number>
+  kindCount: ContentTypesDictionary<ContentKinds, number> | KeyValueObject
+  reset: () => void
   countKind: (kind: ContentKinds) => void
   getParsingBenchmarkResultAndParsedContent: (content: string) => string
 }

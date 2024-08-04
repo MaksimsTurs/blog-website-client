@@ -20,10 +20,13 @@ import useRequest from '@/custom-hook/_use-request/_useRequest'
 
 export default function Page() {
   const searchParams = useSearchParams()
+
   const contentPerLoad: number = 10
+  const is830px: boolean = window.matchMedia('(width <= 830px)').matches
+  
   const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
   const postStatisticPreviewType: string | null = searchParams.get('type')
-  const is830px: boolean = window.matchMedia('(width <= 830px)').matches
+  
   const { isFetching, isMutating, data, error, mutate } = useRequest({ 
     deps: ['all-posts'], 
     request: async () => await fetcher.get<Content[]>(`/home/${postsCount}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 

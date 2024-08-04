@@ -46,9 +46,10 @@
   }
   
   .preview_item_count {
-    background-color: $color-common-hover-soft;
-    color: $color-common-hover;
-    padding: 0.4rem 0.72rem;
+    background-color: $color-common-soft;
+    color: $color-common;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.7rem;
     border-radius: 50%;
   }
 }

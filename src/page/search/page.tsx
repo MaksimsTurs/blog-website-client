@@ -18,28 +18,33 @@ import type { SortData, SortOption, SortedPosts } from './page.type';
 
 import useRequest from '@/custom-hook/_use-request/_useRequest';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
+import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
 
 import { MODALS_KEYS } from '@/conts';
-import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
+
+const sortOptions = [
+  { name: 'Likes', icon: <Heart size={17}/> },
+  { name: 'Views', icon: <Eye size={17}/> },
+  { name: 'Comments', icon: <MessageCircle size={17}/> }
+]
 
 export default function Search() {
-  const searchParams = useSearchParams()
-  const selectedTag: string | null = searchParams.get('tag')
-  const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
   const modalContainerRef = useRef<HTMLDivElement>(null)
-  const is930px: boolean = window.matchMedia('(width <= 930px)').matches
-  const isOpen: boolean = !is930px ? true : useOutsideClick(MODALS_KEYS['IS-FILTER-MODAL-OPEN'], modalContainerRef)
   const [sortData, setSortData] = useState<SortData>({ author: '', content: '', title: '' })
   const [sortOption, setSortOption] = useState<SortOption>()
+  
+  const searchParams = useSearchParams()
+
+  const selectedTag: string | null = searchParams.get('tag')
   const page: number = parseInt(searchParams.get('page') || '0')
-  const sortOptions = [
-    { name: 'Likes', icon: <Heart size={17}/> },
-    { name: 'Views', icon: <Eye size={17}/> },
-    { name: 'Comments', icon: <MessageCircle size={17}/> }
-  ]
+  
+  const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
+  
+  const is930px: boolean = window.matchMedia('(width <= 930px)').matches
+  const isOpen: boolean = !is930px ? true : useOutsideClick(MODALS_KEYS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
     deps: [`sort-${page}`],
@@ -82,11 +87,11 @@ export default function Search() {
       <div style={{ height: '100%' }} className='flex-row-normal-normal-medium'>
         <div style={{ width: '100%', minHeight: '100%' }} className='flex-column-normal-normal-small'>
           {is930px ? <Filter onClick={openFilterModal} className={scss.search_filter_modal_button}/> : null}
-          {isPending ? <PaginationLoader/> : data && data.pagesCount >= 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
+          {isPending ? <PaginationLoader/> : data && data.pagesCount > 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
           {isPending ? <HomeLoader/> : 
           data && data.posts.length === 0 ? <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label='Nothing found!'/> : 
           data && data.posts.map(post => <PostContainer key={post._id} post={post} type="preview"/>)}
-          {isPending ? <PaginationLoader/> : data && data.pagesCount >= 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
+          {isPending ? <PaginationLoader/> : data && data.pagesCount > 1 ? <Pagination pagesCount={data.pagesCount}/> : null}
         </div>
         <div ref={modalContainerRef} className={isOpen ? scss.search_filter_container : `${scss.search_filter_container} ${scss.search_filter_container_hidden}`}>
           <div className='main-content-container flex-column-normal-normal-small'>

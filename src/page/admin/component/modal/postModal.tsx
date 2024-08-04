@@ -36,14 +36,36 @@ export default function PostModal() {
       const maxViewsPage: number = Math.ceil(currViews.length / 10)
       const maxLikesPage: number = Math.ceil(currLikes.length / 10)
 
-      const createdAtDifference: string = DateParser
-        .getDifference(props.data.createdAt)
+      const createdAtDifferenceUser: string = DateParser
+        .getDifference(props.data.author?.createdAt)
         .getSortDate({
-          year: '[year] year [month] months ago!',
-          month: '[month] month [day] days ago!',
-          day: '[day] day [hour] hours ago!',
-          hour: '[hour] hour [minute] minutes ago!',
-          minute: 'days [minute] minutes [second] seconds ago!',
+          year: '[year] years [month] months ago!',
+          month: '[month] months [day] days ago!',
+          day: '[day] days [hour] hours ago!',
+          hour: '[hour] hours [minute] minutes ago!',
+          minute: '[minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
+        
+      const createdAtDifferencePost: string = DateParser
+        .getDifference(props.data.author?.createdAt)
+        .getSortDate({
+          year: '[year] years [month] months ago!',
+          month: '[month] months [day] days ago!',
+          day: '[day] days [hour] hours ago!',
+          hour: '[hour] hours [minute] minutes ago!',
+          minute: '[minute] minutes [second] seconds ago!',
+          second: '[second] seconds ago!'
+        })
+      
+      const updatedAtDifferencePost: string = DateParser
+        .getDifference(props.data.author?.createdAt)
+        .getSortDate({
+          year: '[year] years [month] months ago!',
+          month: '[month] months [day] days ago!',
+          day: '[day] days [hour] hours ago!',
+          hour: '[hour] hours [minute] minutes ago!',
+          minute: '[minute] minutes [second] seconds ago!',
           second: '[second] seconds ago!'
         })
 
@@ -61,7 +83,7 @@ export default function PostModal() {
                 <div className={`${scss.post_author_data_body} flex-column-normal-normal-none`}>
                   <p>{props.data.author.name}</p>
                   <p>{props.data.author.role}</p>
-                  <p>{createdAtDifference}</p>
+                  <p>{createdAtDifferenceUser}</p>
                   <p>{props.data.author.email}</p>
                 </div> 
               </Link>}
@@ -90,9 +112,9 @@ export default function PostModal() {
           <SimpleData propKey='Title:' propValue={props.data.title}/>
           <SimpleData propKey='Is hidden:' propValue={props.data.isHidden ?  'Yes' : 'No'}/>
           <SimpleData propKey='Tags:' propValue={props.data.tags?.join(', ') || 'No tags'}/>
-          <SimpleData propKey='Created at:' propValue={DateParser.getDifference(props.data.createdAt)}/>
-          <SimpleData propKey='Updated at:' propValue={DateParser.getDifference(props.data.updatedAt)}/>
-          <SimpleData propKey='Content:' propValue={props.data.content} useParser/>
+          <SimpleData propKey='Created at:' propValue={createdAtDifferencePost}/>
+          <SimpleData propKey='Updated at:' propValue={updatedAtDifferencePost}/>
+          <SimpleData propKey='Content:' propValue={`/post/${props.data._id}`} useLink/>
         </div>
       )
     }}/>

@@ -4,21 +4,28 @@ import have from "./have";
 import secure from "./secure";
 import regexp from "./regexp";
 import error from "./error";
+import benchmark from "./benchmark";
+import kind from "./kind";
 
 export default {
   intendention: function() {
+    benchmark.countKind(kind.INTENDENTION)
     return '<div class="intendention"></div>'
   },
   header2: function(line) {
+    benchmark.countKind(kind.HEADER_2)
     return line.replace(regexp.HEADER_REGEXP_2, '<h2 class="header header_2">$1</h2>')
   },
   header1: function(line) {
+    benchmark.countKind(kind.HEADER_1)
     return line.replace(regexp.HEADER_REGEXP_1, '<h1 class="header header_1">$1</h1>')
   },
   bold: function(line) {
+    benchmark.countKind(kind.BOLD)
     return line.replace(regexp.BOLD_REGEXP, '<b class="bold container_flex">$1</b>')
   },
   list: function(obj, lines) {
+    benchmark.countKind(kind.LIST)
     let parsed: string = '', listDictionary: LinkLikeDictionary = {}, entries = []
 
     //Collect all list items
@@ -42,6 +49,7 @@ export default {
     return `<ul class="list">` + parsed + `</ul>`
   },
   img: function(obj, lines) {
+    benchmark.countKind(kind.IMG)
     let parsed: string = '', imgDictionary: LinkLikeDictionary = {}, entries = []
 
     //Collect all images
@@ -78,9 +86,10 @@ export default {
       parsed += `<a target="_blank" href="` + value.link + `"><img class="img" src="` + value.link + `"` + `alt="` + value.text + `"></a>`
     }
 
-    return `<div style="flex-wrap: wrap;" class="flex-row-center-center-none">` + parsed + `</div>`
+    return `<div style="flex-wrap: wrap; margin: 1rem 0rem;" class="flex-row-center-center-none">` + parsed + `</div>`
   },
   link: function(line) {
+    benchmark.countKind(kind.LINK)
     const matchers = line.match(regexp.LINK_REGEXP)
 
     let index: number = 0
@@ -100,6 +109,7 @@ export default {
     return parsed
   },
   video: function(line) {
+    benchmark.countKind(kind.VIDEO)
     let videoURL: string | undefined = line.replace(regexp.VIDEO_REGEXP, '$1')  
 
     if(!secure.URL(videoURL)) {
@@ -115,6 +125,7 @@ export default {
     )
   },
   quote: function(line) {
+    benchmark.countKind(kind.QUOTE)
     const name: string = line.replace(regexp.QUOTE_BRACKETS_REGEXP, '$1')
 
     let text: string = line.replace(regexp.QUOTE_BRACKETS_REGEXP, '$2')

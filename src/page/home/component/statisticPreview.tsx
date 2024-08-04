@@ -22,12 +22,15 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 export default function StatisticPreview({ type }: StatisticPreviewProps) {
   const searchParams = useSearchParams()
+  
   const postID: string = searchParams.get('post-id')!
   const currPage: number = parseInt(searchParams.get('list-page') || '0')
+  
   const iconDictionary: KeyValueObject = { views: <Eye/>, likes: <Heart/>, comments: <MessageCircle/> }
+
   const { data, prev, isPending } = useRequest<GetPostStatistic>({ 
     deps: [`preview-${type}-${postID}-${currPage}`], 
-    prev: [`preview-${type}-${postID}-${currPage - 1 < 0 ? 0 : currPage - 1}`], 
+    prev: [`preview-${type}-${postID}-${currPage === 0 ? 0 : currPage - 1}`], 
     request: async () => fetcher.get(`/post/preview/${type}/${postID}/${currPage}`),
   })
 

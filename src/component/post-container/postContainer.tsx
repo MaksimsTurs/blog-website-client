@@ -27,17 +27,17 @@ import coockie from '@/lib/coockie/coockie';
 export default function PostContainer({ post, type }: PostContainerProps) {
   const { id } = useParams()
   const { pathname } = useLocation()
+  const redirect = useNavigate()
+
   const auth = useAuth()
   const searchParams = useSearchParams()
   const permission = useHavePermission()
-  const redirect = useNavigate()
 
   const { mutate } = useRequest({ deps: [] })
 
   const isPostPage: boolean = pathname.search('/post') > -1
   const isHomePage: boolean = pathname === '/'
   const isLiked: boolean = post.likedBy.includes(auth.user?._id || '')
-  
   const isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited()
   const isAdmin: boolean = permission.role(['Admin']).permited()
   const isHidden: boolean = post.isHidden
@@ -77,12 +77,12 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const createdAtDifference: string = DateParser
     .getDifference(post.createdAt)
     .getSortDate({
-      year: '[year] year [month] months ago!',
-      month: '[month] month [day] days ago!',
-      day: '[day] day [hour] hours ago!',
-      hour: '[hour] hour [minute] minutes ago!',
-      minute: '[minute] minutes [second] seconds ago!',
-      second: '[second] seconds ago!'
+       year: '[year] years [month] months ago!',
+       month: '[month] months [day] days ago!',
+       day: '[day] days [hour] hours ago!',
+       hour: '[hour] hours [minute] minutes ago!',
+       minute: '[minute] minutes [second] seconds ago!',
+       second: '[second] seconds ago!'
     })
 
   return(
@@ -102,9 +102,9 @@ export default function PostContainer({ post, type }: PostContainerProps) {
               <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 450)}/>
             </div> : null}
           {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
-            <div className='flex-row-center-space-between-none'>
+            <div className='flex-row-center-space-between-medium'>
               {((type === 'post' || type === 'preview') && post.tags) ? <PostTags tags={post.tags}/> : null}
-                <div className='flex-row-center-normal-big'>
+              <div className='flex-row-center-normal-big'>
               {type === 'preview' ? 
                 <Fragment>
                   <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('views') : undefined} ><Eye />{post.viewedBy?.length}</p>

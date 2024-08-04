@@ -16,16 +16,20 @@ export default {
     
     const kindCountEntries: [string, number][] = Object.entries(this.kindCount)
 
-    console.info('-----------------------------------------------------')
-    console.info('Content size (letter): %c%d', NUM_COLOR, parsed.length)
+    console.info('-----------------------Parse start------------------------------')
+    console.info('Content size (charachters): %c%d', NUM_COLOR, parsed.length)
     console.info('Content parsing time: %c%fs', NUM_COLOR, parseEnd)
     for(let [kindName, count] of kindCountEntries) console.info('Count of %c%s%c: %c%d', KIND_COLOR, kindName, TEXT_COLOR, NUM_COLOR, count)
-    console.info('-----------------------------------------------------')
+    console.info('-----------------------Parse end--------------------------------')
 
     return parsed
   },
   countKind: function(kind) {
     if(this.kindCount[kind]) this.kindCount[kind]++
     else this.kindCount[kind] = 1
+  },
+  reset: function() {
+    this.parsingTime = 0
+    this.kindCount = {}
   }
 } as ContentParserBenchmark

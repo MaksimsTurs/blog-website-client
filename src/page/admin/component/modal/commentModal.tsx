@@ -49,7 +49,7 @@ export default function CommentModal() {
           <SimpleData propKey='ID:' propValue={props.data._id} useCopyBoard/>
           <SimpleData propKey='Written at:' propValue={DateParser.getDifference(props.data.createdAt)}/>
           <SimpleData propKey='Is hidden:' propValue={props.data.isHidden ? 'Yes' : 'No'}/>
-          <SimpleData propKey='Content:' propValue={props.data.content} useParser/>
+          <SimpleData propKey='Content:' propValue={`/post/${props.data._id}`} useLink/>
           <DataBurgerWrapper propKey='Auhor:'>
           {!props.data.author ? 
             <div><Empty option={{ size: 'SMALL' }} label='No author found!'/></div> :

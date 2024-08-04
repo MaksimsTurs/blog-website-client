@@ -105,19 +105,19 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
   const createdAtDifference: string = DateParser
     .getDifference(createdAt)
     .getSortDate({
-      year: '[year] year [month] months ago!',
-      month: '[month] month [day] days ago!',
-      day: '[day] day [hour] hours ago!',
-      hour: '[hour] hour [minute] minutes ago!',
-      minute: '[minute] minutes [second] seconds ago!',
-      second: '[second] seconds ago!'
+       year: '[year] year [month] months ago!',
+       month: '[month] month [day] days ago!',
+       day: '[day] day [hour] hours ago!',
+       hour: '[hour] hour [minute] minutes ago!',
+       minute: '[minute] minutes [second] seconds ago!',
+       second: '[second] seconds ago!'
     })
 
   return(
     <div className={`${scss.post_header} flex-row-center-space-between-none`}>
       {user ? 
-      <div className='flex-row-normal-normal-medium'>
-         <ImageComponent src={user?.avatar} alt={user?.name || 'User avatar'}/>
+      <div className='flex-row-center-normal-medium'>
+         <ImageComponent styles={{ img: { width: '2rem', height: '2rem' }}} src={user?.avatar} alt={user?.name || 'User avatar'}/>
          <div className={scss.post_author}>
            <Link to={`/user/${user?._id}`}>{user?.name}</Link>
            <p className={scss.post_create_date}>{createdAtDifference}</p>  
