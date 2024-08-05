@@ -1,0 +1,46 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.galery_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  width: 100%;
+
+  .galery_insert_button {
+    color: $color-common;
+    border: 1px solid $color-common;
+    height: 10rem;
+
+    &:hover {
+      color: $color-common-hover;
+      border: 1px solid $color-common-hover;  
+    }
+  }
+
+  .galery_body {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      @include absolute-left-top-zindex-width-height(0%, 0%);
+      backdrop-filter: blur(5px);
+    }
+
+    &:hover > .galery_title {
+      transition: all $transition-time-fast;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .galery_title {
+      @include absolute-left-top-zindex-width-height(0%, 0%);
+      transition: all $transition-time-fast;
+      visibility: hidden;
+      opacity: 0;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

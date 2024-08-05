@@ -1,0 +1,118 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.galery_current_galery_modal_container_hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.galery_current_galery_modal_container {
+  @include absolute-left-top-zindex-width-height(0%, 0%);
+  background-color: $color-black-medium-soft;
+  padding: 2rem;
+  z-index: 99;
+  
+  .galery_current_galery_modal_body {
+    width: 100%;
+    height: 100%;
+
+    .galery_modal_title {
+      border-bottom: $border-container-soft;
+      color: rgb(111, 111, 111);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+
+      svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+
+        &:hover { color: $color-error; }
+      }
+    }
+
+    .galery_slides_container {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      .galery_slide_buttons {
+        @include absolute-left-top-zindex-width-height(0%, 50%);
+        transform: translate(0%, -50%);
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+        padding: 0rem 1rem;
+        height: fit-content;
+
+        > button {
+          background-color: $color-common-soft;
+          border-radius: $border-radiues-button;
+          box-shadow: $box-shadow-button;
+          transition: all $transition-time-very-fast;
+          padding: 0.45rem 0.25rem;
+          color: white;
+          width: fit-content;
+          height: fit-content;
+
+          &:hover {
+            box-shadow: $box-shadow-button-hover;
+            transition: all $transition-time-very-fast;
+            background-color: $color-common;
+         }
+        }
+      }
+
+      .galery_slides {
+        @include absolute-left-top-zindex-width-height();
+        left: 1000%;
+        width: 100%;
+
+        img, video {
+          height: auto;
+          max-height: 100%;
+          max-width: 100%;
+        }
+      }
+
+      .galery_slide_context_warn {
+        @include absolute-left-top-zindex-width-height(97%, 5%);
+        background-color: $color-common;
+        transition: all $transition-time-fast;
+        border-radius: $border-radiues-button;
+        box-shadow: $box-shadow-button;
+        z-index: 120;
+        transform: translate(-50%, -50%);
+        color: white;
+        width: fit-content;
+        height: fit-content;
+        padding: 0.45rem;
+        cursor: pointer;
+
+        &:hover {
+          color: $color-common-hover;
+          border: 1px solid $color-common-hover;
+          background-color: white;
+        }
+
+        &:hover ~ .galery_slide_context {
+          transition: all $transition-time-fast;
+          background-color: rgba(0, 0, 0, 0.9);
+          left: 0% !important;
+          top: 0% !important;
+        }
+      }
+
+      .galery_slide_context {
+        @include absolute-left-top-zindex-width-height(100%, -100%);
+        transition: all $transition-time-fast;
+        background-color: $color-common;
+        user-select: text;
+        color: white;
+        padding: 0.5rem 5rem 0.5rem 0.5rem;
+      }
+
+      .galery_current_slide { left: 0%; }
+    }
+  }
+}

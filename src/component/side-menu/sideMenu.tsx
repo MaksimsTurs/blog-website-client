@@ -2,7 +2,7 @@ import scss from './sideMenu.module.scss'
 import '@/scss/global.scss'
 
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
+import { Home, Images, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react/jsx-runtime'
 
@@ -18,7 +18,8 @@ import type { RootState } from '@/store/store'
 
 const adminPaths = [
   { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
-  { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> }
+  { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> },
+  { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> }
 ]
 
 const creatorPaths = [

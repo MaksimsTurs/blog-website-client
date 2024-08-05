@@ -34,3 +34,9 @@ export type Content = {
   createdAt: string
   updatedAt: string
 }
+
+export type Galery = {
+  _id: string
+  title: string
+  content: { url: string, description?: string }[]
+}
