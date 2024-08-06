@@ -75,7 +75,7 @@ export default {
       if(value.context) {
         parsed += 
         `
-          <div class="img_with_context flex-column-center-center-medium">
+          <div class="img_with_context flex-column-center-center-big">
             <a target="_blank" href="` + value.link + `"><img src="` + value.link + `"` + `alt="` + value.text + `"></a>
             <p>` + value.context + `</p>
           </div>

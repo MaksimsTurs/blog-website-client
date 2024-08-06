@@ -25,20 +25,20 @@
 .bold { font-weight: bold; }
 
 .img_with_context {
-    flex-grow: 1;
     margin: 1rem 0rem;
+    width: 100%;
 
   > p {
-    width: fit-content;
+    width: 70%;
     height: fit-content;
     color: rgb(133, 133, 133);
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
     line-height: 1rem;
   }
 
   > a, img {
     border-radius: 0px !important;
     object-fit: cover;
-    width: auto;
     height: 12rem;
   }
 }
@@ -87,10 +87,10 @@
     border: 1px solid $color-common-hover;
     box-shadow: $box-shadow-button;
     font-size: clamp(0.7rem, 2.5vw, 1rem);
-    margin: 1rem 0rem;
+    margin: 0.5rem 0rem;
     padding: 1rem;
     position: relative;
-    width: fit-content;
+    width: 70%;
   }
 
   .quote_name {
