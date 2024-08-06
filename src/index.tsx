@@ -32,6 +32,7 @@ import SearchLoader from "./page/search/loader"
 import UserLoader from './page/user/loader'
 import AdminLoader from './page/admin/loader'
 import SettingLoader from './page/website-settings/loader'
+import GaleryLoader from './page/galery/loader'
 
 import Error from "./component/error/error"
 import ProtectedRoute from "./component/protected-route/protectedRoute"
@@ -53,7 +54,7 @@ const App = () => {
             <Route path="/search" element={<Suspense fallback={<SearchLoader/>}><Search/></Suspense>}/>
             <Route path="/user/:id" element={<Suspense fallback={<UserLoader/>}><User/></Suspense>}/>
             <Route path="/setting" element={<Suspense fallback={<SettingLoader/>}><Setting/></Suspense>}></Route>
-            <Route path="/galery" element={<Suspense fallback={<SettingLoader/>}><Galery/></Suspense>}></Route>
+            <Route path="/galery" element={<Suspense fallback={<GaleryLoader/>}><Galery/></Suspense>}></Route>
             <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
             <Route path="/write-post" element={
               <Suspense fallback={<WriteNewPostLoader/>}>

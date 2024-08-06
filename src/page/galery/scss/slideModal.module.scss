@@ -1,7 +1,9 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
+@import './media-query/slideModal.media-query.scss';
 
 .galery_current_galery_modal_container_hidden {
+  transition: all $transition-time-fast;
   opacity: 0;
   visibility: hidden;
 }
@@ -9,7 +11,8 @@
 .galery_current_galery_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 0%);
   background-color: $color-black-medium-soft;
-  padding: 2rem;
+  transition: all $transition-time-fast;
+  padding: 1rem;
   z-index: 99;
   
   .galery_current_galery_modal_body {
@@ -75,41 +78,51 @@
         }
       }
 
-      .galery_slide_context_warn {
-        @include absolute-left-top-zindex-width-height(97%, 5%);
-        background-color: $color-common;
-        transition: all $transition-time-fast;
-        border-radius: $border-radiues-button;
-        box-shadow: $box-shadow-button;
-        z-index: 120;
-        transform: translate(-50%, -50%);
-        color: white;
-        width: fit-content;
-        height: fit-content;
-        padding: 0.45rem;
-        cursor: pointer;
-
-        &:hover {
-          color: $color-common-hover;
-          border: 1px solid $color-common-hover;
-          background-color: white;
-        }
-
-        &:hover ~ .galery_slide_context {
+      .galery_slide_context_container {
+        @include absolute-left-top-zindex-width-height(0%, 0%);
+        justify-content: flex-end reverse;
+        padding: 1rem;
+        
+        .galery_slide_context {
+          border-radius: $border-radiues-button;
+          color: $color-common;
           transition: all $transition-time-fast;
-          background-color: rgba(0, 0, 0, 0.9);
-          left: 0% !important;
-          top: 0% !important;
-        }
-      }
+          visibility: hidden;
+          opacity: 0;
+          background-color: rgba(0, 0, 0, 1);
+          height: fit-content;
+          user-select: text;
+          padding: 1rem 0.5rem;  
 
-      .galery_slide_context {
-        @include absolute-left-top-zindex-width-height(100%, -100%);
-        transition: all $transition-time-fast;
-        background-color: $color-common;
-        user-select: text;
-        color: white;
-        padding: 0.5rem 5rem 0.5rem 0.5rem;
+          &:hover {
+            opacity: 1;
+            visibility: visible;
+          }
+          
+          &::before {
+            @include absolute-left-top-zindex-width-height(3%, 5%, 1, 1rem, 2rem);
+            content: "";
+          }
+        }
+
+        .galery_slide_context_warn {
+          background-color: $color-common;
+          transition: all $transition-time-fast;
+          border-radius: $border-radiues-button;
+          box-shadow: $box-shadow-button;
+          flex-shrink: 0;
+          color: white;
+          width: fit-content;
+          height: fit-content;
+          padding: 0.45rem;
+          cursor: pointer;
+  
+          &:hover + .galery_slide_context {
+            transition: all $transition-time-fast;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
       }
 
       .galery_current_slide { left: 0%; }

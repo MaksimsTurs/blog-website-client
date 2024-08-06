@@ -1,0 +1,14 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+@media(width <= 670px) {
+  .galery_slide_context_warn {
+    left: 95% !important;
+  }
+}
+
+@media(width <= 440px) {
+  .galery_slide_context_warn {
+    left: 93% !important;
+  }
+}

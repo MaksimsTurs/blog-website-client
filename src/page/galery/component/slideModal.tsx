@@ -7,7 +7,6 @@ import type { SlideModalProps } from "../page.type";
 import getExtension from '@/lib/get-extension/getExtention'
 
 import { ChevronLeft, ChevronRight, CircleAlert, X } from 'lucide-react'
-import { Fragment } from 'react/jsx-runtime';
 
 import { MODALS_KEYS } from "@/conts";
 
@@ -45,10 +44,10 @@ export default function SlideModal({ galery }: SlideModalProps) {
           <div key={Math.random() * 9999} className={`${currSlide === index ? scss.galery_current_slide : ''} ${scss.galery_slides} flex-row-center-center-none`}>
             {imageExtentions.includes(getExtension(content.url)) ? <img src={content.url}/> : <video  controls src={content.url}/>}
             {content.description ? 
-            <Fragment>
+            <div className={`${scss.galery_slide_context_container} flex-row-normal-normal-medium`}>
               <CircleAlert size={18} className={scss.galery_slide_context_warn}/>
               <p className={scss.galery_slide_context}>{content.description}</p> 
-            </Fragment> : null}
+            </div> : null}
           </div>))}
         </div>
       </div>
