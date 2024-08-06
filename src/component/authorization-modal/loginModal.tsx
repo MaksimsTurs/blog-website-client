@@ -16,7 +16,8 @@ import { MODALS_KEYS } from '@/conts'
 export default function LoginModal() {
   const auth = useAuth()
   const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isOpen: boolean = useOutsideClick(MODALS_KEYS['LOGIN-MODAL'], mainContainerRef)
+  const isOpen: boolean = useOutsideClick(MODALS_KEYS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
+
   const { submit, reset, formState: { errors }} = useForm<User>([
     ['email', 'isPattern:^[^\\s@]+@[^\\s@]+\.[^\\s@]+$:Email is incorrect!'],
     ['name', ['isMax:12:Name is to long!', 'isMin:3:Name is to short!']],

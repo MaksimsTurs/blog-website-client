@@ -1,6 +1,6 @@
 export const MODALS_KEYS = {
-  'LOGIN-MODAL': 'is-login-modal-open',
-  'REGISTRATE-MODAL': 'is-registrate-modal-open',
+  'IS-LOGIN-MODAL-OPEN': 'is-login-modal-open',
+  'IS-REGISTRATE-MODAL-OPEN': 'is-registrate-modal-open',
   'IS-SIDE-MENU-OPEN': 'is-side-menu-open',
   'IS-EDIT-USER-MODAL-OPEN': 'is-edit-user-modal-open',
   'IS-FILTER-MODAL-OPEN': 'is-filter-modal-open',

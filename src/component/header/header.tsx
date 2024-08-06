@@ -22,17 +22,17 @@ export default function Header() {
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
     let otherModalState: boolean = false
-    const currState: boolean = JSON.parse(searchParams.get(`${modal}-modal`) || 'false')
+    const currState: boolean = JSON.parse(searchParams.get(`is-${modal}-modal-open`) || 'false')
     
     if(modal === 'login') {
-      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['REGISTRATE-MODAL']) || 'false')
+      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['IS-REGISTRATE-MODAL-OPEN']) || 'false')
     } else {
-      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['LOGIN-MODAL']) || 'false')
+      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['IS-LOGIN-MODAL-OPEN']) || 'false')
     }
 
     if(otherModalState) return
 
-    searchParams.set({ [`${modal}-modal`]: !currState })
+    searchParams.set({ [`is-${modal}-modal-open`]: !currState })
   }
 
   const changeSideMenuVisibility = (): void => {
