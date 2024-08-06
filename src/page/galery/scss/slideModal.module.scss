@@ -10,12 +10,14 @@
 
 .galery_current_galery_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 0%);
+  position: fixed;
   background-color: $color-black-medium-soft;
   transition: all $transition-time-fast;
-  padding: 1rem;
   z-index: 99;
+  padding: 1rem 0rem;
   
   .galery_current_galery_modal_body {
+    margin: 1rem;
     width: 100%;
     height: 100%;
 
@@ -107,15 +109,21 @@
 
         .galery_slide_context_warn {
           background-color: $color-common;
-          transition: all $transition-time-fast;
           border-radius: $border-radiues-button;
           box-shadow: $box-shadow-button;
+          transition: all $transition-time-fast;
+          opacity: 0.5;
           flex-shrink: 0;
           color: white;
           width: fit-content;
           height: fit-content;
           padding: 0.45rem;
           cursor: pointer;
+
+          &:hover {
+            transition: all $transition-time-fast;
+            opacity: 1;
+          }
   
           &:hover + .galery_slide_context {
             transition: all $transition-time-fast;
