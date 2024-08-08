@@ -5,8 +5,11 @@ import type { SlideModalProps } from "../page.type";
 import getExtension from '@/lib/get-extension/getExtention'
 
 import { ChevronLeft, ChevronRight, CircleAlert, X } from 'lucide-react'
+import useMetadata from '@/custom-hook/use-metadata/useMetadata';
 
 export default function SlideModal({ galery, currentSlide, setCurrentSlide }: SlideModalProps) {
+  useMetadata({ title: galery.title ? galery.title : 'Galery' })
+
   const imageExtentions: string[] = ['webp', 'jpeg', 'png', 'jpg']
 
   const changeCurrSlide = (to: 'prev' | 'next'): void => {

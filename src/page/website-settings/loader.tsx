@@ -1,7 +1,10 @@
 import scss from './loader.module.scss'
 import '@/scss/global.scss'
 
+import useMetadata from '@/custom-hook/use-metadata/useMetadata'
+
 export default function Loader() {
+  useMetadata({ title: 'Einstellung' })
   return(
     <div className='flex-column-normal-normal-medium'>
       <div className={`${scss.loader_container}`}>
