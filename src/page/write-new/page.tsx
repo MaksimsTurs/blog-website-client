@@ -40,12 +40,11 @@ export default function WriteNewPost() {
 
   const searchParams = useSearchParams()
   const auth = useAuth()
-  const { submit } = useForm<Content>([])
+  const { submit, reset } = useForm<Content>([])
   const permitor = usePermitor()
   
   const contentID: string | null = searchParams.get('content-id')
   const draftID: string | null = searchParams.get('draft-id')
-  const isEdit: boolean = JSON.parse(searchParams.get('is-edit') || 'false')
 
   if(!permitor.role(['Admin', 'Creator']).permited()) {
     return <Navigate to='/'/>
@@ -53,7 +52,7 @@ export default function WriteNewPost() {
 
   const currContent: ContentDraft | undefined = 
     //Get content to edit
-    isEdit && contentID ? 
+    contentID ? 
     localStorage.get<ContentDraft>(contentID, 'null') :
     //Get content draft to edit
     draftID ?
@@ -64,7 +63,7 @@ export default function WriteNewPost() {
 
   useMetadata({ 
     title: 
-      isEdit && currContent ? `${isPost ? currContent.title : 'Comment'} ändern` :
+      currContent?.isEdit && currContent ? `${isPost ? currContent.title : 'Comment'} ändern` :
       draftID && currContent ? `${isPost ? currContent.title : 'Entwurf'} ändern` :
       'Neue post schreiben',
     description: 'Hier kannst neue post oder entwurfe schreiben oder ändern.'
@@ -74,7 +73,7 @@ export default function WriteNewPost() {
 
   const { mutate, isMutating, error } = useRequest({ deps: key })
 
-  const toError: ServerResponseError | undefined = error ? error : isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
+  const toError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
   
   const tagsRef = useRef<string[]>(currContent?.tags || [])
   const contentRef = useRef<string>('')
@@ -87,8 +86,8 @@ export default function WriteNewPost() {
     mutate<PostCommentsData | Content[]>({
       key,
       request: async function(option) {
-        if(isEdit) {
-          const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+        if(currContent?.isEdit) {
+          const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
           localStorage.remove(updated._id!)
 
@@ -143,12 +142,16 @@ export default function WriteNewPost() {
       
     searchParams.set({ 'draft-id': newDraftID })
     searchParams.remove(['content-id'])
+
     localStorage.remove(contentID!)
   }
 
   const deleteDraft = (): void => {
     dispatch(removeContentDraft(draftID || contentID!))
     searchParams.remove(['draft-id'])
+    reset()
+    tagsRef.current = []
+    contentRef.current = ''
   }
 
   const getTextAreaContentValue = (content: string): void => {
@@ -163,7 +166,7 @@ export default function WriteNewPost() {
         <WriteNewLoader/> :
         <div className={`${scss.create_new_post_container} flex-row-normal-center-big`}>
           <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
-            {currContent?.contentType !== 'comment' ?
+              {currContent?.contentType !== 'comment' ?
               <Fragment>
                 <TextInput name='title' defaultValue={currContent?.title} placeholder='Post title'/>
                 <CheckBoxInput name='isHidden' label='Hidde post' defaultValue={currContent?.isHidden}/>
@@ -171,7 +174,7 @@ export default function WriteNewPost() {
               </Fragment> : null}
             <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
             <div className={scss.create_new_buttons_container}>
-              <Button label={isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
+              <Button label={currContent?.isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
               <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>
               <Button label="Delete draft" onClick={deleteDraft}/>
             </div>

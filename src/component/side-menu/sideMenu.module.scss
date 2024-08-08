@@ -2,10 +2,6 @@
 @import '@/scss/variabel';
 @import './scss/media-query/sideMenu.media-query.scss';
 
-.aside_menu_extra_width { box-shadow: $box-shadow-container; width: 15rem !important; }
-
-.aside_menu_container_hidden { left: -100% !important; }
-
 .aside_menu_container { padding-left: 12rem; }
 
 .aside_menu_body {
@@ -14,10 +10,12 @@
   background-color: white;
   position: fixed;
   height: 100%;
-  width: 11rem;
+  width: 12rem;
   padding: 4.5rem 0rem;
   left: 0%;
-  z-index: 2;
+  z-index: 1;
+
+  .aside_menu_user_action { display: none;  }
   
   .aside_menu_default_link { gap: 1rem; }
   
@@ -60,3 +58,5 @@
     }
   }
 }
+
+.aside_menu_container_visible { left: 0% !important; }

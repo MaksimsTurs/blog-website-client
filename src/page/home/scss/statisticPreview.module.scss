@@ -3,15 +3,17 @@
 @import './media-query/statisticPreview.media-query.scss';
 
 .preview_container {
-  display: flex;
-  justify-content: flex-end;
-  position: fixed;
-  width: fit-content;
-  height: fit-content;
-  right: 0%;
-  padding: 0rem 1rem;
-
-  .preview_body { background-color: white; width: 16.5rem; }
+  width: 15rem;
+  flex-shrink: 0;
+  
+  .preview_body { 
+    position: fixed;
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+    background-color: white; 
+    width: 15rem;
+    height: fit-content;
+    right: 1.5rem;
+  }
   
   .preview_header {
     border-bottom: $border-container-soft;

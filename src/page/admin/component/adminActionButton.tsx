@@ -36,8 +36,8 @@ export default function AdminActionButton({ optionAction, contentData }: AdminAc
     if(optionAction.actionType === 'edit') {
       if(!contentData) return searchParams.set({ 'user-edit-modal': true })
 
-      localStorage.set(contentData._id!, {...contentData, isFromAdmin: true, contentType: toPreview, onPage: currPage })
-      return redirect(`/write-post?is-edit=true&content-id=${contentData._id}`)
+      localStorage.set(contentData._id!, {...contentData, isEdit: true, isFromAdmin: true, contentType: toPreview, onPage: currPage })
+      return redirect(`/write-post?content-id=${contentData._id}`)
     }
     
     mutate<ContentData<Content>>({

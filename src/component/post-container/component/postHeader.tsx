@@ -51,8 +51,8 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
 
     if(action === 'edit') {
       if(permission.role(['Creator']).permited()) {
-        localStorage.set(contentID, { content, tags, title, isHidden, contentType: typeForAPI, onPage: page, onPost: postID })
-        return redirect(`/write-post?is-edit=true&content-id=${contentID}`)
+        localStorage.set(contentID, { content, tags, title, isHidden, isEdit: true, contentType: typeForAPI, onPage: page, onPost: postID })
+        return redirect(`/write-post?content-id=${contentID}`)
       } 
 
       if(permission.role(['Admin']).permited()) {

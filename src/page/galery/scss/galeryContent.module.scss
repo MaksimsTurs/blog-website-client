@@ -1,6 +1,34 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
+.galery_information_container {
+  border-bottom: $border-container-soft;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+
+  > h4 {
+    font-size: clamp($font-large, 2.5vw, $font-xx-large);
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .galery_file_count_container {
+    color: $color-common;
+    border-radius: $border-radiues-button;
+    border: 1px solid $color-common;
+    transition: all $transition-time-fast;
+    background-color: white;
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-common-soft;
+      color: $color-common;
+      transition: all $transition-time-fast;
+    }
+  }
+}
+
 .galery_content_container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
@@ -24,4 +52,9 @@
       border: 1px solid $color-common-hover;  
     }
   }
+}
+
+.galery_file_count_container_active {
+  background-color: $color-common !important;
+  color: white !important;
 }

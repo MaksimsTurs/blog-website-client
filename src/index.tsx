@@ -58,14 +58,14 @@ const App = () => {
             <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
             <Route path="/write-post" element={
               <Suspense fallback={<WriteNewPostLoader/>}>
-                <ProtectedRoute exeptetRoles={['Admin', 'Creator']}>
+                <ProtectedRoute exeptetRoles={['Admin', 'Creator']} loaderComponent={<WriteNewPostLoader/>}>
                   <WriteNewPost />
                 </ProtectedRoute>
               </Suspense>
             }/>
             <Route path="/admin/:tab" element={
               <Suspense fallback={<AdminLoader/>}>
-                <ProtectedRoute exeptetRoles={['Admin']}>
+                <ProtectedRoute exeptetRoles={['Admin']} loaderComponent={<AdminLoader/>}>
                   <Admin/>
                 </ProtectedRoute>
               </Suspense>
