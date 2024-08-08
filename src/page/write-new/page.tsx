@@ -37,6 +37,7 @@ export default function WriteNewPost() {
   const dispatch = useDispatch<AppDispatch>()
   const redirect = useNavigate()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
+
   const searchParams = useSearchParams()
   const auth = useAuth()
   const { submit } = useForm<Content>([])
@@ -165,8 +166,8 @@ export default function WriteNewPost() {
             {currContent?.contentType !== 'comment' ?
               <Fragment>
                 <TextInput name='title' defaultValue={currContent?.title} placeholder='Post title'/>
-                <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
                 <CheckBoxInput name='isHidden' label='Hidde post' defaultValue={currContent?.isHidden}/>
+                <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
               </Fragment> : null}
             <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
             <div className={scss.create_new_buttons_container}>

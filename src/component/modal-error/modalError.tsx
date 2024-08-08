@@ -9,13 +9,15 @@ import type { ModalErrorProps } from './modalError.type'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
+import { URL_SEARCH_PARAMS } from '@/conts'
+
 export default function ModalError({ error, removeError }: ModalErrorProps) {
   const searchParams = useSearchParams()
 
-  const isErrorModalOpen: boolean = JSON.parse(searchParams.get('is-error-modal-open') || 'false')
+  const isErrorModalOpen: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-ERROR-MODAL-OPEN']) || 'false')
 
   const closeErrorModal = (): void => {
-    searchParams.remove(['is-error-modal-open'])
+    searchParams.remove([URL_SEARCH_PARAMS['IS-ERROR-MODAL-OPEN']])
     if(removeError) removeError()
   }
 
@@ -24,7 +26,7 @@ export default function ModalError({ error, removeError }: ModalErrorProps) {
   }
 
   useEffect(() => {
-    if(error) searchParams.set({ 'is-error-modal-open': true })
+    if(error) searchParams.set({ [URL_SEARCH_PARAMS['IS-ERROR-MODAL-OPEN']]: true })
   }, [])
 
   return(

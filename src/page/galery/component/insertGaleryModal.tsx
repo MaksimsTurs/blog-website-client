@@ -2,15 +2,16 @@ import scss from '../scss/insertGaleryModal.module.scss'
 import '@/scss/global.scss'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
+import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 import useForm from '@/custom-hook/useForm/useForm'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 import { X } from 'lucide-react'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
 import TextInput from '@/component/input/textInput/textInput'
-import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
+
 import { useRef } from 'react'
 
 export default function InsertGaleryModal() {
@@ -19,10 +20,10 @@ export default function InsertGaleryModal() {
 
   const modalContainerRef = useRef<HTMLDivElement>(null)
 
-  const isOpen: boolean = useOutsideClick(MODALS_KEYS['IS-ADD-GALERY-MODAL-OPEN'], modalContainerRef)
+  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-ADD-GALERY-MODAL-OPEN'], modalContainerRef)
 
   const closeSlidesModal = (): void => {
-    searchParams.remove([MODALS_KEYS['IS-ADD-GALERY-MODAL-OPEN']])
+    searchParams.remove([URL_SEARCH_PARAMS['IS-ADD-GALERY-MODAL-OPEN']])
   }
 
   const insertGalery = (): void => {

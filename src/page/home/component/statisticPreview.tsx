@@ -15,29 +15,33 @@ import type { GetPostStatistic, StatisticPreviewProps } from '../page.type'
 import type { KeyValueObject } from '@/global.type'
 
 import fetcher from "@/lib/fetcher/fetcher"
+import formatNum from '@/lib/format-num/formatNum'
 import firstLetterToUpperCase from "@/lib/first-letter-to-upper/firstLetterToUpper"
 
 import useRequest from '@/custom-hook/_use-request/_useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
-export default function StatisticPreview({ type }: StatisticPreviewProps) {
+import { URL_SEARCH_PARAMS } from '@/conts'
+
+const iconDictionary: KeyValueObject = { views: <Eye/>, likes: <Heart/>, comments: <MessageCircle/> }
+const emptyTextDictionary: KeyValueObject = { views: 'No body have viewed!', likes: 'No body have liked!', comments: 'No body have commented!' }
+
+export default function StatisticPreview({ statisticToPreview }: StatisticPreviewProps) {
   const searchParams = useSearchParams()
   
-  const postID: string = searchParams.get('post-id')!
-  const currPage: number = parseInt(searchParams.get('list-page') || '0')
+  const postID: string = searchParams.get(URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID'])!
+  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['LIST-PAGE']) || '0')
   
-  const iconDictionary: KeyValueObject = { views: <Eye/>, likes: <Heart/>, comments: <MessageCircle/> }
-
   const { data, prev, isPending } = useRequest<GetPostStatistic>({ 
-    deps: [`preview-${type}-${postID}-${currPage}`], 
-    prev: [`preview-${type}-${postID}-${currPage === 0 ? 0 : currPage - 1}`], 
-    request: async () => fetcher.get(`/post/preview/${type}/${postID}/${currPage}`),
+    deps: [`preview-${statisticToPreview}-${postID}-${currPage}`], 
+    prev: [`preview-${statisticToPreview}-${postID}-${currPage === 0 ? 0 : currPage - 1}`], 
+    request: async () => fetcher.get(`/post/preview/${statisticToPreview}/${postID}/${currPage}`),
   })
 
-  const paginationLength: number = (prev?.pagesCount || data?.pagesCount) || 0
+  const pagesCount: number = (prev?.pagesCount || data?.pagesCount) || 0
 
-  const closePreviewStatistic = (): void => {
-    searchParams.remove(['type', 'post-id', 'list-page'])
+  const closePostStatisticModal = (): void => {
+    searchParams.remove([URL_SEARCH_PARAMS['STATISTIC-TO-CHECK'], URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID'], URL_SEARCH_PARAMS['LIST-PAGE']])
   }
 
   return(
@@ -45,22 +49,22 @@ export default function StatisticPreview({ type }: StatisticPreviewProps) {
       <div className={`${scss.preview_body} main-content-container`}>
         <div className={`${scss.preview_header} flex-row-center-space-between-none`}>
           <div className='flex-row-center-normal-medium'>
-            {iconDictionary[type]}
-            <h4 className={scss.preview_type}>{firstLetterToUpperCase(type || '')}</h4>
+            {iconDictionary[statisticToPreview]}
+            <h4 className={scss.preview_type}>{firstLetterToUpperCase(statisticToPreview || '')}</h4>
           </div>
-          <X onClick={closePreviewStatistic}/>
+          <X onClick={closePostStatisticModal}/>
         </div>
-        {isPending ? <PaginationListLoader/> : paginationLength > 1 ? <PaginationList pagesCount={paginationLength}/> : null}
+        {isPending ? <PaginationListLoader/> : pagesCount > 1 ? <PaginationList pagesCount={pagesCount}/> : null}
         {isPending ? <StatisticPreviewLoader/> :
-        <div style={{ paddingTop: paginationLength > 1 ? '0.5rem' : '0rem' }} className={scss.preview_item_count_list}>
-          {data?.items?.length === 0 ? <Empty label='Nothing found!'/> :
+        <div style={{ paddingTop: pagesCount > 1 ? '0.5rem' : '0rem' }} className={scss.preview_item_count_list}>
+          {data?.items?.length === 0 ? <Empty option={{ size: 'SMALL' }} label={emptyTextDictionary[statisticToPreview]}/> :
           data?.items?.map(item => (
-            <Link to={`/user/${item._id}`} className='flex-row-center-space-between-none' key={Math.random() * 200}>
+            <Link to={`/user/${item._id}`} className={`${scss.preview_item} flex-row-center-space-between-none`} key={Math.random() * 200}>
               <div className='flex-row-center-normal-medium'>
                 <ImageComponent src={item.avatar} alt={item.name}/>
                 <p>{item.name}</p>
               </div>
-              <p className={scss.preview_item_count}>{item.count}</p>
+              <p className={scss.preview_item_count}>{formatNum(item.count)}</p>
             </Link>
           ))}
         </div>}

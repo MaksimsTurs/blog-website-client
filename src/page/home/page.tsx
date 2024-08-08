@@ -13,29 +13,33 @@ import coockie from '@/lib/coockie/coockie'
 
 import type { Content } from "@/global.type"
 
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 
-import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
+
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 const contentPerLoad: number = 10
 const is830px: boolean = window.matchMedia('(width <= 830px)').matches
 
 export default function Page() {
+  const [postCount, setPostCount] = useState<number>(10)
+
   const searchParams = useSearchParams()
-  
-  const postsCount: number = parseInt(searchParams.get('posts-count') || String(contentPerLoad))
-  const postStatisticPreviewType: string | null = searchParams.get('type')
+
+  const statisticPreviewType: string | null = searchParams.get(URL_SEARCH_PARAMS['STATISTIC-TO-CHECK'])
   
   const { isFetching, isMutating, data, error, mutate } = useRequest({ 
     deps: ['all-posts'], 
-    request: async () => await fetcher.get<Content[]>(`/home/${postsCount}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
+    request: async () => await fetcher.get<Content[]>(`/home/${postCount}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
   })
 
   const loadMorePosts = async (): Promise<void> => {
-    const nextLoadCount: number = postsCount + contentPerLoad
+    const nextLoadCount: number = postCount + contentPerLoad
 
-    searchParams.set({ 'posts-count': nextLoadCount })
+    setPostCount(prev => prev + contentPerLoad)
+    
     await mutate({ key: ['all-posts'], request: async () => await fetcher.get<Content[]>(`/home/${nextLoadCount}`) })
     
     if(!isFetching && !isMutating) setTimeout(() => window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight }), 100)
@@ -44,7 +48,7 @@ export default function Page() {
   return (
     <Fragment>
       {isMutating ? <MutatingLoader/> : null}
-      <div style={{ height: '100%', marginRight: is830px ? '0rem' : postStatisticPreviewType ? '17rem' : '0rem' }} className='flex-row-normal-normal-medium'>
+      <div style={{ height: '100%', marginRight: is830px ? '0rem' : statisticPreviewType ? '17rem' : '0rem' }} className='flex-row-normal-normal-medium'>
         <div style={{ flexGrow: 1 }} className='flex-column-normal-normal-small'>
           {isFetching ? <Loader/> : 
           error ? <Error underText='Go back or reload the page!' code={error.code} message={error.message}/> :
@@ -55,7 +59,7 @@ export default function Page() {
             {data.length % contentPerLoad === 0 ? <div className='flex-row-center-center-none'><Button onClick={loadMorePosts} label='Load More'/></div> : null}
           </Fragment>}
         </div>
-        {postStatisticPreviewType && <StatisticPreview type={postStatisticPreviewType}/>}
+        {statisticPreviewType && <StatisticPreview statisticToPreview={statisticPreviewType}/>}
       </div>
     </Fragment>
   )

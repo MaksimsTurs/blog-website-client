@@ -26,17 +26,19 @@ import type { UserSessionData } from '@/custom-hook/useAuth/useAuth.type';
 import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON';
 import fetcher from '@/lib/fetcher/fetcher';
 
-import { MODALS_KEYS } from '@/conts';
+import { URL_SEARCH_PARAMS } from '@/conts';
 
 export default function EditUser({ _id }: EditUserProps) {
   const { submit, reset, formState: { errors } } = useForm<User>([])
   const { mutate, isMutating } = useRequest<UserSessionData>({ deps: [`user-${_id}`] })
-  const redirect = useNavigate()
   const auth = useAuth()
   const searchParams = useSearchParams()
+
+  const redirect = useNavigate()
+  
   const modalContainerRef = useRef<HTMLDivElement>(null)
   
-  const isOpen: boolean = useOutsideClick(MODALS_KEYS['IS-EDIT-USER-MODAL-OPEN'], modalContainerRef)
+  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-EDIT-USER-MODAL-OPEN'], modalContainerRef)
   const isAdminOrIDEqual: boolean = useHavePermission().role(['Admin']).equal('_id', _id).permited()
 
   const updateUser = (data: User): void => {
@@ -61,7 +63,7 @@ export default function EditUser({ _id }: EditUserProps) {
   }
 
   const stopEditing = (): void => {
-    searchParams.remove([MODALS_KEYS['IS-EDIT-USER-MODAL-OPEN']])
+    searchParams.remove([URL_SEARCH_PARAMS['IS-EDIT-USER-MODAL-OPEN']])
   }
 
   return(

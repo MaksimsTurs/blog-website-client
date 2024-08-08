@@ -22,9 +22,14 @@ import useRequest from '@/custom-hook/_use-request/_useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
+import { URL_SEARCH_PARAMS } from '@/conts'
+
 export default function Post() {
   const { id } = useParams()
-  const page: number = parseInt(useSearchParams().get('page') || '0')
+  
+  const searchParams = useSearchParams()
+
+  const page: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
   
   const { data, isPending, isMutating, isFetching, error } = useRequest<Content>({ deps: [`post-${id}`], request: async () => fetcher.get<Content>(`/post/${id}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) })
 

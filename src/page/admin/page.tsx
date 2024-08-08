@@ -25,14 +25,17 @@ import ModalError from '@/component/modal-error/modalError'
 
 import { useParams, Navigate } from 'react-router-dom'
 
+import { URL_SEARCH_PARAMS } from '@/conts'
+
 export default function Admin() {
   const { tab } = useParams()
+
   const searchParams = useSearchParams()
   const permitor = usePermitor()
 
   if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
 
-  const currPage: number = parseInt(searchParams.get('page') || '0')
+  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
 
   const { isMutating, isPending, data, prev, error } = useRequest<ContentData<Content | User>>({ 
     deps: [`${tab}-${currPage}`], 

@@ -16,7 +16,7 @@ import SideMenuLoader from './component/sideMenuLoader'
 import type { CreatorState } from '@/store/creator/creator.type'
 import type { RootState } from '@/store/store'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 const adminPaths = [
   { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
@@ -33,13 +33,14 @@ const is830px: boolean = window.matchMedia('(width <= 830px)').matches
 
 export default function SideMenu() {
   const { pathname } = useLocation()
+  const creator = useSelector<RootState, CreatorState>(state => state.creator)
+
   const searchParams = useSearchParams()
   const auth = useAuth()
   const permission = usePermitor()
-  const creator = useSelector<RootState, CreatorState>(state => state.creator)
 
   const isPostPage: boolean = pathname.search(/post/) > -1
-  const isSideMenuOpen: boolean = is830px ? JSON.parse(searchParams.get(MODALS_KEYS['IS-SIDE-MENU-OPEN']) || 'false') : true
+  const isSideMenuOpen: boolean = is830px ? JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false') : true
 
   const paths = [
     { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
@@ -53,7 +54,7 @@ export default function SideMenu() {
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
     searchParams.set({ [`${modal}-modal`]: !JSON.parse(searchParams.get(`${modal}-modal`) || 'false') })
-    searchParams.remove([MODALS_KEYS['IS-SIDE-MENU-OPEN']])
+    searchParams.remove([URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']])
   }
 
   return(

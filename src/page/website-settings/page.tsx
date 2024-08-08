@@ -10,16 +10,16 @@ import type { WebsiteSetting } from '@/store/website-setting/setting.type'
 
 import SettingWrapper from './component/settingWrapper'
 
-export default function Settings() {
-  const fonts: WebsiteSetting['font'][] = [
-    'Fira Code, monospace', 
-    'Fira Sans, sans-serif',
-    'Inter, sans-serif',
-    'Public Sans, sans-serif',
-    'Roboto Slab, serif',
-    'Sofia Sans, sans-serif',
-  ]
+const fonts: WebsiteSetting['font'][] = [
+  'Fira Code, monospace', 
+  'Fira Sans, sans-serif',
+  'Inter, sans-serif',
+  'Public Sans, sans-serif',
+  'Roboto Slab, serif',
+  'Sofia Sans, sans-serif',
+]
 
+export default function Settings() {
   const dispatch = useDispatch<AppDispatch>()
   const websiteSetting = useSelector<RootState, WebsiteSetting>(state => state.websiteSetting)
 

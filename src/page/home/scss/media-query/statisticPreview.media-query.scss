@@ -1,12 +1,13 @@
 @media(width <= 830px) {
   .preview_container {
     background-color: $color-black-medium-soft;
+    width: 100% !important;
+    height: 100% !important;
     padding-top: 5rem !important;
     top: 0%;
+    left: 0%;
+    z-index: 50;
 
-    .preview_body {
-      width: 100% !important;
-      box-shadow: $box-shadow-container;
-    }
+    .preview_body { box-shadow: $box-shadow-container; width: 100% !important; }
   }
 }

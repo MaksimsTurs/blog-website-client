@@ -11,17 +11,18 @@ import ImageComponent from '@/component/image-component/image'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 export default function UserDataHeader({ user }: UserDataHeaderProps) {
   const isCurrentUser: boolean = usePermitor().equal('_id', user._id).permited()
   const isAdmin: boolean = user?.role === 'Admin'
-  const roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
   const roleColor: string = isAdmin ? "#F48023" : "#1682FD"
+  const roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
+  
   const searchParams = useSearchParams()
 
   const openUpdateModal = (): void => {
-    searchParams.set({ [MODALS_KEYS['IS-EDIT-USER-MODAL-OPEN']]: true })
+    searchParams.set({ [URL_SEARCH_PARAMS['IS-EDIT-USER-MODAL-OPEN']]: true })
   }
 
   const createdAtDifference: string = DateParser

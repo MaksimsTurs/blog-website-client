@@ -25,11 +25,13 @@
 .bold { font-weight: bold; }
 
 .img_with_context {
+
     margin: 1rem 0rem;
     width: 100%;
 
   > p {
     width: 70%;
+    text-align: center;
     height: fit-content;
     color: rgb(133, 133, 133);
     font-size: clamp(0.7rem, 2.5vw, 0.9rem);
@@ -83,9 +85,9 @@
   
   .quote_body {
     color: $color-common-hover;
-    border-radius: $border-radius-container;
-    border: 1px solid $color-common-hover;
     box-shadow: $box-shadow-button;
+    border: 1px solid $color-common-hover;
+    // border-radius: $border-radius-container;
     font-size: clamp(0.7rem, 2.5vw, 1rem);
     margin: 0.5rem 0rem;
     padding: 1rem;

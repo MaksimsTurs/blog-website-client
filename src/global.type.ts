@@ -38,5 +38,8 @@ export type Content = {
 export type Galery = {
   _id: string
   title: string
+  countOfImg: number
+  countOfVideos: number
+  galerySize: number
   content: { url: string, description?: string }[]
 }

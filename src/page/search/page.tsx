@@ -23,7 +23,7 @@ import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
 
-import { MODALS_KEYS } from '@/conts';
+import { URL_SEARCH_PARAMS } from '@/conts';
 
 const sortOptions = [
   { name: 'Likes', icon: <Heart size={17}/> },
@@ -34,7 +34,6 @@ const sortOptions = [
 const is930px: boolean = window.matchMedia('(width <= 930px)').matches
 
 export default function Search() {
-  const modalContainerRef = useRef<HTMLDivElement>(null)
   const [sortData, setSortData] = useState<SortData>({ author: '', content: '', title: '' })
   const [sortOption, setSortOption] = useState<SortOption>()
   
@@ -44,8 +43,9 @@ export default function Search() {
   const page: number = parseInt(searchParams.get('page') || '0')
   
   const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
+  const modalContainerRef = useRef<HTMLDivElement>(null)
   
-  const isOpen: boolean = !is930px ? true : useOutsideClick(MODALS_KEYS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
+  const isOpen: boolean = !is930px ? true : useOutsideClick(URL_SEARCH_PARAMS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
     deps: [`sort-${page}`],
@@ -74,7 +74,7 @@ export default function Search() {
   }
 
   const openFilterModal = (): void => {
-    searchParams.set({ [MODALS_KEYS['IS-FILTER-MODAL-OPEN']]: true })
+    searchParams.set({ [URL_SEARCH_PARAMS['IS-FILTER-MODAL-OPEN']]: true })
   }
 
   const getSorted = (): void => {

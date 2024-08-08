@@ -9,25 +9,25 @@ import useAuth from '@/custom-hook/useAuth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import UserContainerLoader from './component/userContainerLoader'
-import LoginModal from '../authorization-modal/loginModal'
-import RegistrationModal from '../authorization-modal/registrateModal'
+// import LoginModal from '../authorization-modal/loginModal'
+// import RegistrationModal from '../authorization-modal/registrateModal'
 import ImageComponent from '../image-component/image'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 export default function Header() {
   const auth = useAuth()
   const searchParams = useSearchParams()
-  const isSideMenuOpen: boolean = JSON.parse(searchParams.get(MODALS_KEYS['IS-SIDE-MENU-OPEN']) || 'false')
+  const isSideMenuOpen: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false')
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
     let otherModalState: boolean = false
     const currState: boolean = JSON.parse(searchParams.get(`is-${modal}-modal-open`) || 'false')
     
     if(modal === 'login') {
-      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['IS-REGISTRATE-MODAL-OPEN']) || 'false')
+      otherModalState = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN']) || 'false')
     } else {
-      otherModalState = JSON.parse(searchParams.get(MODALS_KEYS['IS-LOGIN-MODAL-OPEN']) || 'false')
+      otherModalState = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN']) || 'false')
     }
 
     if(otherModalState) return
@@ -36,14 +36,14 @@ export default function Header() {
   }
 
   const changeSideMenuVisibility = (): void => {
-    const currState: boolean = JSON.parse(searchParams.get(MODALS_KEYS['IS-SIDE-MENU-OPEN']) || 'false')
-    searchParams.set({ [MODALS_KEYS['IS-SIDE-MENU-OPEN']]: !currState })
+    const currState: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false')
+    searchParams.set({ [URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']]: !currState })
   }
 
   return(
     <Fragment>
-      <LoginModal/>
-      <RegistrationModal/>
+      {/* <LoginModal/>
+      <RegistrationModal/> */}
       <header className={`${scss.header_container} flex-row-center-space-between-none`}>
         <div style={{ width: '100%' }} className='flex-row-center-normal-none'>
           <button onClick={changeSideMenuVisibility} className={scss.header_side_menu_button}>

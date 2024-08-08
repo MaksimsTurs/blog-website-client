@@ -24,6 +24,8 @@ import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
 
+import { URL_SEARCH_PARAMS } from '@/conts';
+
 export default function PostContainer({ post, type }: PostContainerProps) {
   const { id } = useParams()
   const { pathname } = useLocation()
@@ -49,7 +51,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   if(isHidden && isPostPage && !isAdmin && !isContentCreator && type === 'post') redirect('/')
 
   const showSomeData = (showThe: string): void => {
-    searchParams.set({ 'type': showThe, 'post-id': post._id, 'list-page': 0 })
+    searchParams.set({ [URL_SEARCH_PARAMS['STATISTIC-TO-CHECK']]: showThe, [URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID']]: post._id, [URL_SEARCH_PARAMS['LIST-PAGE']]: 0 })
   }
 
   const likeThisPost = async (): Promise<void> => {

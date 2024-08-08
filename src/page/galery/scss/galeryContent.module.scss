@@ -1,0 +1,27 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.galery_content_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+
+  .galery_content_body > img, video {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .galery_content_close {
+    color: $color-common;
+    border: 1px solid $color-common;
+    height: 15rem;
+
+    &:hover {
+      color: $color-common-hover;
+      border: 1px solid $color-common-hover;  
+    }
+  }
+}

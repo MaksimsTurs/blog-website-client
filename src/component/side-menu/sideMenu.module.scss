@@ -2,18 +2,11 @@
 @import '@/scss/variabel';
 @import './scss/media-query/sideMenu.media-query.scss';
 
-.aside_menu_extra_width {
-  box-shadow: $box-shadow-container;
-  width: 15rem !important;
-}
+.aside_menu_extra_width { box-shadow: $box-shadow-container; width: 15rem !important; }
 
-.aside_menu_container_hidden {
-  left: -100% !important;
-}
+.aside_menu_container_hidden { left: -100% !important; }
 
-.aside_menu_container {
-  padding-left: 12rem;
-}
+.aside_menu_container { padding-left: 12rem; }
 
 .aside_menu_body {
   border-right: $border-container-soft;
@@ -26,14 +19,9 @@
   left: 0%;
   z-index: 2;
   
-  .aside_menu_default_link {
-    gap: 1rem;
-  }
+  .aside_menu_default_link { gap: 1rem; }
   
-  .aside_menu_title {
-    color: $color-black-medium-soft;
-    padding: 0rem 2rem 0.25rem 2rem;
-  }   
+  .aside_menu_title { color: $color-black-medium-soft; padding: 0rem 2rem 0.25rem 2rem; }   
   
   .aside_menu_text_wrapper { @include text-overflow-ellipsis(); }
 
@@ -64,8 +52,8 @@
     position: relative;
 
     &::after {
-      content: '';
       @include absolute-left-top-zindex-width-height();
+      content: '';
       height: 100%;
       width: 0.25rem;
       background-color: $color-common;

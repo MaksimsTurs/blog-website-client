@@ -20,11 +20,14 @@ import UserHeaderLoader from './component/userHeaderLoader'
 import UserContentLoader from './component/userContentLoader'
 import UserContentList from './component/userContentList'
 
+import { URL_SEARCH_PARAMS } from '@/conts'
+
 export default function User() {
   const { id } = useParams()
+
   const searchParams = useSearchParams()
 
-  const page: number = parseInt(searchParams.get('list-page') || '0')
+  const page: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['LIST-PAGE']) || '0')
 
   const user = useRequest<User>({ deps: [`user-${id}`], request: async () => fetcher.get<User>(`/user/${id}`) })
   const userContent = useRequest<UserContentData>({ prev: [`user-${id}-content-${page > 0 ? page - 1 : page}`], deps: [`user-${id}-content-${page}`], request: async () => await fetcher.get(`/user/${id}/content/${page}`) })
