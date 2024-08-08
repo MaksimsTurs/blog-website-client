@@ -64,7 +64,7 @@ export default function Page() {
         </div> :
         (galeryID && !selectedGalery) || error ? 
         <ModalError error={error || { code: 404, message: 'Galery not found!' }}/> : 
-        <GaleryContent content={selectedGalery?.content || []} setGaleryID={setGaleryID} setCurrentSlide={setCurrentSlide}/>}
+        <GaleryContent galery={selectedGalery} setGaleryID={setGaleryID} setCurrentSlide={setCurrentSlide}/>}
       </Fragment>}
     </Fragment>
   )

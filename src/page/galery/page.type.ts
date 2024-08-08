@@ -8,7 +8,7 @@ export type SlideModalProps = {
 }
 
 export type GaleryContentProps = {
-  content: Galery['content']
+  galery?: Galery
   setCurrentSlide: Dispatch<SetStateAction<number | undefined>>
   setGaleryID: Dispatch<SetStateAction<string | undefined>>
 }
