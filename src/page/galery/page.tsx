@@ -26,8 +26,9 @@ export default function Page() {
   const permitor = usePermitor()
   const searchParams = useSearchParams()
 
-  const [galeryID, setGaleryID] = useState<string | undefined>()
   const [currentSlide, setCurrentSlide] = useState<number | undefined>()
+
+  const galeryID: string | null = searchParams.get(URL_SEARCH_PARAMS['GALERY-ID'])
 
   const isAdmin: boolean = permitor.role(['Admin']).permited()
   const defaultBackground: string[] = ['#F48023', '#1682FD']
@@ -37,7 +38,7 @@ export default function Page() {
   const selectedGalery: Galery | undefined = data?.find(galery => galery._id === galeryID)
 
   const openGalery = (id: string): void => {
-    setGaleryID(id)
+    searchParams.set({ [URL_SEARCH_PARAMS['GALERY-ID']]: id })
   }
 
   const openInsertModal = (): void => {
@@ -64,7 +65,7 @@ export default function Page() {
         </div> :
         (galeryID && !selectedGalery) || error ? 
         <ModalError error={error || { code: 404, message: 'Galery not found!' }}/> : 
-        <GaleryContent galery={selectedGalery} setGaleryID={setGaleryID} setCurrentSlide={setCurrentSlide}/>}
+        <GaleryContent galery={selectedGalery} setCurrentSlide={setCurrentSlide}/>}
       </Fragment>}
     </Fragment>
   )
