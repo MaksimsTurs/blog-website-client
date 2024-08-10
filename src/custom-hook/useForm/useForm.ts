@@ -22,6 +22,10 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
     }
   }
 
+  function setError(name: string, message?: string) {
+    setFormState(prev => ({...prev, errors: {...prev.errors, [name]: message }}))
+  }
+
   function submit(target: (data: T) => any): any {
     return new Proxy(target, {
       apply: function(target, _, argArray) {
@@ -35,7 +39,11 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
 
         for(let index: number = 0; index < inputs.length; index++) {
           const input: HTMLInputElement = inputs[index]
-          if(input.type === 'checkbox') formData[input.name] = input.checked
+
+          if(!input.name) continue
+          
+          if(input.type === 'file') formData[input.name] = input.files
+          else if(input.type === 'checkbox') formData[input.name] = input.checked
           else formData[input.name] = input.value
         }
 
@@ -49,5 +57,5 @@ export default function useForm<T>(validationOptionArray: ValidationOptionString
     })
   }
 
-  return { submit, reset, formState }
+  return { submit, reset, setError, formState }
 }

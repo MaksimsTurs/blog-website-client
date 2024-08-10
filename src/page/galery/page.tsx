@@ -4,6 +4,7 @@ import '@/scss/global.scss'
 import usePermitor from "@/custom-hook/use-permitor/useHavePermission"
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 import { Plus } from "lucide-react"
 import { useState, Fragment } from 'react'
@@ -17,12 +18,13 @@ import SlideModal from './component/slideModal'
 import ModalError from '@/component/modal-error/modalError'
 import InsertGaleryModal from './component/insertGaleryModal'
 import Loader from './loader'
+import GaleryContent from './component/galeryContent'
 
 import type { Galery } from '@/global.type'
 
-import GaleryContent from './component/galeryContent'
-
 export default function Page() {
+  useMetadata({ title: 'Galery' })
+
   const permitor = usePermitor()
   const searchParams = useSearchParams()
 

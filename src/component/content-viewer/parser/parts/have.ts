@@ -38,3 +38,7 @@ export default {
     return regexp.QUOTE_BRACKETS_REGEXP.test(line)
   }
 } as LineHave
+
+// [Putin hat erklärtder sinn von wort "Entnazifizierung" (RBC);https://www.rbc.ru/rbcfreenews/6660b9de9a7947aaae9f77dc]
+// (Valknut_1;https://res.cloudinary.com/dlsfhze5b/image/upload/v1721916482/ruzzkyi-mir/n1t7k1p2o1pwu4fr34ht.webp)
+// [Valknut;https://kulturologia.ru/blogs/(300822/54112/)]

@@ -46,9 +46,7 @@ export default function WriteNewPost() {
   const contentID: string | null = searchParams.get('content-id')
   const draftID: string | null = searchParams.get('draft-id')
 
-  if(!permitor.role(['Admin', 'Creator']).permited()) {
-    return <Navigate to='/'/>
-  }
+  if(!permitor.role(['Admin', 'Creator']).permited()) return <Navigate to='/'/>
 
   const currContent: ContentDraft | undefined = 
     //Get content to edit
@@ -116,7 +114,7 @@ export default function WriteNewPost() {
               return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
             }
 
-            redirect('/admin')
+            redirect('/admin/comment')
             return undefined
           }
         }
@@ -160,8 +158,8 @@ export default function WriteNewPost() {
 
   return(
     <Fragment>
-      {toError ? <ModalError error={toError}/> : null}
-      {isMutating ? <MutatingLoader/> : null}
+      {toError && <ModalError error={toError}/>}
+      {isMutating && <MutatingLoader/>}
       {auth.isAuthPending ?
         <WriteNewLoader/> :
         <div className={`${scss.create_new_post_container} flex-row-normal-center-big`}>

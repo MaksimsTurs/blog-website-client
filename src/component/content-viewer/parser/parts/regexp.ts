@@ -4,7 +4,7 @@ export default {
   //Text ; URL
   LINK_REGEXP: /\[(.*?);(.*?)\]/g,
   //Alt ; Context ; Src
-  IMAGE_REGEXP: /\((.*?);(.*?);?(.*?)\)/g,
+  IMAGE_REGEXP: /\<(.*?);(.*?);?(.*?)\>/g,
   //Name ; Text
   QUOTE_BRACKETS_REGEXP: /\(?(.*?)\)?\"{2}([^""]+?)\"{2}/gm,
   BOLD_REGEXP: /#(.*?)#/g,

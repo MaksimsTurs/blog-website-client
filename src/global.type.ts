@@ -43,3 +43,10 @@ export type Galery = {
   galerySize: number
   content: { url: string, description?: string }[]
 }
+
+export type Database = {
+  _id: string
+  title: string
+  content: string
+  thumbnail: string
+}

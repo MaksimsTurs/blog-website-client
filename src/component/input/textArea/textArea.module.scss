@@ -6,7 +6,7 @@
 }
 
 .text_area_asset_modal_container {
-  @include absolute-left-top-zindex-width-height(50%, 50%, 3);
+  @include absolute-left-top-zindex-width-height(50%, 50%, 100);
   background-color: $color-black-medium-soft;
   transition: all $transition-time-very-fast;
   position: fixed;
@@ -95,7 +95,7 @@
   position: fixed;
   left: 20%;
   top: 10.9%;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

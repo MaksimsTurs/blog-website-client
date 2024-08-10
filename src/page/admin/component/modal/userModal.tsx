@@ -19,8 +19,8 @@ import DateParser from "@/lib/date-parser/dateParser";
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useForm from '@/custom-hook/useForm/useForm';
-import useSelect from '@/component/input/select-input/selectInput';
 import useRequest from '@/custom-hook/_use-request/_useRequest';
+import useSelect from '@/component/input/select-input/useSelectItem';
 
 import { Link } from 'react-router-dom';
 import { ShieldHalf, SquarePen, UserRound } from 'lucide-react'
@@ -33,10 +33,11 @@ import inObject from '@/lib/in-object/inObject';
 
 export default function UserModal() {
   const searchParams = useSearchParams()
-  const userRoles = useSelect({})
-  const userBan = useSelect({})
   const { submit, reset } = useForm<User>([])
   const { mutate, isMutating } = useRequest({ deps: [] })
+
+  const SelectBan = useSelect({})
+  const SelectRole = useSelect({})
 
   const currMyContentPage: number = parseInt(searchParams.get('user-content') || '0')
   const currMyLikes: number = parseInt(searchParams.get('my-likes') || '0')
@@ -51,13 +52,11 @@ export default function UserModal() {
     mutate<ContentData<User>>({
       key: [`user-${searchParams.get('page') || 0}`],
       request: async (option) => {
-        const role: string | undefined = userRoles.selected.length === 0 ? undefined : userRoles.selected[0]
-        const ban: string | undefined = userBan.selected.length === 0 ? undefined : userBan.selected[0]
+        const role: string | undefined = SelectRole.selected?.[0]
+        const ban: string | undefined = SelectBan.selected?.[0]
 
         const updatedUser = await fetcher.post<User>('/admin/user/update', createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
-        userRoles.reset()
-        userBan.reset()
         reset()
         searchParams.remove(['user-edit-modal'])
 
@@ -104,16 +103,16 @@ export default function UserModal() {
           <DataEditModalWrapper>
             <FormWrapper style={{ border: 'none', width: '25rem', boxShadow: 'none', padding: '1rem' }} buttonLabel='Change user data' onSubmit={submit(editUser)}>
               <TextInput name='name' placeholder='Write new user name' defaultValue={props.data.name}/>
-              <userRoles.SelectInput title='User roles:'>
-                <userRoles.SelectItem value='Admin'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><ShieldHalf size={15}/><p>Admin</p></div></userRoles.SelectItem>
-                <userRoles.SelectItem value='Creator'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><SquarePen size={15}/><p>Creator</p></div></userRoles.SelectItem>
-                <userRoles.SelectItem value='User'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><UserRound size={15}/><p>User</p></div></userRoles.SelectItem>
-              </userRoles.SelectInput>
-              <userBan.SelectInput title='Ban for:'>
-                <userBan.SelectItem value='1'>1 Day</userBan.SelectItem>
-                <userBan.SelectItem value='7'>7 Days</userBan.SelectItem>
-                <userBan.SelectItem value='14'>14 Days</userBan.SelectItem>
-              </userBan.SelectInput>
+              <SelectRole.Wrapper title='User roles:'>
+                <SelectRole.Item value='Admin'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><ShieldHalf size={15}/><p>Admin</p></div></SelectRole.Item>
+                <SelectRole.Item value='Creator'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><SquarePen size={15}/><p>Creator</p></div></SelectRole.Item>
+                <SelectRole.Item value='User'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><UserRound size={15}/><p>User</p></div></SelectRole.Item>
+              </SelectRole.Wrapper>
+              <SelectBan.Wrapper title='Ban for:'>
+                <SelectRole.Item value='1'>1 Day</SelectRole.Item>
+                <SelectRole.Item value='7'>7 Days</SelectRole.Item>
+                <SelectRole.Item value='14'>14 Days</SelectRole.Item>
+              </SelectBan.Wrapper>
               <FileInput label='Change user avatar' name='avatar' isChange={isMutating}/>
             </FormWrapper>
           </DataEditModalWrapper>

@@ -2,7 +2,7 @@ import scss from './sideMenu.module.scss'
 import '@/scss/global.scss'
 
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Images, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
+import { Home, Images, LibraryBig, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react/jsx-runtime'
 
@@ -21,7 +21,7 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 const adminPaths = [
   { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
   { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> },
-  { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> }
+  { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
 ]
 
 const creatorPaths = [
@@ -33,19 +33,20 @@ const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
 export default function SideMenu() {
   const { pathname } = useLocation()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
-
+  
   const searchParams = useSearchParams()
   const auth = useAuth()
   const permission = usePermitor()
-
+  
   const isSideMenuOpen: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false')
-
+  
   const paths = [
     { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
     { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
     { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
+    { title: 'Database', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> }
   ]
-
+  
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
     searchParams.set({ [`${modal}-modal`]: !JSON.parse(searchParams.get(`${modal}-modal`) || 'false') })
     searchParams.remove([URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']])

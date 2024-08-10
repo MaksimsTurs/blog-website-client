@@ -9,8 +9,8 @@ import useAuth from '@/custom-hook/useAuth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import UserContainerLoader from './component/userContainerLoader'
-// import LoginModal from '../authorization-modal/loginModal'
-// import RegistrationModal from '../authorization-modal/registrateModal'
+import LoginModal from '../authorization-modal/loginModal'
+import RegistrationModal from '../authorization-modal/registrateModal'
 import ImageComponent from '../image-component/image'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
@@ -42,8 +42,8 @@ export default function Header() {
 
   return(
     <Fragment>
-      {/* <LoginModal/>
-      <RegistrationModal/> */}
+      <LoginModal/>
+      <RegistrationModal/>
       <header className={`${scss.header_container} flex-row-center-space-between-none`}>
         <div style={{ width: '100%' }} className='flex-row-center-normal-none'>
           <button onClick={changeSideMenuVisibility} className={scss.header_side_menu_button}>

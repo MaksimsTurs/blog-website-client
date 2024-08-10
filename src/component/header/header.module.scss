@@ -5,7 +5,7 @@
 .header_container {
   border-bottom: $border-container-soft;
   position: fixed;
-  z-index: 3;
+  z-index: 99;
   background-color: white;
   padding: 0.5rem 1rem;
 

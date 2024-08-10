@@ -2,10 +2,10 @@
 @import '@/scss/variabel';
 
 .pagintion_list_button {
-  @include loader(4px);
+  @include loader(0px);
   box-shadow: $box-shadow-container;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 @include loader-animation();

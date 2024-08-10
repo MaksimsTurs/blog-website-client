@@ -1,0 +1,24 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.image_input_loader_container {
+  width: 100%;
+  grid-column: 1 / -1;
+  padding: 0.5rem;
+
+  .image_input_loader_body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+    gap: 0.5rem;
+    width: 100%;  
+
+    .image_input_loader {
+      @include loader(0px);
+      box-shadow: $box-shadow-container;
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+}
+
+@include loader-animation()

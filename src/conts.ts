@@ -12,6 +12,7 @@ export const URL_SEARCH_PARAMS = {
   'STATISTIC-TO-CHECK': 'statistic-to-check',
   'CURRENT-SLIDE': 'current-slide',
   'GALERY-ID': 'galery-id',
+  'DATABASE-ID': 'database-id',
   'STATISTIC-PREVIEW-POST-ID': 'statistic-preview-post-id',
   'LIST-PAGE': 'list-page',
   'PAGE': 'page'

@@ -13,13 +13,13 @@ import FileInput from '../input/fileInput/fileInput'
 import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON'
 import generateDefaultAvatar from '@/lib/generate-default-avatar/generateDefaultAvatar'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 import { useRef } from 'react'
 
 export default function RegistrationModal() {
   const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isOpen: boolean = useOutsideClick(MODALS_KEYS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
+  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
   const auth = useAuth()
   const { submit, reset, formState: { errors }} = useForm<User>([
     ['email', 'isPattern:^[^\\s@]+@[^\\s@]+\.[^\\s@]+$:Email is incorrect!'],

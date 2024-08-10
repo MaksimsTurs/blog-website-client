@@ -1,0 +1,18 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.insert_item_form_container {
+  width: 100%;
+
+  > form { width: 60rem; }
+}
+
+.insert_item_form_error {
+  color: $color-error;
+  width: 100%;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}

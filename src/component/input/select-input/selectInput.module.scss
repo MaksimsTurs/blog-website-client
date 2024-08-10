@@ -2,19 +2,35 @@
 @import '@/scss/variabel';
 
 .select_list_wrapper {
+  border-radius: $border-radius-container;
+  border: $border-container-soft;
+  transition: all $transition-time-fast;
   padding: 0rem;
   width: 100%;
+
+  &:hover {
+    transition: all $transition-time-fast;
+    border: 1px solid $color-common;
+  }
+
+  ul {
+    border-bottom-left-radius: $border-radius-container;
+    border-bottom-right-radius: $border-radius-container;
+    overflow: hidden;
+  }
 
   .select_list_title {
     border-bottom: $border-container-soft;
     font-weight: bold;
+    width: 100%;
     padding: 0.75rem;
   }
 
   .select_list_item {
     transition: all $transition-time-very-fast;
-    border: 1px solid transparent;
     border-bottom: 1px solid $color-black-soft;
+    border-radius: $border-radius-container;
+    border: 1px solid transparent;
     font-size: 0.9rem;
     padding: 0.5rem;
     cursor: pointer;
@@ -26,33 +42,14 @@
       background-color: $color-common-hover-soft;
       border: 1px solid $color-common-hover;
       color: $color-common-hover;
-
-      &:first-child {
-        border-top-left-radius: $border-radius-container;
-        border-top-right-radius: $border-radius-container;
-      }
-      
-      &:last-child {
-        border-bottom-left-radius: $border-radius-container;
-        border-bottom-right-radius: $border-radius-container;
-      }
     }
   }
-
+  
   .select_list_item_selected {
+    transition: all $transition-time-very-fast;
     background-color: $color-common-hover-soft;
+    border-bottom: 1px solid $color-common-hover !important;
     border: 1px solid $color-common-hover;
     color: $color-common-hover;
-
-    &:first-child {
-      border-top-left-radius: $border-radius-container;
-      border-top-right-radius: $border-radius-container;
-    }
-    
-    &:last-child {
-      border-bottom-left-radius: $border-radius-container;
-      border-bottom-right-radius: $border-radius-container;
-      border: 1px solid $color-common-hover;
-    }
   }
 }

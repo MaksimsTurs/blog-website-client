@@ -55,8 +55,8 @@ export default {
     //Collect all images
     for(; obj.index < lines.length;) {
       if(have.img(lines[obj.index])) {
-        const [text, context, src] = lines[obj.index].replace(regexp.PAIR_BRACKETS_REGEXP, '$1').split(/;/)
-
+        const [text, context, src] = lines[obj.index].replace(/\<(.*)\>/g, '$1').trim().split(/;/)
+        
         if(!src && secure.URL(context)) {
           imgDictionary[obj.index] = { text, link: context }
         } else if(src && secure.URL(src)) {

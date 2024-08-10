@@ -11,12 +11,12 @@ import TextInput from '../input/textInput/textInput'
 
 import { useRef } from 'react'
 
-import { MODALS_KEYS } from '@/conts'
+import { URL_SEARCH_PARAMS } from '@/conts'
 
 export default function LoginModal() {
   const auth = useAuth()
   const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isOpen: boolean = useOutsideClick(MODALS_KEYS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
+  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
 
   const { submit, reset, formState: { errors }} = useForm<User>([
     ['email', 'isPattern:^[^\\s@]+@[^\\s@]+\.[^\\s@]+$:Email is incorrect!'],

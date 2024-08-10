@@ -1,0 +1,16 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.image_input_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  overflow: auto;
+
+  .image_input_image {
+    height: 5rem;
+    width: 100%;
+    object-fit: cover;
+  }
+}
