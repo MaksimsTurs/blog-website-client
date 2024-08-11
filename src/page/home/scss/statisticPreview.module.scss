@@ -3,14 +3,14 @@
 @import './media-query/statisticPreview.media-query.scss';
 
 .preview_container {
-  width: 15rem;
+  width: 19rem;
   flex-shrink: 0;
   
   .preview_body { 
     position: fixed;
     padding: 1rem 1.5rem 0.5rem 1.5rem;
     background-color: white; 
-    width: 15rem;
+    width: 19rem;
     height: fit-content;
     right: 1.5rem;
   }

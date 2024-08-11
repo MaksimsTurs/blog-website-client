@@ -10,7 +10,7 @@ import type { Content } from '@/global.type'
 import type { SyntheticEvent } from 'react'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'

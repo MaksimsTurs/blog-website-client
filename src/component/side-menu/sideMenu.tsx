@@ -21,7 +21,6 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 const adminPaths = [
   { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
   { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> },
-  { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
 ]
 
 const creatorPaths = [
@@ -44,17 +43,18 @@ export default function SideMenu() {
     { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
     { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
     { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
+    { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
     { title: 'Database', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> }
   ]
   
-  const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
-    searchParams.set({ [`${modal}-modal`]: !JSON.parse(searchParams.get(`${modal}-modal`) || 'false') })
-    searchParams.remove([URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']])
-  }
-
   if(permission.role(['Admin']).permited()) paths.push(...adminPaths)
 
   if(permission.role(['Creator']).permited()) paths.push(...creatorPaths)
+
+  const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
+    searchParams.set({ [`is-${modal}-modal-open`]: !JSON.parse(searchParams.get(`is-${modal}-modal-open`) || 'false') })
+    searchParams.remove([URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']])
+  }
 
   return(
     <div className={scss.aside_menu_container}>
@@ -69,11 +69,11 @@ export default function SideMenu() {
             </Link>
           </div> :
           <Fragment>
-            <button className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('login')}>
+            <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('login')}>
               <UserPlus className={scss.aside_menu_icon}/>
               <p>Login</p>
             </button>
-            <button className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
+            <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
               <UserPlus className={scss.aside_menu_icon}/>
               <p>Registrate</p>
             </button>

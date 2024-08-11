@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { RequestContext } from "./requestProvider";
 
-import type { _MutateParams, _UseRequestParams, _UseRequestReturn, TRequestContext, RequestState } from "./_useRequest.type";
+import type { _MutateParams, _UseRequestParams, _UseRequestReturn, TRequestContext } from "./useRequest.type";
 import type { ServerResponseError } from "@/global.type";
 
 //isPending is true when any of async function execute.
@@ -12,6 +12,8 @@ function isUndefined(some: any) {
 }
 
 export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequestReturn<T> {
+  const [error, setError] = useState<ServerResponseError | undefined>()
+
   const cacheKey = reqParam.deps.join('-')
   const prevKey = reqParam.prev?.join('-')
 
@@ -22,8 +24,8 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
 
   let local = useRef<any>(), initRender = useRef<boolean>(true)
 
-  function changeError(key: string[], error?: ServerResponseError) {
-    context?.change?.(prev => ({...prev || {}, [key.join('-')]: {...(prev || {})?.[key.join('-')] || {}, error }}))
+  function changeError(error?: ServerResponseError): void {
+    setError(() => error)
   }
 
   async function mutate<C>(mutateParam: _MutateParams<C>) {
@@ -67,10 +69,9 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
         }
         context!.change!(prev => ({...prev, [cacheKey]: { data: response, isFetching: false, isPending: false, isMutating: false }}))
       } catch(error) {
-        context!.change!(prev => ({
-          ...prev, 
-          [cacheKey]: { isFetching: false, isMutating: false, isPending: false, error: error instanceof Error ? { code: 503, message: 'Service Unavailable!' } : JSON.parse(error as string) }
-        }))
+        const passError: ServerResponseError = error instanceof Error ? { code: 503, message: 'Service Unavailable!' } : JSON.parse(error as string)
+        context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isMutating: false, isPending: false }}))
+        setError(passError)
       }
     } else {
       context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isMutating: false, isPending: false, data: cache }}))
@@ -84,6 +85,7 @@ export default function _useRequest<T>(reqParam: _UseRequestParams<T>): _UseRequ
 
   return {
     ...currState, 
+    error,
     data: reqParam.noCache ? local.current : currState?.data,
     isPending: isUndefined(currState?.isPending) ? true : currState.isPending,
     isFetching: initRender.current && !currState?.error,

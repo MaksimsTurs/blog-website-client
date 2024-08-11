@@ -6,6 +6,10 @@
 .checkbox_body { 
   cursor: pointer;
 
+  .checkbox_label {
+    font-size: 0.9rem
+  }
+
   &:hover .checkbox_custom_checkbox_wrapper {
     border: 1px solid $color-common;
     box-shadow: $box-shadow-button;

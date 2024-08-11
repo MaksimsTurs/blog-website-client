@@ -1,5 +1,3 @@
-import scss from './page.module.scss'
-
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
@@ -7,7 +5,7 @@ import { Fragment } from 'react/jsx-runtime'
 import { URL_SEARCH_PARAMS } from '@/conts'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
@@ -15,6 +13,7 @@ import DatabaseItem from './component/databaseItem'
 import InsertItemForm from './component/insertItemForm'
 import Loader from '../galery/loader'
 import Error from '@/component/error/error'
+import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 
 import type { Database } from '@/global.type'
 
@@ -33,7 +32,7 @@ export default function Page() {
 
   const itemID: string | null = searchParams.get(URL_SEARCH_PARAMS['DATABASE-ID'])
 
-  const selectedItem: Database | undefined = data?.find(galery => galery._id === itemID)
+  const selectedItem: Database | undefined = data?.find(items => items._id === itemID)
 
   const changeInsertMode = (): void => {
     setIsInsertMode(true)
@@ -46,21 +45,15 @@ export default function Page() {
   return(
     <Fragment>
       {isFetching ? <Loader/> :
-      error ? <Error code={error?.code} message={error?.message}/> :
+      error ? <Error code={error.code} message={error.message}/> :
       isInsertMode ? <InsertItemForm setIsInsertMode={setIsInsertMode}/> :
       itemID && selectedItem ?
       <DatabaseItem item={selectedItem}/> :
       <Fragment>
-        <div className={scss.personal_database_container}>
-          {isAdmin && <button onClick={changeInsertMode} className={`${scss.personal_database_insert_button} flex-row-center-center-none`}><Plus /></button>}
-          {data && data.map(item => {
-            return(
-              <div onClick={() => openSelectedItem(item._id)} className={scss.personal_database_body} key={item._id} style={{ background: `url(${item.thumbnail})` }}>
-                <div className={`${scss.personal_database_title} flex-row-center-center-none`}>{item.title}</div>
-              </div>
-            )
-          })}
-        </div>
+        <GridWrapper size='10rem' gap='0.5rem'>
+          {isAdmin && <GridButton onClick={changeInsertMode}><Plus/></GridButton>}
+          {data && data.map(item => <GridItem key={item._id} onClick={() => openSelectedItem(item._id)} icon={item.thumbnail}>{item.title}</GridItem>)}
+        </GridWrapper>
       </Fragment>}
     </Fragment>
   )

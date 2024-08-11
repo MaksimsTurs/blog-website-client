@@ -14,7 +14,7 @@ export default function CheckBoxInput({ defaultValue, label, name, onInput }: Ch
           <p className={scss.checkbox_custom_checkbox_body}></p>
           <Check/>
         </div>
-        {label}
+        <p className={scss.checkbox_label}>{label}</p>
       </label>
     </div>
   )

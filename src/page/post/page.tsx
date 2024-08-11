@@ -18,7 +18,7 @@ import Empty from '@/component/empty/empty'
 import fetcher from "@/lib/fetcher/fetcher"
 import coockie from '@/lib/coockie/coockie'
 
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
@@ -38,18 +38,17 @@ export default function Post() {
   return(
     <Fragment>
       {isMutating ? <MutatingLoader/> : null}
+      {error ? <Error code={error.code} message={error.message}/> :
       <div className={`${scss.post_page_container} flex-row-normal-normal-medium`}>
-        <div style={{ flexGrow: '1' }} className='flex-column-normal-normal-medium'>
-          {error ? 
-           <Error code={error.code} message={error.message}/> : 
-            <Fragment>
-              {isPending ? <PostContainerLoader/> : <PostContainer post={data!} type="post"/>}
-              <Empty option={{ height: 'FULL', flexCenterCenter: true }} label='Kommentar funktion ist zu zeit aus!'/>
-              {/* <CommentContainer page={page} postID={id!} isPostHidden={data?.isHidden || false}/> */}
-            </Fragment>}
+        <div style={{ flexGrow: '1' }} className='flex-column-normal-normal-medium'> 
+          <Fragment>
+            {isPending ? <PostContainerLoader/> : <PostContainer post={data!} type="post"/>}
+            <Empty option={{ height: 'FULL', flexCenterCenter: true }} label='Kommentar funktion ist zu zeit aus!'/>
+            {/* <CommentContainer page={page} postID={id!} isPostHidden={data?.isHidden || false}/> */}
+          </Fragment>
         </div>
         {isFetching ? <PreviewAuthorDataLoader/> : (data && data?.author) ? <PreviewAuthorData author={data!.author}/> : null}
-      </div>
+      </div>}
     </Fragment>
   )
 }

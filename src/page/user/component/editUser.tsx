@@ -10,7 +10,7 @@ import useForm from '@/custom-hook/useForm/useForm';
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useAuth from '@/custom-hook/useAuth/useAuth';
-import useRequest from '@/custom-hook/_use-request/_useRequest';
+import useRequest from '@/custom-hook/_use-request/useRequest';
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 
 import FormWrapper from "@/component/form-wrapper/formWrapper";

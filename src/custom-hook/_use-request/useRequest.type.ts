@@ -12,7 +12,7 @@ export type _UseRequestParams<T> = {
 export type _UseRequestReturn<T> = {
   mutate: <C>(option: _MutateParams<C & T>) => Promise<void>
   request: () => Promise<void>
-  changeError: (key: string[], error?: ServerResponseError) => void
+  changeError: (error?: ServerResponseError) => void
   isFetching: boolean
   isPending: boolean
   isMutating?: boolean

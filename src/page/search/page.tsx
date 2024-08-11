@@ -16,7 +16,7 @@ import { Fragment, useRef, useState } from 'react';
 
 import type { SortData, SortOption, SortedPosts } from './page.type';
 
-import useRequest from '@/custom-hook/_use-request/_useRequest';
+import useRequest from '@/custom-hook/_use-request/useRequest';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 

@@ -1,0 +1,13 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.local_error_container {
+  border-radius: $border-radius-container;
+  box-shadow: $box-shadow-button;
+  border: 1px solid #500;
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  color: #500;
+  padding: 0.5rem 1rem;
+}

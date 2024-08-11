@@ -4,7 +4,7 @@ import '@/scss/global.scss'
 import { useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 

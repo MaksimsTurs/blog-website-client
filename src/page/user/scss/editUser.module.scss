@@ -2,7 +2,7 @@
 @import '@/scss/variabel';
 
 .edit_user_container {
-  @include absolute-left-top-zindex-width-height(0%, 0%, 3);
+  @include absolute-left-top-zindex-width-height(0%, 0%, 102);
   background-color: $color-black-medium-soft;
   transition: all $transition-time-fast;
   position: fixed;

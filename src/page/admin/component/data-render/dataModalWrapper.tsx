@@ -8,12 +8,12 @@ import { Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 
 import firstLetterToUpperCase from '@/lib/first-letter-to-upper/firstLetterToUpper'
 
-import ModalError from '@/component/modal-error/modalError'
 import DataModalWrapperLoader from '../dataModalWrapperLoader'
+import LocalError from '@/component/error/local-error/localError'
 
 export default function DataModalWrapper<T>({ Component }: DataModalWrapperProps<T>) {
   const searchParams = useSearchParams()
@@ -35,7 +35,6 @@ export default function DataModalWrapper<T>({ Component }: DataModalWrapperProps
 
   return(
     <Fragment>
-      {(!itemToPreview && toPreviewID && !isPending) ? <ModalError error={{ code: 404, message: `${firstLetterToUpperCase(toPreview)} not found!` }}/> : null}
       {toPreviewID ? 
       <div className={`${scss.modal_wrapper_container} flex-row-center-center-none`}>
         <div className={`${scss.modal_wrapper_body} main-content-container flex-column-normal-normal-none`}>
@@ -43,6 +42,10 @@ export default function DataModalWrapper<T>({ Component }: DataModalWrapperProps
             <p>{firstLetterToUpperCase(toPreview)}</p>
             <X onClick={closeModal} size={17}/>
           </section>
+          {(!itemToPreview && toPreviewID && !isPending) &&
+          <div style={{ padding: '1rem' }}>
+            <LocalError error={`${firstLetterToUpperCase(toPreview)} with id "${toPreviewID}" not found!`}/>
+          </div>}
           {isPending ? <DataModalWrapperLoader/> : itemToPreview ? Component({ data: itemToPreview }) : null}
         </div>
       </div> : null}

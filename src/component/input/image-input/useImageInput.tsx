@@ -2,7 +2,7 @@ import scss from './imageInput.module.scss'
 
 import fetcher from "@/lib/fetcher/fetcher"
 
-import useRequest from "@/custom-hook/_use-request/_useRequest"
+import useRequest from "@/custom-hook/_use-request/useRequest"
 import useSearchParams from "@/custom-hook/use-search-params/useSearchParams"
 import useSelect from '../select-input/useSelectItem'
 

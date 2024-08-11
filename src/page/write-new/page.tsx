@@ -9,10 +9,10 @@ import FormWrapper from "@/component/form-wrapper/formWrapper"
 import TextInput from "@/component/input/textInput/textInput"
 import TextArea from '@/component/input/textArea/textArea'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
-import ModalError from '@/component/modal-error/modalError'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
 import Button from '@/component/button/button'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
+import LocalError from '@/component/error/local-error/localError'
 import WriteNewLoader from './loader'
 
 import { Fragment, useRef } from "react"
@@ -21,12 +21,12 @@ import { Navigate, useNavigate } from 'react-router-dom'
 
 import { editOrinsertContentDraft, removeContentDraft } from '@/store/creator/creator'
 
-import useRequest from '@/custom-hook/_use-request/_useRequest'
 import useForm from '@/custom-hook/useForm/useForm'
 import useAuth from '@/custom-hook/useAuth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
+import useMutate from '@/custom-hook/_use-request/useMutate'
 
 import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
@@ -40,7 +40,7 @@ export default function WriteNewPost() {
 
   const searchParams = useSearchParams()
   const auth = useAuth()
-  const { submit, reset } = useForm<Content>([])
+  const { submit, reset, formState: { errors }} = useForm<Content>([['title', 'isMin:4:Title is to short!']])
   const permitor = usePermitor()
   
   const contentID: string | null = searchParams.get('content-id')
@@ -67,11 +67,11 @@ export default function WriteNewPost() {
     description: 'Hier kannst neue post oder entwurfe schreiben oder ändern.'
   })
 
-  const key: string[] = currContent?.isFromAdmin ? [] : currContent?.contentType === 'comment' ? [`post-${currContent.onPost}-comments-${currContent.onPage}`] : ['all-posts']
+  const key: string = currContent?.isFromAdmin ? '' : currContent?.contentType === 'comment' ? `post-${currContent.onPost}-comments-${currContent.onPage}` : 'all-posts'
+  
+  const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>(key)
 
-  const { mutate, isMutating, error } = useRequest({ deps: key })
-
-  const toError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
+  const passError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
   
   const tagsRef = useRef<string[]>(currContent?.tags || [])
   const contentRef = useRef<string>('')
@@ -81,51 +81,48 @@ export default function WriteNewPost() {
     delete data.uploadImg
     delete data.url
 
-    mutate<PostCommentsData | Content[]>({
-      key,
-      request: async function(option) {
-        if(currContent?.isEdit) {
-          const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+    mutate(async function(option) {
+      if(currContent?.isEdit) {
+        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
-          localStorage.remove(updated._id!)
+        localStorage.remove(updated._id!)
 
-          //Edit post
-          if(currContent?.contentType === 'post') {
-            const state = option.state as Content[] || []
-  
-            option.removeCache(`/post-${updated._id}`)
+        //Edit post
+        if(currContent?.contentType === 'post') {
+          const state = option.state as Content[] || []
 
-            for(let index: number = (currContent?.onPage || 0) + 1; index >= 0; index--) {
-              option.removeCache(`${currContent.contentType}-${index}`)
-            }
+          option.removeCache(`/post-${updated._id}`)
 
-            if(!currContent.isFromAdmin) redirect(`/post/${updated._id}`)
-            else redirect(`/admin/${currContent.contentType}`)
-  
-            return state.map(post => post._id === updated._id ? updated : post)
+          for(let index: number = (currContent?.onPage || 0) + 1; index >= 0; index--) {
+            option.removeCache(`${currContent.contentType}-${index}`)
           }
-          
-          //Edit comment
-          if(currContent?.contentType === 'comment') {
-            const state = option.state as PostCommentsData || { pagesCount: 0, comments: [] }
-  
-            if(!currContent.isFromAdmin) {
-              redirect(`/post/${currContent?.onPost}?page=${currContent?.onPage}`)
-              return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
-            }
 
-            redirect('/admin/comment')
-            return undefined
-          }
+          if(!currContent.isFromAdmin) redirect(`/post/${updated._id}`)
+          else redirect(`/admin/${currContent.contentType}`)
+
+          return state.map(post => post._id === updated._id ? updated : post)
         }
+        
+        //Edit comment
+        if(currContent?.contentType === 'comment') {
+          const state = option.state as PostCommentsData || { pagesCount: 0, comments: [] }
 
-        //Insert post
-        const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, { 'Authorization': `Bearer ${auth?.user?.token}` })
-        const state = option.state as Content[] || []
+          if(!currContent.isFromAdmin) {
+            redirect(`/post/${currContent?.onPost}?page=${currContent?.onPage}`)
+            return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
+          }
 
-        redirect(`/post/${post._id}`)
-        return [...state || [], post]
+          redirect('/admin/comment')
+          return undefined
+        }
       }
+
+      //Insert post
+      const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, { 'Authorization': `Bearer ${auth?.user?.token}` })
+      const state = option.state as Content[] || []
+
+      redirect(`/post/${post._id}`)
+      return [...state || [], post]
     })
   }
 
@@ -158,7 +155,6 @@ export default function WriteNewPost() {
 
   return(
     <Fragment>
-      {toError && <ModalError error={toError}/>}
       {isMutating && <MutatingLoader/>}
       {auth.isAuthPending ?
         <WriteNewLoader/> :
@@ -166,7 +162,7 @@ export default function WriteNewPost() {
           <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
               {currContent?.contentType !== 'comment' ?
               <Fragment>
-                <TextInput name='title' defaultValue={currContent?.title} placeholder='Post title'/>
+                <TextInput name='title' errors={errors} defaultValue={currContent?.title} placeholder='Post title'/>
                 <CheckBoxInput name='isHidden' label='Hidde post' defaultValue={currContent?.isHidden}/>
                 <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
               </Fragment> : null}
@@ -176,6 +172,7 @@ export default function WriteNewPost() {
               <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>
               <Button label="Delete draft" onClick={deleteDraft}/>
             </div>
+            {passError && <LocalError error={passError.message}/>}
           </FormWrapper>
       </div>}
     </Fragment>

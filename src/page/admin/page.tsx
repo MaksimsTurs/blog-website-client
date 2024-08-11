@@ -1,7 +1,7 @@
 import scss from './page.module.scss'
 import '@/scss/global.scss'
 
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
@@ -21,7 +21,7 @@ import Empty from '@/component/empty/empty'
 import DataLoader from './component/data-render/dataLoader'
 import Modals from './component/modal/modals'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
-import ModalError from '@/component/modal-error/modalError'
+import Error from '@/component/error/error'
 
 import { useParams, Navigate } from 'react-router-dom'
 
@@ -33,8 +33,6 @@ export default function Admin() {
   const searchParams = useSearchParams()
   const permitor = usePermitor()
 
-  if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
-
   const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
 
   const { isMutating, isPending, data, prev, error } = useRequest<ContentData<Content | User>>({ 
@@ -43,16 +41,17 @@ export default function Admin() {
     request: async () => await fetcher.get(`/admin/${tab}/${currPage}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
   })
 
+  if(!permitor.role(['Admin']).permited() || error?.code === 403) return <Navigate to='/'/>
+
   const pagesCount: number = data?.pagesCount || prev?.pagesCount || 0
   const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar', 'email'])
 
   return(
-    <div style={{ height: '100%' }} className='flex-row-normal-normal-none'>
-      <ModalError error={error}/>
+    <div style={{ height: '100%',paddingRight: '11rem', }} className='flex-row-normal-normal-none'>
       <Modals/>
       {isMutating ? <MutatingLoader/> : null}
-      {error ? null :
-      <div style={{ paddingRight: '11rem', width: '100%', height: '100%' }} className='flex-column-normal-normal-medium'>
+      {error ? <Error code={error.code} message={error.message}/> :
+      <div style={{ width: '100%', height: '100%' }} className='flex-column-normal-normal-medium'>
         {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
         {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label={`Nothing found...`}/>}
         {isPending ? 

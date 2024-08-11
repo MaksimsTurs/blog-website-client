@@ -1,9 +1,6 @@
-import scss from './page.module.scss'
-import '@/scss/global.scss'
-
 import usePermitor from "@/custom-hook/use-permitor/useHavePermission"
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 import { Plus } from "lucide-react"
@@ -19,8 +16,10 @@ import ModalError from '@/component/modal-error/modalError'
 import InsertGaleryModal from './component/insertGaleryModal'
 import Loader from './loader'
 import GaleryContent from './component/galeryContent'
+import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 
 import type { Galery } from '@/global.type'
+import Error from "@/component/error/error"
 
 export default function Page() {
   useMetadata({ title: 'Galery' })
@@ -33,7 +32,6 @@ export default function Page() {
   const galeryID: string | null = searchParams.get(URL_SEARCH_PARAMS['GALERY-ID'])
 
   const isAdmin: boolean = permitor.role(['Admin']).permited()
-  const defaultBackground: string[] = ['#F48023', '#1682FD']
 
   const { data, error, isFetching } = useRequest<Galery[]>({ deps: [`galery`], request: async () => await fetcher.get('/get/galeries') })
 
@@ -51,20 +49,17 @@ export default function Page() {
     <Fragment>
       <InsertGaleryModal/>
       {isFetching ? <Loader/> :
+      error ? <Error code={error.code} message={error.message}/> :
       <Fragment>
         {(typeof currentSlide !== 'undefined' && selectedGalery) && <SlideModal setCurrentSlide={setCurrentSlide} currentSlide={currentSlide} galery={selectedGalery}/>}
         {!galeryID ?
-        <div className={scss.galery_container}>
-          {isAdmin ? <button onClick={openInsertModal} className={`${scss.galery_insert_button} flex-row-center-center-none`}><Plus /></button> : null}
+        <GridWrapper size='10rem' gap='0.5rem'>
+          {isAdmin && <GridButton onClick={openInsertModal}><Plus/></GridButton>}
           {data && data.map(galery => {
             const icon: string = findImage(galery.content.map(content => content.url))
-            return(
-              <div key={galery._id} onClick={() => openGalery(galery._id)} style={{ background: icon ? `url(${icon})` : defaultBackground[Math.floor(Math.random() * 1)] }} className={scss.galery_body}>
-                <div className={`${scss.galery_title} flex-row-center-center-none`}>{galery.title}</div>
-              </div>
-            )
+            return <GridItem key={galery._id} onClick={() => openGalery(galery._id)} icon={icon}>{galery.title}</GridItem>
           })}
-        </div> :
+        </GridWrapper> :
         (galeryID && !selectedGalery) || error ? 
         <ModalError error={error || { code: 404, message: 'Galery not found!' }}/> : 
         <GaleryContent galery={selectedGalery} setCurrentSlide={setCurrentSlide}/>}

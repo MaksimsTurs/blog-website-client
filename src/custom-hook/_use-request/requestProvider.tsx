@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 import type { PropsWithChildren } from "react";
-import type { RequestState, TRequestContext } from "./_useRequest.type";
+import type { RequestState, TRequestContext } from "./useRequest.type";
 
 export const RequestContext = createContext<TRequestContext | undefined>(undefined)
 

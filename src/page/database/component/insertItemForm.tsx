@@ -8,10 +8,11 @@ import TextArea from '@/component/input/textArea/textArea'
 import TextInput from '@/component/input/textInput/textInput'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
+import LocalError from '@/component/error/local-error/localError'
 
 import useForm from '@/custom-hook/useForm/useForm'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
+import useMutate from '@/custom-hook/_use-request/useMutate'
 import useImageInput from '@/component/input/image-input/useImageInput'
 
 import fetcher from '@/lib/fetcher/fetcher'
@@ -28,15 +29,14 @@ import { CircleX } from 'lucide-react'
 export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps) {
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
 
-  const { submit, reset, setError, formState: { errors }} = useForm([['title', 'isMin:5:Title is to short!']])
-  const { mutate, isMutating, changeError } = useRequest({ deps: ['database'] })
+  const { submit, reset, setError, formState: { errors }} = useForm([['title', 'isMin:4:Title is to short!']])
+  const { mutate, isMutating, error } = useMutate<Database[]>('database')
   const ImageInput = useImageInput({})
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
 
   const navigate = useNavigate()
 
   const contentRef = useRef<string>('')
-  const selectedRef = useRef<string | undefined>()
 
   const getContent = (content: string): void => {
     contentRef.current = content
@@ -52,26 +52,22 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
   }
 
   const insertItem = (data: any): void => {
-    if(!isAdmin) return changeError(['database'], { code: 403, message: 'You have no permission!' })
+    if(!isAdmin) return navigate('/')
 
     delete data.alt
     delete data.uploadImg
     delete data.url
 
-    data.thumbnail = data?.thumbnail?.length === 0 ? data?.thumbnail?.[0] || selectedRef.current : undefined
+    data.thumbnail = data?.thumbnail?.length === 0 ? data?.thumbnail?.[0] : ImageInput.selected?.[0]
 
     if(!data.thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
-    setError('thumbnail')
    
-    mutate<Database[]>({
-      key: ['database'],
-      request: async (option) => {
-        const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
-        
-        navigate('/database')
-        setIsInsertMode(false)
-        return [...option.state || [], newItem]
-      }
+    mutate(async (option) => {
+      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
+      
+      navigate('/database')
+      setIsInsertMode(false)
+      return [...option.state || [], newItem]
     })
 
     ImageInput.clear()
@@ -92,6 +88,7 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
             <Button label='Insert item' type='submit'/>
             <Button label='Back' onClick={goBack}/>
           </div>
+          {error && <LocalError error={error.message}/>}
         </FormWrapper>
       </div>
     </Fragment>

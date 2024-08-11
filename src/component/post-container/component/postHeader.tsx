@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Pencil, Trash2, UserX } from 'lucide-react'
 
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission'
-import useRequest from '@/custom-hook/_use-request/_useRequest'
+import useRequest from '@/custom-hook/_use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import DateParser from '@/lib/date-parser/dateParser'

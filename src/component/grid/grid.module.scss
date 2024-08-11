@@ -1,0 +1,48 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.grid_wrapper {
+  display: grid;
+  width: 100%;
+}
+
+.grid_item_body {
+  overflow: hidden;
+  height: inherit;
+  position: relative;
+  padding: 0.5rem;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    @include absolute-left-top-zindex-width-height(0%, 0%);
+    backdrop-filter: blur(5px);
+  }
+
+  &:hover > .grid_item_title {
+    transition: all $transition-time-fast;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .grid_item_title {
+    @include absolute-left-top-zindex-width-height(0%, 0%);
+    transition: all $transition-time-fast;
+    visibility: hidden;
+    padding: 0.5rem;
+    opacity: 0;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.grid_button {
+  color: $color-common;
+  border: 1px solid $color-common;
+  height: 10rem;
+
+  &:hover {
+    color: $color-common-hover;
+    border: 1px solid $color-common-hover;  
+  }
+}
