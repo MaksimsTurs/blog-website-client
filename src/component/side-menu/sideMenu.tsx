@@ -6,7 +6,7 @@ import { Home, Images, LibraryBig, Search, Settings, Shield, SquarePen, UserPlus
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react/jsx-runtime'
 
-import useAuth from '@/custom-hook/useAuth/useAuth'
+import useAuth from '@/custom-hook/use-auth/useAuth'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 

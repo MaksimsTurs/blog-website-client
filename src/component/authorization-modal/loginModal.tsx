@@ -1,7 +1,7 @@
 import scss from './authorizationModal.module.scss'
 
-import useForm from '@/custom-hook/useForm/useForm'
-import useAuth from '@/custom-hook/useAuth/useAuth'
+import useForm from '@/custom-hook/use-form/useForm'
+import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
 import type { User } from '@/global.type'

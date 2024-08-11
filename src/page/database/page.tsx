@@ -5,14 +5,14 @@ import { Fragment } from 'react/jsx-runtime'
 import { URL_SEARCH_PARAMS } from '@/conts'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
 import DatabaseItem from './component/databaseItem'
 import InsertItemForm from './component/insertItemForm'
 import Loader from '../galery/loader'
-import Error from '@/component/error/error'
+import PageError from '@/component/errors/page-error/pageError'
 import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 
 import type { Database } from '@/global.type'
@@ -45,7 +45,7 @@ export default function Page() {
   return(
     <Fragment>
       {isFetching ? <Loader/> :
-      error ? <Error code={error.code} message={error.message}/> :
+      error ? <PageError error={error}/> :
       isInsertMode ? <InsertItemForm setIsInsertMode={setIsInsertMode}/> :
       itemID && selectedItem ?
       <DatabaseItem item={selectedItem}/> :

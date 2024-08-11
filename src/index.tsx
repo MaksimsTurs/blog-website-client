@@ -13,8 +13,8 @@ import store, { RootState } from "./store/store"
 import Header from "./component/header/header"
 import ScrollTo from "./component/scroll-to-top/scrollTo"
 import SideMenu from "./component/side-menu/sideMenu"
-import RequestProvider from "./custom-hook/_use-request/requestProvider"
-import AuthProvider from "./custom-hook/useAuth/authProvider"
+import RequestProvider from "./custom-hook/use-request/requestProvider"
+import AuthProvider from "./custom-hook/use-auth/authProvider"
 
 const Home = lazy(() => import('./page/home/page'))
 const Post = lazy(() => import('./page/post/page'))
@@ -35,7 +35,7 @@ import AdminLoader from './page/admin/loader'
 import SettingLoader from './page/website-settings/loader'
 import GaleryLoader from './page/galery/loader'
 
-import Error from "./component/error/error"
+import PageError from "./component/errors/page-error/pageError"
 import ProtectedRoute from "./component/protected-route/protectedRoute"
 
 const App = () => {
@@ -57,7 +57,7 @@ const App = () => {
             <Route path="/setting" element={<Suspense fallback={<SettingLoader/>}><Setting/></Suspense>}></Route>
             <Route path="/galery" element={<Suspense fallback={<GaleryLoader/>}><Galery/></Suspense>}></Route>
             <Route path="/database" element={<Suspense fallback={<GaleryLoader/>}><Database/></Suspense>}></Route>
-            <Route path="*" element={<Error code={404} message="Page not found!" underText="Site there you search is not implemented or not exist!"/>}/>
+            <Route path="*" element={<PageError error={{ code: 404, message: 'Page not found!' }} description="Site there you search is not implemented or not exist!"/>}/>
             <Route path="/write-post" element={
               <Suspense fallback={<WriteNewPostLoader/>}>
                 <ProtectedRoute exeptetRoles={['Admin', 'Creator']} loaderComponent={<WriteNewPostLoader/>}>

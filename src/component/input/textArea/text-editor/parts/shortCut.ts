@@ -1,6 +1,6 @@
 import { TextEditorShortCut } from "../textEditor.type";
 
-import countDuplicate from "@/lib/count-duplicate/countDuplicate";
+import Array from "@/lib/array/array";
 
 export default {
   lineEnd: 0,
@@ -22,7 +22,7 @@ export default {
     event.preventDefault()
 
     const textArea = textAreaRef.current!
-    const isMultiple: boolean = countDuplicate(this.shortCutPressedKeys, 'KeyL') > 1
+    const isMultiple: boolean = Array.countDuplicate<{ KeyL: number }>(this.shortCutPressedKeys, ['KeyL']).KeyL > 0
 
     this.lineStart = textArea.selectionStart
     this.lineEnd = textArea.value.indexOf('\n', isMultiple ? textArea.selectionEnd : textArea.selectionStart)

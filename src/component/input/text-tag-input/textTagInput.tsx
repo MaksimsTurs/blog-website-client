@@ -6,14 +6,15 @@ import TextInput from "../textInput/textInput";
 import TagPreview from "@/component/tag-preview/tagPreview";
 
 import tag from "./tag";
-import removeDuplicate from "@/lib/remove-duplicate/removeDuplicate";
+
+import Array from "@/lib/array/array";
 
 export default function TextTagInput({ getTags, placeholder, value }: TextTagInputProps) {
   const [tags, setTags] = useState<string[]>(value || [])
 
   const removeTag = (tag: string): void => {
     setTags(prev => {
-      const newTagState: string[] = removeDuplicate(prev, tag)
+      const newTagState: string[] = Array.removeDuplicates(prev, [tag])
       getTags(newTagState)
       return newTagState
     })

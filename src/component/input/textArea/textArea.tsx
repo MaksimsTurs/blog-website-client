@@ -10,8 +10,9 @@ import { Fragment, memo, SyntheticEvent, useCallback, useEffect, useRef, useStat
 import TextInput from '../textInput/textInput';
 import FileInput from '../fileInput/fileInput';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
-import ModalError from '@/component/modal-error/modalError';
 import ContentViewer from '@/component/content-viewer/contentViewer';
+import LocalError from '@/component/errors/local-error/localError';
+import Button from '@/component/button/button';
 
 import areaValidation from './areaValidation';
 
@@ -193,8 +194,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
   return(
     <Fragment>
-      {isUploading.current ? <MutatingLoader/> : null}
-      <ModalError error={errors?.['upload-error']}/>
+      {isUploading.current && <MutatingLoader/>}
       <section className={scss.text_area_action_buttons_container}>
         <button disabled={isPreviewMode} onClick={bold} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Bold /></button>
         <button disabled={isPreviewMode} onClick={headerOne} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading1/></button>
@@ -213,7 +213,8 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
             <TextInput errors={errors} onInput={inputImgUrl} defaultValue={imgUrl || ''} name='url' type='text' placeholder='Put you img URL here!'/>
             <TextInput errors={errors} onInput={inputImgAlt} defaultValue={imgAlt || ''} name='alt' type='text' placeholder='Put img Alt attributte here!'/>
             <FileInput label='Upload img!' name='uploadImg' asset={asset} initValue={imgUrl}/>
-            <button disabled={isUploading.current} type='button' onClick={addImg}>Add Link</button>
+            <Button label='Add Link' onClick={addImg}/>
+            {errors?.['upload-error'] && <LocalError error={errors?.['upload-error']}/>}
           </div>
         </div>
         <div>

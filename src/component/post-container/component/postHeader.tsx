@@ -7,14 +7,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Pencil, Trash2, UserX } from 'lucide-react'
 
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission'
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import DateParser from '@/lib/date-parser/dateParser'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
-import firstLetterToUpperCase from '@/lib/first-letter-to-upper/firstLetterToUpper'
 import localStorage from '@/lib/local-storage/localStorage'
+import CharacterArray from '@/lib/string/string'
 
 import type { Content } from '@/global.type'
 import type { PostCommentsData } from '@/page/post/page.type'
@@ -46,7 +46,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
 
     //User have no permmissin
     if(!permission.role(['Creator', 'Admin']).permited()) {
-      return changeError(key, { code: 403, message: 'You have no edit and remove permission!' })
+      return changeError({ code: 403, message: 'You have no edit and remove permission!' })
     }
 
     if(action === 'edit') {
@@ -65,7 +65,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
       request: async (option) => {
         //Remove item handlers
         if(action === 'remove') {
-          const removedItem = await fetcher.get<Content>(`/admin/remove/${firstLetterToUpperCase(typeForAPI)}/${contentID}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+          const removedItem = await fetcher.get<Content>(`/admin/remove/${CharacterArray.firstLetterToUpperCase(typeForAPI)}/${contentID}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
           
           //Remove some comment from post page
           if(isPostPage && type === 'comment') {

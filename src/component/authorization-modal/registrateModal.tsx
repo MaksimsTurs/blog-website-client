@@ -1,7 +1,7 @@
 import scss from './authorizationModal.module.scss'
 
-import useForm from '@/custom-hook/useForm/useForm'
-import useAuth from '@/custom-hook/useAuth/useAuth'
+import useForm from '@/custom-hook/use-form/useForm'
+import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
 import type { User } from '@/global.type'
@@ -10,8 +10,8 @@ import FormWrapper from '../form-wrapper/formWrapper'
 import TextInput from '../input/textInput/textInput'
 import FileInput from '../input/fileInput/fileInput'
 
-import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON'
-import generateDefaultAvatar from '@/lib/generate-default-avatar/generateDefaultAvatar'
+import Thing from '@/lib/object/object'
+import CharacterArray from '@/lib/string/string'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 
@@ -29,9 +29,9 @@ export default function RegistrationModal() {
   ])
 
   const registrate = (data: User) => {
-    const formData = createFormDataFromJSON(data)
+    const formData = Thing.createFormDataFromJSON(data)
 
-    if((formData.get('avatar') as File).size === 0) formData.set('avatar', generateDefaultAvatar(data.name))
+    if((formData.get('avatar') as File).size === 0) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
     
     auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
     reset()

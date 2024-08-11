@@ -17,9 +17,9 @@ import ModalError from '@/component/modal-error/modalError';
 import CommentsLoader from './commentsLoader';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 
-import useForm from "@/custom-hook/useForm/useForm";
+import useForm from "@/custom-hook/use-form/useForm";
 import useAuth from '@/custom-hook/useAuth/useAuth';
-import useRequest from '@/custom-hook/_use-request/useRequest';
+import useRequest from '@/custom-hook/use-request/useRequest';
 
 import fetcher from '@/lib/fetcher/fetcher';
 

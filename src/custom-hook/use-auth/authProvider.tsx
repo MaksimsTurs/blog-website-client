@@ -1,6 +1,6 @@
 import { type PropsWithChildren, createContext, useEffect, useState } from "react";
 
-import type { TAuthContext, UserState } from "./useAuth.type";
+import type { TAuthContext, UserState } from "../use-auth/useAuth.type";
 
 import fetcher from "@/lib/fetcher/fetcher";
 import coockie from "@/lib/coockie/coockie";

@@ -16,10 +16,10 @@ import { Eye, Heart, MessageCircle } from 'lucide-react';
 
 import DateParser from '@/lib/date-parser/dateParser';
 
-import useAuth from '@/custom-hook/useAuth/useAuth';
-import useRequest from '@/custom-hook/_use-request/useRequest';
+import useAuth from '@/custom-hook/use-auth/useAuth';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
+import useMutate from '@/custom-hook/use-request/useMutate';
 
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
@@ -35,18 +35,20 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const searchParams = useSearchParams()
   const permission = useHavePermission()
 
-  const { mutate } = useRequest({ deps: [] })
-
   const isPostPage: boolean = pathname.search('/post') > -1
   const isHomePage: boolean = pathname === '/'
   const isLiked: boolean = post.likedBy.includes(auth.user?._id || '')
   const isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited()
   const isAdmin: boolean = permission.role(['Admin']).permited()
   const isHidden: boolean = post.isHidden
+
   
   const postID: string = (type === 'preview' || type === 'post') ? post._id : id!
   const currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0
   const hiddenClass: string = ((isHidden && isAdmin) || (isContentCreator && isHidden)) ? scss.post_hidden : ''
+  const key: string = type === 'post' ? `post-${post._id}` : `post-${postID}-comments-${currPage}`
+
+  const { mutate } = useMutate<Content | PostCommentsData>(key)
 
   if(isHidden && isPostPage && !isAdmin && !isContentCreator && type === 'post') redirect('/')
 
@@ -57,22 +59,17 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const likeThisPost = async (): Promise<void> => {
     if(post.isHidden && !auth.user) return
 
-    const key: string[] = type === 'post' ? [`post-${post._id}`] : [`post-${postID}-comments-${currPage}`]
+    mutate( async (option) => {
+      const likedContent = await fetcher.get<Content>(`/${type}/${post._id}/like`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
-    mutate<Content | PostCommentsData>({
-      key,
-      request: async (option) => {
-        const likedContent = await fetcher.get<Content>(`/${type}/${post._id}/like`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+      //Update post
+      if(type === 'post') return likedContent
 
-        //Update post
-        if(type === 'post') return likedContent
+      //Update comment
+      const state = option.state as PostCommentsData
+      const comments = state.comments || []
 
-        //Update comment
-        const state = option.state as PostCommentsData
-        const comments = state.comments || []
-
-        return {...state, comments: comments.map(comment => comment._id === likedContent._id ? likedContent : comment) }
-      }
+      return {...state, comments: comments.map(comment => comment._id === likedContent._id ? likedContent : comment) }
     })
   }
 

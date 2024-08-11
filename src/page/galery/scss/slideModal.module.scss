@@ -83,7 +83,6 @@
       .galery_slide_context_container {
         @include absolute-left-top-zindex-width-height(0%, 0%);
         justify-content: flex-end reverse;
-        padding: 1rem;
         
         .galery_slide_context {
           border-radius: $border-radiues-button;

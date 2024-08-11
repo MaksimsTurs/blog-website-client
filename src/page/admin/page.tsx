@@ -1,13 +1,12 @@
 import scss from './page.module.scss'
 import '@/scss/global.scss'
 
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
 import fetcher from '@/lib/fetcher/fetcher'
-import inObject from '@/lib/in-object/inObject'
-import coockie from '@/lib/coockie/coockie'
+import inObject from '@/lib/object/props/inObject'
 
 import type { ContentData } from './page.type'
 import type { Content, User } from '@/global.type'
@@ -21,11 +20,11 @@ import Empty from '@/component/empty/empty'
 import DataLoader from './component/data-render/dataLoader'
 import Modals from './component/modal/modals'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
-import Error from '@/component/error/error'
+import PageError from '@/component/errors/page-error/pageError'
 
 import { useParams, Navigate } from 'react-router-dom'
 
-import { URL_SEARCH_PARAMS } from '@/conts'
+import { URL_SEARCH_PARAMS, AUTHORIZATION_OBJECT } from '@/conts'
 
 export default function Admin() {
   const { tab } = useParams()
@@ -35,13 +34,13 @@ export default function Admin() {
 
   const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
 
+  if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
+
   const { isMutating, isPending, data, prev, error } = useRequest<ContentData<Content | User>>({ 
     deps: [`${tab}-${currPage}`], 
     prev: [`${tab}-${currPage === 0 ? currPage : currPage - 1}`], 
-    request: async () => await fetcher.get(`/admin/${tab}/${currPage}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` }) 
+    request: async () => await fetcher.get(`/admin/${tab}/${currPage}`, AUTHORIZATION_OBJECT) 
   })
-
-  if(!permitor.role(['Admin']).permited() || error?.code === 403) return <Navigate to='/'/>
 
   const pagesCount: number = data?.pagesCount || prev?.pagesCount || 0
   const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar', 'email'])
@@ -50,7 +49,7 @@ export default function Admin() {
     <div style={{ height: '100%',paddingRight: '11rem', }} className='flex-row-normal-normal-none'>
       <Modals/>
       {isMutating ? <MutatingLoader/> : null}
-      {error ? <Error code={error.code} message={error.message}/> :
+      {error ? <PageError error={error}/> :
       <div style={{ width: '100%', height: '100%' }} className='flex-column-normal-normal-medium'>
         {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
         {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label={`Nothing found...`}/>}

@@ -2,7 +2,7 @@ import scss from '../scss/slideModal.module.scss'
 
 import type { SlideModalProps } from "../page.type";
 
-import getExtension from '@/lib/get-extension/getExtention'
+import CharacterArray from '@/lib/string/string';
 
 import { ChevronLeft, ChevronRight, CircleAlert, X } from 'lucide-react'
 
@@ -35,7 +35,7 @@ export default function SlideModal({ galery, currentSlide, setCurrentSlide }: Sl
         </div>
         {galery && galery.content.map((content, index) => (
           <div key={Math.random() * 9999} className={`${currentSlide === index ? scss.galery_current_slide : ''} ${scss.galery_slides} flex-row-center-center-none`}>
-            {imageExtentions.includes(getExtension(content.url)) ? <img src={content.url}/> : <video  controls src={content.url}/>}
+            {imageExtentions.includes(CharacterArray.getAssetExtension(content.url)) ? <img src={content.url}/> : <video  controls src={content.url}/>}
             {content.description ? 
             <div className={`${scss.galery_slide_context_container} flex-row-normal-normal-medium`}>
               <CircleAlert size={18} className={scss.galery_slide_context_warn}/>

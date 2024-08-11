@@ -6,7 +6,7 @@ import PaginationList from "@/component/pagination-list/paginationList"
 import PaginationListLoader from '@/component/pagination-list/component/paginationListLoader'
 import StatisticPreviewLoader from './statisticPreviewLoader'
 import ImageComponent from '@/component/image-component/image'
-import LocalError from '@/component/error/local-error/localError'
+import LocalError from '@/component/errors/local-error/localError'
 
 import { Link } from "react-router-dom"
 import { X } from 'lucide-react'
@@ -16,10 +16,10 @@ import type { GetPostStatistic, StatisticPreviewProps } from '../page.type'
 import type { KeyValueObject } from '@/global.type'
 
 import fetcher from "@/lib/fetcher/fetcher"
-import formatNum from '@/lib/format-num/formatNum'
-import firstLetterToUpperCase from "@/lib/first-letter-to-upper/firstLetterToUpper"
+import Integer from '@/lib/number/number'
+import CharacterArray from '@/lib/string/string'
 
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
@@ -51,7 +51,7 @@ export default function StatisticPreview({ statisticToPreview }: StatisticPrevie
         <div className={`${scss.preview_header} flex-row-center-space-between-none`}>
           <div className='flex-row-center-normal-medium'>
             {iconDictionary[statisticToPreview]}
-            <h4 className={scss.preview_type}>{firstLetterToUpperCase(statisticToPreview || '')}</h4>
+            <h4 className={scss.preview_type}>{CharacterArray.firstLetterToUpperCase(statisticToPreview || '')}</h4>
           </div>
           <X onClick={closePostStatisticModal}/>
         </div>
@@ -66,7 +66,7 @@ export default function StatisticPreview({ statisticToPreview }: StatisticPrevie
                 <ImageComponent src={item.avatar} alt={item.name}/>
                 <p>{item.name}</p>
               </div>
-              <p className={scss.preview_item_count}>{formatNum(item.count)}</p>
+              <p className={scss.preview_item_count}>{Integer.formatNum(item.count)}</p>
             </Link>
           ))}
         </div>}

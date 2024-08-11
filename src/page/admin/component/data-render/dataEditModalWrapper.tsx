@@ -9,7 +9,7 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 
 import { useParams } from 'react-router-dom';
 
-import firstLetterToUpperCase from '@/lib/first-letter-to-upper/firstLetterToUpper';
+import CharacterArray from '@/lib/string/string';
 
 export default function DataEditModalWrapper({ children }: PropsWithChildren) {
   const searchParams = useSearchParams()
@@ -25,7 +25,7 @@ export default function DataEditModalWrapper({ children }: PropsWithChildren) {
     <div style={{ display: isOpen ? 'flex' : 'none' }} className={`${scss.data_edit_modal_wrapper} flex-row-center-center-none`}>
       <div className='main-content-container'>
         <div className={`${scss.data_edit_modal_header} flex-row-center-space-between-none`}>
-          <p>Edit {firstLetterToUpperCase(tab!)}</p>
+          <p>Edit {CharacterArray.firstLetterToUpperCase(tab!)}</p>
           <X onClick={closeModal} size={17}/>
         </div>
         {children}

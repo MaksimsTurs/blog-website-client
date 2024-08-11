@@ -12,7 +12,7 @@ import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
 import Button from '@/component/button/button'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
-import LocalError from '@/component/error/local-error/localError'
+import LocalError from '@/component/errors/local-error/localError'
 import WriteNewLoader from './loader'
 
 import { Fragment, useRef } from "react"
@@ -21,12 +21,12 @@ import { Navigate, useNavigate } from 'react-router-dom'
 
 import { editOrinsertContentDraft, removeContentDraft } from '@/store/creator/creator'
 
-import useForm from '@/custom-hook/useForm/useForm'
-import useAuth from '@/custom-hook/useAuth/useAuth'
+import useForm from '@/custom-hook/use-form/useForm'
+import useAuth from '@/custom-hook/use-auth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
-import useMutate from '@/custom-hook/_use-request/useMutate'
+import useMutate from '@/custom-hook/use-request/useMutate'
 
 import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'

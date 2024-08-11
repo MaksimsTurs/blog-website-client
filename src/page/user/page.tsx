@@ -4,7 +4,7 @@ import '@/scss/global.scss'
 import { useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
@@ -15,7 +15,8 @@ import type { UserContentData } from './page.type'
 
 import UserDataHeader from './component/userDataHeader'
 import EditUser from './component/editUser'
-import Error from '@/component/error/error'
+import LocalError from '@/component/errors/local-error/localError'
+import PageError from '@/component/errors/page-error/pageError'
 import UserHeaderLoader from './component/userHeaderLoader'
 import UserContentLoader from './component/userContentLoader'
 import UserContentList from './component/userContentList'
@@ -36,14 +37,14 @@ export default function User() {
 
   return(
     <Fragment>
-      {(user.error || userContent.error) ? 
-       <Error code={(user!.error || userContent!.error)!.code} message={(user!.error || userContent!.error)!.message}/> :
+      {user.error ? 
+       <PageError error={user.error}/> :
        <Fragment>
          {user.data ? <EditUser _id={user.data._id}/> : null}
          <div className='flex-row-normal-center-none'>
            <div className={`${scss.user_data_body} flex-column-normal-normal-medium`}>
              {(!user.isFetching && user.data) ? <UserDataHeader user={user.data}/> : <UserHeaderLoader/>}
-             {(!userContent.isFetching && user.data && userContent.data) ? <UserContentList user={user.data} userContent={userContent.data}/> : <UserContentLoader/>}
+             {userContent.error ? <LocalError error={userContent.error.message}/> : (!userContent.isFetching && user.data && userContent.data) ? <UserContentList user={user.data} userContent={userContent.data}/> : <UserContentLoader/>}
           </div>
         </div>      
       </Fragment>}

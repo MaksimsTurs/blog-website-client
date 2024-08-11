@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
-import type { ServerResponseError } from "@/global.type";
+
 import { RequestContext } from "./requestProvider";
+
+import type { ServerResponseError } from "@/global.type";
 import type { TRequestContext } from "./useRequest.type";
-import type { MutateParams, MutateRequestFunctionParams } from "./useMutate.type";
+import type { MutateRequestFunctionParams } from "./useMutate.type";
 
 export default function useMutate<T>(key: string) {
   const [error, setError] = useState<ServerResponseError | undefined>()

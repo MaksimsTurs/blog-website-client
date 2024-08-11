@@ -5,7 +5,7 @@ import type { GridWrapperProps, GridWrapperItemProps, GridWrapperButtonProps } f
 import type { PropsWithChildren } from 'react';
 
 export function GridWrapper({ children, gap, size }: PropsWithChildren<GridWrapperProps>) {
-  return <div style={{ gap, height: size, gridTemplateColumns: `repeat(auto-fill, minmax(${size || '10rem'}, 1fr))` }} className={scss.grid_wrapper}>{children}</div>
+  return <div style={{ gap, gridTemplateColumns: `repeat(auto-fill, minmax(${size || '10rem'}, 1fr))` }} className={scss.grid_wrapper}>{children}</div>
 }
 
 export function GridItem({ onClick, icon, children }: PropsWithChildren<GridWrapperItemProps>) {

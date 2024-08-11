@@ -8,15 +8,15 @@ import TextArea from '@/component/input/textArea/textArea'
 import TextInput from '@/component/input/textInput/textInput'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
-import LocalError from '@/component/error/local-error/localError'
+import LocalError from '@/component/errors/local-error/localError'
 
-import useForm from '@/custom-hook/useForm/useForm'
+import useForm from '@/custom-hook/use-form/useForm'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
-import useMutate from '@/custom-hook/_use-request/useMutate'
+import useMutate from '@/custom-hook/use-request/useMutate'
 import useImageInput from '@/component/input/image-input/useImageInput'
 
 import fetcher from '@/lib/fetcher/fetcher'
-import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON'
+import createFormDataFromJSON from '@/lib/object/props/createFormDataFromJSON'
 import coockie from '@/lib/coockie/coockie'
 
 import type { Database } from '@/global.type'
@@ -24,7 +24,6 @@ import type { InsertItemFormProps } from '../page.type'
 
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CircleX } from 'lucide-react'
 
 export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps) {
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
@@ -57,13 +56,14 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     delete data.alt
     delete data.uploadImg
     delete data.url
+    delete data.thumbnail
 
-    data.thumbnail = data?.thumbnail?.length === 0 ? data?.thumbnail?.[0] : ImageInput.selected?.[0]
+    const thumbnail = ImageInput.selected?.[0] ? data?.thumbnail?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
 
-    if(!data.thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
+    if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
    
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
+      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
       
       navigate('/database')
       setIsInsertMode(false)
@@ -80,7 +80,6 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
       <div className={`${scss.insert_item_form_container} flex-row-normal-center-none`}>
         <FormWrapper onSubmit={submit(insertItem)}>
           {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
-          {errors?.['thumbnail'] && <div className={`${scss.insert_item_form_error} flex-row-center-normal-medium`}><CircleX />{errors['thumbnail']}</div>}
           <CheckBoxInput name='' label='Use uploaded images' onInput={changeThumbnailSource}/>
           <TextInput name='title' placeholder='Item title' errors={errors}/>
           <TextArea getValue={getContent} placeholder='Wirte item content'/>

@@ -1,6 +1,8 @@
 import scss from '../../scss/modal/userModal.module.scss'
 import '@/scss/global.scss'
 
+import { AUTHORIZATION_OBJECT } from '@/conts';
+
 import type { Content, User } from "@/global.type";
 import type { ContentData } from '../../page.type';
 
@@ -14,27 +16,26 @@ import FormWrapper from '@/component/form-wrapper/formWrapper';
 import DataEditModalWrapper from '../data-render/dataEditModalWrapper';
 import TextInput from '@/component/input/textInput/textInput';
 import FileInput from '@/component/input/fileInput/fileInput';
+import LocalError from '@/component/errors/local-error/localError';
 
 import DateParser from "@/lib/date-parser/dateParser";
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
-import useForm from '@/custom-hook/useForm/useForm';
-import useRequest from '@/custom-hook/_use-request/useRequest';
+import useForm from '@/custom-hook/use-form/useForm';
 import useSelect from '@/component/input/select-input/useSelectItem';
+import useMutate from '@/custom-hook/use-request/useMutate';
 
 import { Link } from 'react-router-dom';
 import { ShieldHalf, SquarePen, UserRound } from 'lucide-react'
 import { Fragment } from 'react/jsx-runtime';
 
 import fetcher from '@/lib/fetcher/fetcher';
-import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON';
-import coockie from '@/lib/coockie/coockie';
-import inObject from '@/lib/in-object/inObject';
+import Thing from '@/lib/object/object';
 
 export default function UserModal() {
   const searchParams = useSearchParams()
   const { submit, reset } = useForm<User>([])
-  const { mutate, isMutating } = useRequest({ deps: [] })
+  const { mutate, isMutating, error } = useMutate<ContentData<User>>(`user-${searchParams.get('page') || 0}`)
 
   const SelectBan = useSelect({})
   const SelectRole = useSelect({})
@@ -49,21 +50,18 @@ export default function UserModal() {
   const myLikesEnd: number = myLikesStart + 10
 
   const editUser = (userNewData: User): void => {
-    mutate<ContentData<User>>({
-      key: [`user-${searchParams.get('page') || 0}`],
-      request: async (option) => {
-        const role: string | undefined = SelectRole.selected?.[0]
-        const ban: string | undefined = SelectBan.selected?.[0]
+    mutate(async (option) => {
+      const role: string | undefined = SelectRole.selected?.[0]
+      const ban: string | undefined = SelectBan.selected?.[0]
 
-        const updatedUser = await fetcher.post<User>('/admin/user/update', createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+      const updatedUser = await fetcher.post<User>('/admin/user/update', Thing.createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), AUTHORIZATION_OBJECT)
 
-        reset()
-        searchParams.remove(['user-edit-modal'])
+      reset()
+      searchParams.remove(['user-edit-modal'])
 
-        return {
-          pagesCount: option.state?.pagesCount || 0,
-          data: option.state?.data.map(item => item._id === updatedUser._id ? {...item, ...updatedUser } : item) || []
-        }
+      return {
+        pagesCount: option.state?.pagesCount || 0,
+        data: option.state?.data.map(item => item._id === updatedUser._id ? {...item, ...updatedUser } : item) || []
       }
     })
   }
@@ -114,6 +112,7 @@ export default function UserModal() {
                 <SelectRole.Item value='14'>14 Days</SelectRole.Item>
               </SelectBan.Wrapper>
               <FileInput label='Change user avatar' name='avatar' isChange={isMutating}/>
+              {error && <LocalError error={error.message}/>}
             </FormWrapper>
           </DataEditModalWrapper>
           <div style={{ width: '30rem', position: 'relative' }} className='flex-column-normal-normal-small'>
@@ -132,7 +131,7 @@ export default function UserModal() {
                 {maxMyContentPage > 1 ? <PaginationList pagesCount={maxMyContentPage} listKey='user-content'/> : null}
                 {currMyContent.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have no content!'/> :
                 currMyContent.map(content => 
-                  <Link to={`/admin/${inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
+                  <Link to={`/admin/${Thing.inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
                     <li key={content._id} className='flex-column-normal-normal-none'>
                       <h5>{content.title}</h5>
                       <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Likes:</p><p>{content.likedBy.length}</p></section>

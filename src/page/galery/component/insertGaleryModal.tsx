@@ -3,7 +3,7 @@ import '@/scss/global.scss'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
-import useForm from '@/custom-hook/useForm/useForm'
+import useForm from '@/custom-hook/use-form/useForm'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 

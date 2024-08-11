@@ -12,3 +12,9 @@
     left: 93% !important;
   }
 }
+
+@media(width <= 380px) {
+  .galery_slide_context_container {
+    flex-direction: column !important;
+  }
+}

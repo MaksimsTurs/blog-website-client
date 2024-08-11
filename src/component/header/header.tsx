@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { AlignJustify, UserPlus, X } from 'lucide-react'
 import { Fragment } from 'react/jsx-runtime'
 
-import useAuth from '@/custom-hook/useAuth/useAuth'
+import useAuth from '@/custom-hook/use-auth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import UserContainerLoader from './component/userContainerLoader'

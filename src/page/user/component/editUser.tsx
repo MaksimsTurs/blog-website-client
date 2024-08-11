@@ -6,11 +6,12 @@ import { Fragment } from 'react/jsx-runtime';
 import { UserCog, X } from 'lucide-react';
 import { useRef } from 'react';
 
-import useForm from '@/custom-hook/useForm/useForm';
+import useForm from '@/custom-hook/use-form/useForm';
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
+import useMutate from '@/custom-hook/use-request/useMutate';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
-import useAuth from '@/custom-hook/useAuth/useAuth';
-import useRequest from '@/custom-hook/_use-request/useRequest';
+import useAuth from '@/custom-hook/use-auth/useAuth';
+import useRequest from '@/custom-hook/use-request/useRequest';
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
 
 import FormWrapper from "@/component/form-wrapper/formWrapper";
@@ -21,16 +22,17 @@ import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 
 import type { EditUserProps } from '../page.type';
 import type { User } from '@/global.type';
-import type { UserSessionData } from '@/custom-hook/useAuth/useAuth.type';
+import type { UserSessionData } from '@/custom-hook/use-auth/useAuth.type';
 
-import createFormDataFromJSON from '@/lib/create-formdata-from-json/createFormDataFromJSON';
+import Thing from '@/lib/object/object';
 import fetcher from '@/lib/fetcher/fetcher';
 
 import { URL_SEARCH_PARAMS } from '@/conts';
 
 export default function EditUser({ _id }: EditUserProps) {
   const { submit, reset, formState: { errors } } = useForm<User>([])
-  const { mutate, isMutating } = useRequest<UserSessionData>({ deps: [`user-${_id}`] })
+  const { isMutating } = useRequest<UserSessionData>({ deps: [`user-${_id}`] })
+  const { mutate } = useMutate<UserSessionData>(`user-${_id}`)
   const auth = useAuth()
   const searchParams = useSearchParams()
 
@@ -43,16 +45,13 @@ export default function EditUser({ _id }: EditUserProps) {
 
   const updateUser = (data: User): void => {
     if(isAdminOrIDEqual) {
-      mutate({
-        key: [`user-${_id}`],
-        request: async function(option) {
-          const newUserData = await fetcher.post<User>('/update/user', createFormDataFromJSON({...data, _id }))
-          
-          auth.create({ setSession: newUserData })
-          stopEditing()
-          reset()
-          return {...option.state, ...newUserData }
-        }
+      mutate(async function(option) {
+        const newUserData = await fetcher.post<User>('/update/user', Thing.createFormDataFromJSON({...data, _id }))
+        
+        auth.create({ setSession: newUserData })
+        stopEditing()
+        reset()
+        return {...option.state, ...newUserData }
       })
     }
   }

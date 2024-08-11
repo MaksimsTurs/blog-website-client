@@ -10,12 +10,12 @@ import type { Content } from '@/global.type'
 import type { SyntheticEvent } from 'react'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useRequest from '@/custom-hook/_use-request/useRequest'
+import useRequest from '@/custom-hook/use-request/useRequest'
 
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
-import firstLetterToUpperCase from '@/lib/first-letter-to-upper/firstLetterToUpper'
 import localStorage from '@/lib/local-storage/localStorage'
+import CharacterArray from '@/lib/string/string'
 
 export default function AdminActionButton({ optionAction, contentData }: AdminActionButtonProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false)
@@ -43,7 +43,7 @@ export default function AdminActionButton({ optionAction, contentData }: AdminAc
     mutate<ContentData<Content>>({
       key: [`${toPreview}-${currPage}`],
       request: async (option) => {
-        const content = await fetcher.post<Content>(`/admin/remove/${firstLetterToUpperCase(tab!)}/${toPreviewID}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+        const content = await fetcher.post<Content>(`/admin/remove/${CharacterArray.firstLetterToUpperCase(tab!)}/${toPreviewID}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
 
         if(option.state?.data.length === 1) redirect(`/admin/${tab}?page=${currPage - 1 <= 0 ? 0 : currPage - 1}`)
         else redirect(`/admin/${tab}?page=${currPage}`)

@@ -1,4 +1,4 @@
-import type { FormFieldsError } from "@/custom-hook/useForm/useForm.type"
+import type { FormFieldsError } from "@/custom-hook/use-form/useForm.type"
 import type { MutableRefObject, PropsWithChildren, SyntheticEvent } from "react"
 
 export type InputProps = {
@@ -40,7 +40,7 @@ export type TextInputProps = {
 
 export type TextTagInputProps = { getTags(tags: string[]): void } & Pick<InputProps['attributes'], 'placeholder' | 'value'>
 
-export type CheckBoxInputProps = Pick<FileInputProps, 'label'> & Pick<InputProps['attributes'], 'name' | 'defaultValue' | 'onInput'>
+export type CheckBoxInputProps = Pick<FileInputProps, 'label'> & Pick<InputProps['attributes'], 'name' | 'defaultValue' | 'onInput'> & Pick<InputProps, 'errors'>
 
 export type SelectInputWrapperProps = PropsWithChildren<{ title: string, className?: string, pagesCount?: number }>
 

@@ -1,8 +1,8 @@
-import { AuthContext } from "@/custom-hook/useAuth/authProvider";
+import { AuthContext } from "@/custom-hook/use-auth/authProvider";
 import { useContext } from "react";
 
 import type { UserRoles } from "@/global.type";
-import type { UserSessionData } from "../useAuth/useAuth.type";
+import type { UserSessionData } from "../use-auth/useAuth.type";
 
 export default function usePermitor() {
   const user: UserSessionData | undefined = useContext(AuthContext)?.userState.user

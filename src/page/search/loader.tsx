@@ -3,10 +3,7 @@ import scss from './loader.module.scss'
 import PaginationLoader from '@/component/pagination/component/paginationLoader'
 import PostContainerLoader from '@/component/loader/post-container-loader/postContainerLoader'
 
-import useMetadata from '@/custom-hook/use-metadata/useMetadata'
-
 export default function SearchLaoder() {
-  useMetadata({ title: 'Finden', description: 'Hier kannst du posts mit gegebenen sortierung optionen finden.' })
   return(
     <div className={`${scss.search_loader_container} flex-row-normal-normal-medium`}>
       <div style={{ width: '100%' }} className='flex-column-normal-normal-small'>
