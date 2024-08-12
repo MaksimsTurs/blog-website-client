@@ -58,20 +58,19 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     delete data.url
     delete data.thumbnail
 
-    const thumbnail = ImageInput.selected?.[0] ? data?.thumbnail?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
+    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
 
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
    
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
+      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
       
       navigate('/database')
       setIsInsertMode(false)
+      ImageInput.clear()
+      reset()
       return [...option.state || [], newItem]
     })
-
-    ImageInput.clear()
-    reset()
   }
 
   return(
@@ -80,7 +79,7 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
       <div className={`${scss.insert_item_form_container} flex-row-normal-center-none`}>
         <FormWrapper onSubmit={submit(insertItem)}>
           {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
-          <CheckBoxInput name='' label='Use uploaded images' onInput={changeThumbnailSource}/>
+          <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
           <TextInput name='title' placeholder='Item title' errors={errors}/>
           <TextArea getValue={getContent} placeholder='Wirte item content'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>

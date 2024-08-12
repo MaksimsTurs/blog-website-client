@@ -2,7 +2,20 @@ import type { RefObject } from "react"
 
 export type TextEditor = {
   shortCut: TextEditorShortCut
-  edit: TextEditorEdit 
+  edit: TextEditorEdit
+  upload: TextEditorUpload
+}
+
+export type TextEditorToValidate = {
+  alt?: string
+  url?: string
+  asset?: File
+  uploadType?: 'Existet file from server' | 'From file system' | 'From url' | (string & {})
+}
+
+export type TextEditorUpload = {
+  upload: (file: File) => Promise<{ assetURL: string }>
+  validate: (toValidate: TextEditorToValidate, isVideo: boolean) => string | undefined
 }
 
 export type TextEditorShortCut = {
@@ -20,6 +33,7 @@ export type TextEditorShortCut = {
 export type TextEditorEdit = {
   wrappKeys: TextEditorWrapperKeys
   wrapp: (content: string, textArea: HTMLTextAreaElement, to: TextEditorWrappKeysEnum) => string
+  resource: (url: string, content: string, textArea: HTMLTextAreaElement, to: 'IMAGE' | 'VIDEO', alt?: string, context?: string) => string
 }
 
 export type TextEditorWrappKeysEnum = 
@@ -27,7 +41,7 @@ export type TextEditorWrappKeysEnum =
   'HEADER_1' |
   'HEADER_2' |
   'LINK'
-
+  
 export type TextEditorWrapperKeys = {
   [key in TextEditorWrappKeysEnum]: string
 }

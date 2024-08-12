@@ -8,6 +8,8 @@ import { Fragment, type SyntheticEvent, useEffect, useRef, useState } from 'reac
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
+import { URL_SEARCH_PARAMS } from '@/conts'
+
 export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats }: FileInputProps) {
   const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(initValue)
 
@@ -36,7 +38,7 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
 
   useEffect(() => {
     removeAsset()
-  }, [isChange, searchParams.get('is-open')])
+  }, [isChange, searchParams.get(URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN'])])
 
   return(
     <Fragment>
@@ -48,8 +50,8 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
         <div className={scss.file_input_label}>
           {isVideo.current ? <video className={scss.file_input_uploaded_asset} src={uploadedAsset}/> : <img className={scss.file_input_uploaded_asset} src={uploadedAsset} alt="User uploaded avatar" />}
           <section className={`${scss.asset_input_buttons} flex-column-normal-normal-medium`}>
-            <button className={`${scss.asset_button} flex-row-center-center-none`} type='button' onClick={removeAsset}><X /></button>
-            <label className={`${scss.asset_button} flex-row-center-center-none`} htmlFor={name}><Pencil /></label>
+            <button className={`${scss.asset_button} flex-row-center-center-none`} type='button' onClick={removeAsset}><X/></button>
+            <label className={`${scss.asset_button} flex-row-center-center-none`} htmlFor={name}><Pencil/></label>
           </section>
         </div>}
     </Fragment>

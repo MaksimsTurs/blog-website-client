@@ -79,7 +79,6 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
     delete data.uploadImg
     delete data.url
 
-    
     const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
 
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')

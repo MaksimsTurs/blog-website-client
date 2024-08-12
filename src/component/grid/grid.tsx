@@ -15,7 +15,7 @@ export function GridItem({ onClick, icon, children }: PropsWithChildren<GridWrap
   icon = icon ? `url(${icon})` : defaultIcon
 
   return(
-    <div className={scss.grid_item_body} onClick={onClick} style={{ background: icon }}>
+    <div className={scss.grid_item_body} onClick={onClick} style={{ background: icon, backgroundPosition: 'center center', backgroundSize: '100%' }}>
       <div className={`${scss.grid_item_title} flex-row-center-center-none`}>{children}</div>
     </div>
   )
