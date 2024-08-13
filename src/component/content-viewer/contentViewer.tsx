@@ -9,7 +9,6 @@ import { Pencil, X } from 'lucide-react'
 
 import ContentParseError from './parser/contentParsingError';
 import ContentParser from './parser/contentParser';
-import parse from './parser/parse';
 
 export default function ContentViewer({ content, className }: ContentViewerProps) {
   const [parsed, setParsed] = useState<string>('')
@@ -17,7 +16,7 @@ export default function ContentViewer({ content, className }: ContentViewerProps
 
   useEffect(() => {
     try {
-      setParsed(parse(content || '') || ContentParser.benchmark.getParsingBenchmarkResultAndParsedContent(content || ''))
+      setParsed(ContentParser.benchmark.getParsingBenchmarkResultAndParsedContent(content || ''))
       setParseError('')
     } catch(error) {
       setParseError((error as ContentParseError).message)

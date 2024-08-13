@@ -5,8 +5,6 @@ import { ChevronLeft, Pencil } from 'lucide-react'
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import parse from '@/component/content-viewer/parser/parse'
-
 import useImageInput from '@/component/input/image-input/useImageInput'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
@@ -23,6 +21,7 @@ import Button from '@/component/button/button'
 import LocalError from '@/component/errors/local-error/localError'
 import FormWrapper from '@/component/form-wrapper/formWrapper'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
+import ContentViewer from '@/component/content-viewer/contentViewer'
 import TextArea from '@/component/input/textArea/textArea'
 import TextInput from '@/component/input/textInput/textInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
@@ -126,7 +125,7 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
         <div className={scss.database_thumbnail_container}>
           <ImageComponent classNames={{ img: scss.database_thumbnail, svg: scss.database_loader_thumbnail, loader: scss.database_loader_thumbnail }} src={item.thumbnail} alt={item.title}/>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: parse(item.content) }}></div>
+        <ContentViewer content={item.content}/>
       </Fragment>}
     </div>
   )

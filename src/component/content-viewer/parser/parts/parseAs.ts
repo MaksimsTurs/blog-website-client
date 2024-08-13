@@ -46,7 +46,7 @@ export default {
       parsed += `<li>` + value.text + `</li>`
     }
 
-    return `<ul class="list">` + parsed + `</ul>`
+    return `<ul class="list flex-column-normal-normal-medium">` + parsed + `</ul>`
   },
   img: function(obj, lines) {
     benchmark.countKind(kind.IMG)

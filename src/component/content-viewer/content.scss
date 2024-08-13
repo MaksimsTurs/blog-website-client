@@ -69,7 +69,6 @@
   list-style: disc;
   margin-left: 0.9rem;
   position: relative;
-  align-items: center;
   font-size: clamp(0.7rem, 2.5vw, 1rem);
 }
 
@@ -78,6 +77,8 @@
   display: contents;
   font-weight: normal !important;
   width: fit-content;
+
+  &:active { color: #6f16fd; }
 }
 
 .quote_container {
@@ -88,7 +89,6 @@
     color: $color-common-hover;
     box-shadow: $box-shadow-button;
     border: 1px solid $color-common-hover;
-    // border-radius: $border-radius-container;
     font-size: clamp(0.7rem, 2.5vw, 1rem);
     margin: 0.5rem 0rem;
     padding: 1rem;
