@@ -117,7 +117,7 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
           <div className='flex-column-normal-normal-small'>
             <p className={scss.database_item_header_title}>{item.title}</p>
             <div style={{ width: '100%' }} className='flex-row-normal-normal-small'>
-              <Pencil onClick={setEditMode} className={scss.database_item_back_button}/>
+              {isAdmin && <Pencil onClick={setEditMode} className={scss.database_item_back_button}/>}
               <ChevronLeft onClick={closeCurrentItem} className={scss.database_item_back_button}/>
             </div>
           </div>
