@@ -1,10 +1,10 @@
 import type { FormState, ValidationOptionStringData } from "./useForm.type";
 import type { SyntheticEvent } from "react";
+import type { KeyValueObject } from "@/global.type";
 
 import { useRef, useState } from "react";
 
 import formValidator from "./validation/formValidator";
-import { KeyValueObject } from "@/global.type";
 
 export default function useForm<T>(validationOptionArray: ValidationOptionStringData<T>[]) {
   const [formState, setFormState] = useState<FormState>({ errors: undefined })

@@ -14,8 +14,8 @@
     }
   
     &:hover .checkbox_custom_checkbox_wrapper {
-      border: 1px solid $color-common;
       box-shadow: $box-shadow-button;
+      border: 1px solid $color-common;
       transition: all $transition-time-very-fast;
   
       svg { color: $color-common; }
@@ -63,7 +63,7 @@
     height: 1.2rem; 
   }  
 
-  svg { color: white; }
+  svg { color: white !important; }
 }
 
 .checkbox_error {

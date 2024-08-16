@@ -5,12 +5,8 @@
 .database_item_header {
   border-bottom: 1px solid $color-black-soft;
   background-color: white;
-  top: 3%;
-  width: 100%;
-  position: fixed;
-  padding: 3rem 0rem 1rem 0rem;
+  padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;
-  z-index: 10;
 
   .database_item_back_button {
     background-color: $color-common;
@@ -33,6 +29,7 @@
 
   .database_item_header_title {
     font-size: clamp($font-medium, 2.5vw, $font-x-large);
+    word-wrap: break-word;
     font-weight: bold;
   }
 }
@@ -40,7 +37,6 @@
 .database_thumbnail_container {
   border-bottom: 1px solid $color-black-soft;
   padding-bottom: 0.5rem;
-  padding-top: 5rem;
   margin-bottom: 0.5rem;
 
   .database_loader_thumbnail {
