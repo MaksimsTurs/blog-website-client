@@ -1,7 +1,9 @@
 import formatNum from "./props/formatNum"
+import shortNum from "./props/shortNum"
 
 const Integer = {
-  formatNum
+  formatNum,
+  shortNum
 }
 
 export default Integer

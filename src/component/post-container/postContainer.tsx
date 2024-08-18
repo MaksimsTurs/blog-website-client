@@ -98,7 +98,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
           {type === 'preview' ? 
             <div className={scss.post_content_container}>
               <Link to={`/post/${post._id}`}>{post.title}</Link>
-              <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 450)}/>
+              <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 200)}/>
             </div> : null}
           {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
             <div className={`${scss.post_tags_statistic_container} flex-row-center-space-between-medium`}>

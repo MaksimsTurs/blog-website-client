@@ -1,5 +1,7 @@
 import { ContentParserBenchmark } from "../contentParser.type";
 
+import Integer from "@/lib/number/number";
+
 import parse from "../parse";
 
 export default {
@@ -17,7 +19,7 @@ export default {
     const kindCountEntries: [string, number][] = Object.entries(this.kindCount)
 
     console.info('-----------------------Parse start------------------------------')
-    console.info('Content size (charachters): %c%d', NUM_COLOR, parsed.length)
+    console.info('Content size (charachters): %c%s', NUM_COLOR, Integer.shortNum(parsed.length))
     console.info('Content parsing time: %c%fs', NUM_COLOR, parseEnd)
     for(let [kindName, count] of kindCountEntries) console.info('Count of %c%s%c: %c%d', KIND_COLOR, kindName, TEXT_COLOR, NUM_COLOR, count)
     console.info('-----------------------Parse end--------------------------------')

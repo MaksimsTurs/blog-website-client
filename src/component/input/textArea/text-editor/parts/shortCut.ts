@@ -22,11 +22,10 @@ export default {
     event.preventDefault()
 
     const textArea = textAreaRef.current!
-    const isMultiple: boolean = Array.countDuplicate<{ KeyL: number }>(this.shortCutPressedKeys, ['KeyL']).KeyL > 0
+    const isMultiple: boolean = Array.countDuplicates<{ KeyL: number }>(this.shortCutPressedKeys, ['KeyL']).KeyL > 1
 
     this.lineStart = textArea.selectionStart
     this.lineEnd = textArea.value.indexOf('\n', isMultiple ? textArea.selectionEnd : textArea.selectionStart)
-
 
     //Check if all of left site is selected
     for(let index: number = this.lineStart; index >= 0; index--) {

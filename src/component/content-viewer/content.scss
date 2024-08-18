@@ -7,7 +7,7 @@
   flex-wrap: wrap; 
   row-gap: 0rem; 
   line-height: clamp(0.9rem, 2.5vw, 1.2rem); 
-  font-size: clamp(0.7rem, 2.5vw, $font-medium);
+  font-size: clamp(0.8rem, 2.5vw, $font-medium);
   word-break: break-word;
   clear: both;
   display: inline-block;
@@ -48,7 +48,7 @@
     text-align: center;
     height: fit-content;
     color: rgb(133, 133, 133);
-    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
     line-height: 1rem;
   }
 
@@ -72,7 +72,6 @@
   padding: 1rem 0rem;
 
   video {
-    width: auto;
     max-height: 15em;
   }
 }
@@ -83,7 +82,7 @@
   list-style: disc;
   margin-left: 0.9rem;
   position: relative;
-  font-size: clamp(0.7rem, 2.5vw, 1rem);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
   
   > * {
     user-select: text !important;
@@ -115,39 +114,31 @@
   padding: 1rem 0rem;
   
   .quote_body {
-    // color: $color-common-hover;
     box-shadow: $box-shadow-button;
     border: 1px solid $color-common-hover;
-    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
     margin: 0.5rem 0rem;
     padding: 1rem;
     position: relative;
     width: 70%;
+
+    .quote_svg_body {
+      display: flex;
+  
+      &:last-child { justify-content: flex-end; }
+  
+      .quote_svg {
+        color: $color-common-hover;
+        fill: $color-common-hover;
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+    }
   }
 
   .quote_name {
     color: $color-common-hover;
     font-size: 1.1rem;
     font-weight: bold
-  }
-
-  .quote_svg {
-    @include absolute-left-top-zindex-width-height(0%, 0%);
-    transform: translate(-50%, -50%);
-    color: $color-common-hover;
-    fill: $color-common-hover;
-    width: 1.75rem;
-    height: 1.75rem;
-  }
-
-  .quote_start {
-    transform: translate(-50%, -50%); 
-    left: 0%; 
-    top: 5%; 
-  }
-
-  .quote_end { 
-    left: 100%; 
-    top: 100%; 
   }
 }

@@ -9,8 +9,6 @@ export default function countDuplicates<T>(array: any[], find: (keyof T)[]): Rec
       else if(count?.[find[jndex]] && array[index] === find[jndex]) count![find[jndex]]++
     }
   }
-
-  console.log(count)
-
+  
   return count!
 }
