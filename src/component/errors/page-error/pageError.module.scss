@@ -3,6 +3,7 @@
 
 .error_container {
   height: 100%;
+  width: 100%;
 
   .error_body {
     @include flex-column-alignitems-justifycontent(baseline);

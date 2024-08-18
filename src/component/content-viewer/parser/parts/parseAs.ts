@@ -34,6 +34,7 @@ export default {
         let text = lines[obj.index].replace('+', '')
 
         if(have.link(text)) text = this.link(text)
+        if(have.bold(text)) text = this.bold(text)
 
         listDictionary[obj.index] = { text }
         obj.index++
@@ -46,7 +47,7 @@ export default {
       parsed += `<li>` + value.text + `</li>`
     }
 
-    return `<ul class="list">` + parsed + `</ul>`
+    return `<ul class="list flex-column-normal-normal-small">` + parsed + `</ul>`
   },
   img: function(obj, lines) {
     benchmark.countKind(kind.IMG)
