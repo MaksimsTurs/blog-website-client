@@ -140,7 +140,14 @@
     height: 1.75rem;
   }
 
-  .quote_start { left: 0%; top: 9%; }
+  .quote_start {
+    transform: translate(-50%, -50%); 
+    left: 0%; 
+    top: 5%; 
+  }
 
-  .quote_end { left: 100%; top: 100%; }
+  .quote_end { 
+    left: 100%; 
+    top: 100%; 
+  }
 }
