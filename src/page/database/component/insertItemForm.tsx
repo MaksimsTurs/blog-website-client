@@ -21,14 +21,17 @@ import coockie from '@/lib/coockie/coockie'
 
 import type { Database } from '@/global.type'
 import type { InsertItemFormProps } from '../page.type'
+import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
+
 export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps) {
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
 
-  const { submit, reset, setError, formState: { errors }} = useForm([['title', 'isMin:4:Title is to short!']])
+  const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION)
   const { mutate, isMutating, error } = useMutate<Database[]>('database')
   const ImageInput = useImageInput({})
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
@@ -80,7 +83,7 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
         <FormWrapper onSubmit={submit(insertItem)}>
           {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
           <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
-          <TextInput name='title' placeholder='Item title' errors={errors}/>
+          <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
           <TextArea getValue={getContent} placeholder='Wirte item content'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
             <Button label='Insert item' type='submit'/>

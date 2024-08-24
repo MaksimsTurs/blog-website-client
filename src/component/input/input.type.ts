@@ -1,4 +1,4 @@
-import type { FormFieldsError } from "@/custom-hook/use-form/useForm.type"
+import type { FormFieldsErrors, FormFieldsRegisterCallback } from "@/custom-hook/use-form/useForm.type"
 import type { MutableRefObject, PropsWithChildren, SyntheticEvent } from "react"
 
 export type InputProps = {
@@ -10,7 +10,7 @@ export type InputProps = {
     defaultValue?: any
     onInput?: (event: SyntheticEvent<HTMLInputElement | any>) => any
   }
-  errors?: FormFieldsError
+  errors?: FormFieldsErrors
 }
 
 export type FileInputProps = {
@@ -21,26 +21,29 @@ export type FileInputProps = {
   supportedFormats?: ('image/webp' | 'image/jpg' | 'image/png' | 'image/jpeg' | 'video/mp4')[]
 } & Pick<InputProps['attributes'], 'name'>
 
-export type _InputProps = {
+export type InputAttributes = {
   type: 'text' | 'number' | 'password' | 'email' | 'file'
   name: string
+  register?: FormFieldsRegisterCallback
+  errors?: FormFieldsErrors
   placeholder?: string
   defaultValue?: any
-  errors?: FormFieldsError
+  value?: string
   onInput?: (event: SyntheticEvent<HTMLInputElement | any>) => any
 }
 
 export type TextAreaProps = {
   getValue?: (string: string) => any
-} & Pick<_InputProps, 'placeholder' | 'defaultValue'>
+} & Pick<InputAttributes, 'placeholder' | 'defaultValue'>
 
-export type TextInputProps = {
-  value?: string
-} & Partial<Pick<_InputProps, 'type'>> & Pick<_InputProps, 'onInput' | 'defaultValue' | 'errors' | 'name' | 'placeholder'>
+export type TextTagInputProps = { 
+  getTags?: (tags: string[]) => void 
+  value?: string[]
+} & Pick<InputAttributes, 'placeholder'>
 
-export type TextTagInputProps = { getTags(tags: string[]): void } & Pick<InputProps['attributes'], 'placeholder' | 'value'>
+export type TextInputProps = Partial<Pick<InputAttributes, 'type' | 'value' | 'register'>> & Pick<InputAttributes, 'onInput' | 'errors' | 'name' | 'placeholder'>
 
-export type CheckBoxInputProps = Pick<FileInputProps, 'label'> & Pick<InputProps['attributes'], 'name' | 'defaultValue' | 'onInput'> & Pick<InputProps, 'errors'>
+export type CheckBoxInputProps = Pick<FileInputProps, 'label'> & Pick<InputAttributes, 'name' | 'onInput' | 'register' | 'errors'>
 
 export type SelectInputWrapperProps = PropsWithChildren<{ title: string, className?: string, pagesCount?: number }>
 

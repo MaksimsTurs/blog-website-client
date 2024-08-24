@@ -2,7 +2,7 @@ import scss from './sideMenu.module.scss'
 import '@/scss/global.scss'
 
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Images, LibraryBig, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
+import { CircleHelp, Home, Images, LibraryBig, Search, Settings, Shield, SquarePen, UserPlus } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { Fragment } from 'react/jsx-runtime'
 
@@ -44,7 +44,8 @@ export default function SideMenu() {
     { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
     { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
     { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
-    { title: 'Database', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> }
+    { title: 'Database', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> },
+    { title: 'About', path: '/about', icon: <CircleHelp className={scss.aside_menu_icon}/> }
   ]
   
   if(permission.role(['Admin']).permited()) paths.push(...adminPaths)

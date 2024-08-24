@@ -25,6 +25,7 @@ const Admin = lazy(() => import('./page/admin/page'))
 const Setting = lazy(() => import('./page/website-settings/page'))
 const Galery = lazy(() => import('./page/galery/page'))
 const Database = lazy(() => import('./page/database/page'))
+const About = lazy(() => import('./page/about/page'))
 
 import WriteNewPostLoader from './page/write-new/loader'
 import PostLoader from "./page/post/loader"
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/setting" element={<Suspense fallback={<SettingLoader/>}><Setting/></Suspense>}></Route>
             <Route path="/galery" element={<Suspense fallback={<GaleryLoader/>}><Galery/></Suspense>}></Route>
             <Route path="/database" element={<Suspense fallback={<GaleryLoader/>}><Database/></Suspense>}></Route>
+            <Route path="/about" element={<Suspense fallback={<GaleryLoader/>}><About/></Suspense>}></Route>
             <Route path="*" element={<PageError error={{ code: 404, message: 'Page not found!' }} description="Site there you search is not implemented or not exist!"/>}/>
             <Route path="/write-post" element={
               <Suspense fallback={<WriteNewPostLoader/>}>

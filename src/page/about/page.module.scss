@@ -1,0 +1,12 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.about_page_container_title {
+  margin-bottom: 0.5rem;
+}
+
+.about_body_name > a {
+  color: $color-common-hover;
+  text-decoration: underline;
+  width: fit-content;
+}

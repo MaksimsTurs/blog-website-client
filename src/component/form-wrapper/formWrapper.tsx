@@ -24,7 +24,7 @@ export default function FormWrapper({
       {title ? <h3>{title}</h3> : null}
       <div style={style} className={`${scss.form_body} main-content-container flex-column-center-center-medium`}>
         {children}
-        {(errors && errors.length > 0) ? <div style={{ width: '100%' }}>{errors.map(error => <div className={`${scss.form_error} flex-row-center-center-medium`}><Ban size={15}/><p key={error}>{error}</p></div>) }</div> : null}
+        {(errors && errors.length > 0) ? <div style={{ width: '100%' }}>{errors.map(error => <div key={error} className={`${scss.form_error} flex-row-center-center-medium`}><Ban size={15}/><p key={error}>{error}</p></div>) }</div> : null}
         {buttonLabel ? <button className={buttonClassName} disabled={isPending}><section className='flex-row-center-center-medium'>{label}</section></button> : null}
       </div>
     </form>

@@ -34,8 +34,8 @@ import Thing from '@/lib/object/object';
 
 export default function UserModal() {
   const searchParams = useSearchParams()
-  const { submit, reset } = useForm<User>([])
   const { mutate, isMutating, error } = useMutate<ContentData<User>>(`user-${searchParams.get('page') || 0}`)
+  const { submit, reset, register } = useForm<User>(undefined)
 
   const SelectBan = useSelect({})
   const SelectRole = useSelect({})
@@ -53,12 +53,12 @@ export default function UserModal() {
     mutate(async (option) => {
       const role: string | undefined = SelectRole.selected?.[0]
       const ban: string | undefined = SelectBan.selected?.[0]
-
+  
       const updatedUser = await fetcher.post<User>('/admin/user/update', Thing.createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), AUTHORIZATION_OBJECT)
-
+  
       reset()
       searchParams.remove(['user-edit-modal'])
-
+  
       return {
         pagesCount: option.state?.pagesCount || 0,
         data: option.state?.data.map(item => item._id === updatedUser._id ? {...item, ...updatedUser } : item) || []
@@ -70,14 +70,14 @@ export default function UserModal() {
     <DataModalWrapper<User> Component={props => {
       const currMyContent: Content[] = (props.data.myContent?.slice(myContentStart, myContentEnd) || []) as unknown as Content[]
       const currMyLikes: Content[] = (props.data.likedContent.slice(myLikesStart, myLikesEnd) || []) as unknown as Content[]
-
+      
       const maxMyContentPage: number = Math.ceil(currMyContent.length / 10)
       const maxMyLikesPage: number = Math.ceil(currMyLikes.length / 10)
-
+      
       const createdAtDifference: string = DateParser
-        .getDifference(props.data.createdAt)
-        .getSortDate({
-          year: '[year] year [month] months ago!',
+      .getDifference(props.data.createdAt)
+      .getSortDate({
+        year: '[year] year [month] months ago!',
           month: '[month] month [day] days ago!',
           day: '[day] day [hour] hours ago!',
           hour: '[hour] hour [minute] minutes ago!',
@@ -100,7 +100,7 @@ export default function UserModal() {
         <Fragment>
           <DataEditModalWrapper>
             <FormWrapper style={{ border: 'none', width: '25rem', boxShadow: 'none', padding: '1rem' }} buttonLabel='Change user data' onSubmit={submit(editUser)}>
-              <TextInput name='name' placeholder='Write new user name' defaultValue={props.data.name}/>
+              <TextInput register={register} name='name' placeholder='Write new user name'/>
               <SelectRole.Wrapper title='User roles:'>
                 <SelectRole.Item value='Admin'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><ShieldHalf size={15}/><p>Admin</p></div></SelectRole.Item>
                 <SelectRole.Item value='Creator'><div style={{ background: 'transparent' }} className='flex-row-center-normal-big'><SquarePen size={15}/><p>Creator</p></div></SelectRole.Item>

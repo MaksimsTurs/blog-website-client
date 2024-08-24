@@ -4,6 +4,7 @@ import type { Content, ServerResponseError } from '@/global.type'
 import type { AppDispatch, RootState } from '@/store/store'
 import type { PostCommentsData } from '../post/page.type'
 import type { CreatorState, ContentDraft } from '@/store/creator/creator.type'
+import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import FormWrapper from "@/component/form-wrapper/formWrapper"
 import TextInput from "@/component/input/textInput/textInput"
@@ -30,7 +31,10 @@ import useMutate from '@/custom-hook/use-request/useMutate'
 
 import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
-import coockie from '@/lib/coockie/coockie'
+
+import { AUTHORIZATION_OBJECT } from '@/conts'
+
+const USE_FORM_VALIDATION: FormFieldsValidation<Content> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 //Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
@@ -40,7 +44,6 @@ export default function WriteNewPost() {
 
   const searchParams = useSearchParams()
   const auth = useAuth()
-  const { submit, reset, formState: { errors }} = useForm<Content>([['title', 'isMin:4:Title is to short!']])
   const permitor = usePermitor()
   
   const contentID: string | null = searchParams.get('content-id')
@@ -70,11 +73,12 @@ export default function WriteNewPost() {
   const key: string = currContent?.isFromAdmin ? '' : currContent?.contentType === 'comment' ? `post-${currContent.onPost}-comments-${currContent.onPage}` : 'all-posts'
   
   const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>(key)
+  const { submit, reset, register, formState: { errors }} = useForm<Content>(USE_FORM_VALIDATION, { title: currContent?.title, isHidden: currContent?.isHidden })
 
   const passError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
   
   const tagsRef = useRef<string[]>(currContent?.tags || [])
-  const contentRef = useRef<string>('')
+  const contentRef = useRef<string>(currContent?.content || '')
   
   const createNew = async(data: any): Promise<void> => {
     delete data.alt
@@ -83,7 +87,7 @@ export default function WriteNewPost() {
 
     mutate(async function(option) {
       if(currContent?.isEdit) {
-        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, AUTHORIZATION_OBJECT)
 
         localStorage.remove(updated._id!)
 
@@ -118,7 +122,7 @@ export default function WriteNewPost() {
       }
 
       //Insert post
-      const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, { 'Authorization': `Bearer ${auth?.user?.token}` })
+      const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, AUTHORIZATION_OBJECT)
       const state = option.state as Content[] || []
 
       redirect(`/post/${post._id}`)
@@ -144,9 +148,9 @@ export default function WriteNewPost() {
   const deleteDraft = (): void => {
     dispatch(removeContentDraft(draftID || contentID!))
     searchParams.remove(['draft-id'])
-    reset()
     tagsRef.current = []
     contentRef.current = ''
+    reset()
   }
 
   const getTextAreaContentValue = (content: string): void => {
@@ -162,11 +166,11 @@ export default function WriteNewPost() {
           <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
               {currContent?.contentType !== 'comment' ?
               <Fragment>
-                <TextInput name='title' errors={errors} defaultValue={currContent?.title} placeholder='Post title'/>
-                <CheckBoxInput name='isHidden' label='Hidde post' defaultValue={currContent?.isHidden}/>
+                <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
+                <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
                 <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
               </Fragment> : null}
-            <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
+            <TextArea defaultValue={contentRef.current} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
             <div className={scss.create_new_buttons_container}>
               <Button label={currContent?.isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
               <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>

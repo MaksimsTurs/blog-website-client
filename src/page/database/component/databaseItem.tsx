@@ -11,8 +11,9 @@ import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useForm from '@/custom-hook/use-form/useForm'
 import useMutate from '@/custom-hook/use-request/useMutate'
 
-import { URL_SEARCH_PARAMS } from '@/conts'
+import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 
+import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 import type { DatabaseItemProps } from '../page.type'
 import type { Database } from '@/global.type'
 
@@ -27,9 +28,10 @@ import TextInput from '@/component/input/textInput/textInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import FileInput from '@/component/input/fileInput/fileInput'
 
-import coockie from '@/lib/coockie/coockie'
 import fetcher from '@/lib/fetcher/fetcher'
 import Thing from '@/lib/object/object'
+
+const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 export default function DatabaseItem({ item }: DatabaseItemProps) {
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
@@ -37,7 +39,7 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
 
   const searchParams = useSearchParams()
 
-  const { submit, reset, setError, formState: { errors }} = useForm([['title', 'isMin:5:Title is to short!']])
+  const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION, { title: item.title })
   const { mutate, isMutating, changeError, error } = useMutate<Database[]>('database')
   const ImageInput = useImageInput({ defaultValue: [item.thumbnail] })
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
@@ -83,12 +85,14 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
 
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', Thing.createFormDataFromJSON({...data, _id: item._id, content: contentRef.current, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
+      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', Thing.createFormDataFromJSON({...data, _id: item._id, content: contentRef.current, thumbnail }), AUTHORIZATION_OBJECT)
       
       navigate('/database')
       setIsEditMode(false)
+      
       ImageInput.clear()
       reset()
+      
       return option.state!.map(item => item._id === newItem._id ? newItem : item)
     })
   }
@@ -102,7 +106,7 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
           <FormWrapper onSubmit={submit(updateItem)} style={{ width: '60rem' }}>
             {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
             <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
-            <TextInput name='title' placeholder='Item title' errors={errors} defaultValue={item.title}/>
+            <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
             <TextArea getValue={getContent} placeholder='Wirte item content' defaultValue={item.content}/>
             <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
               <Button label='Update item' type='submit'/>

@@ -4,6 +4,7 @@ import useForm from '@/custom-hook/use-form/useForm'
 import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
+import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 import type { User } from '@/global.type'
 
 import FormWrapper from '../form-wrapper/formWrapper'
@@ -17,16 +18,18 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 
 import { useRef } from 'react'
 
+const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
+  name: { isMax: { message: "Name is to long!", value: 12 }, isMin: { message: "Name is to short!", value: 3 }},
+  email: { isPattern: { message: 'Email is not valid!', value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }},
+  password: { isMin: { message: "Password is to short!", value: 8 }, isEqual: { message: 'Passwords does match', compareWith: 'confirmPassword' }},
+  confirmPassword: { isMin: { message: 'Confirm password is to short!', value: 8 }, isEqual: { message: 'Passwords does match', compareWith: 'password' }}
+}
+
 export default function RegistrationModal() {
   const mainContainerRef = useRef<HTMLDivElement>(null)
   const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
   const auth = useAuth()
-  const { submit, reset, formState: { errors }} = useForm<User>([
-    ['email', 'isPattern:^[^\\s@]+@[^\\s@]+\.[^\\s@]+$:Email is incorrect!'],
-    ['name', ['isMax:12:Name is to long!', 'isMin:3:Name is to short!']],
-    ['password', ['isMin:8:Password is to short!', 'isEqualWith:confirmPassword:Passwords does match!']],
-    ['confirmPassword', ['isMin:8:Password is to short!']]
-  ])
+  const { submit, reset, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 
   const registrate = (data: User) => {
     const formData = Thing.createFormDataFromJSON(data)

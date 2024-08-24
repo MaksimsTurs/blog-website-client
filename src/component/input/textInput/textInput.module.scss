@@ -6,7 +6,7 @@
   position: relative;
 
   .text_input_error_icon {
-    @include absolute-left-top-zindex-width-height(97.5%, 50%, 2);
+    @include absolute-left-top-zindex-width-height(95%, 50%, 2);
     color: $color-error;
     transition: all $transition-time-very-fast;
     transform: translate(-50%, -50%);
