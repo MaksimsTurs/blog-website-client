@@ -7,6 +7,7 @@ import PaginationListLoader from '@/component/pagination-list/component/paginati
 import StatisticPreviewLoader from './statisticPreviewLoader'
 import ImageComponent from '@/component/image-component/image'
 import LocalError from '@/component/errors/local-error/localError'
+import XButton from '@/component/buttons/x-button/xbutton'
 
 import { Link } from "react-router-dom"
 import { X } from 'lucide-react'
@@ -17,7 +18,7 @@ import type { KeyValueObject } from '@/global.type'
 
 import fetcher from "@/lib/fetcher/fetcher"
 import Integer from '@/lib/number/number'
-import CharacterArray from '@/lib/string/string'
+import CharacterArray from '@/lib/string/characters'
 
 import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
@@ -42,7 +43,7 @@ export default function StatisticPreview({ statisticToPreview }: StatisticPrevie
   const pagesCount: number = (prev?.pagesCount || data?.pagesCount) || 0
 
   const closePostStatisticModal = (): void => {
-    searchParams.remove([URL_SEARCH_PARAMS['STATISTIC-TO-CHECK'], URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID'], URL_SEARCH_PARAMS['LIST-PAGE']])
+    searchParams.remove([URL_SEARCH_PARAMS['STATISTIC-TO-PREVIEW'], URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID'], URL_SEARCH_PARAMS['LIST-PAGE']])
   }
 
   return(
@@ -53,7 +54,7 @@ export default function StatisticPreview({ statisticToPreview }: StatisticPrevie
             {iconDictionary[statisticToPreview]}
             <h4 className={scss.preview_type}>{CharacterArray.firstLetterToUpperCase(statisticToPreview || '')}</h4>
           </div>
-          <X onClick={closePostStatisticModal}/>
+          <XButton onClick={closePostStatisticModal}/>
         </div>
         {isPending ? <PaginationListLoader/> : pagesCount > 1 ? <PaginationList pagesCount={pagesCount}/> : null}
         {isPending ? <StatisticPreviewLoader/> :

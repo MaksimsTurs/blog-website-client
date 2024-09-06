@@ -3,7 +3,7 @@ import '@/scss/global.scss'
 import PostContainer from "@/component/post-container/postContainer"
 import PageError from "@/component/errors/page-error/pageError"
 import Empty from "@/component/empty/empty"
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 import StatisticPreview from './component/statisticPreview'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import LocalError from '@/component/errors/local-error/localError'
@@ -28,7 +28,7 @@ export default function Page() {
 
   const searchParams = useSearchParams()
 
-  const statisticPreviewType: string | null = searchParams.get(URL_SEARCH_PARAMS['STATISTIC-TO-CHECK'])
+  const statisticPreviewType: string | null = searchParams.get(URL_SEARCH_PARAMS['STATISTIC-TO-PREVIEW'])
   
   const { mutate, ...otherMutateProps } = useMutate('all-posts')
   const { isFetching, isMutating, data, error } = useRequest({ 
@@ -53,7 +53,7 @@ export default function Page() {
         <div style={{ flexGrow: 1 }} className='flex-column-normal-normal-small'>
           {isFetching ? <Loader/> : 
           error ? <PageError error={error}/> :
-          data && data.length === 0 ? <Empty option={{ flexCenterCenter: true }} label="No post would founded!"/> : 
+          data && data.length === 0 ? <Empty option={{ flexCenterCenter: true }} label="Nothing found!"/> : 
           data && 
           <Fragment>
             {data.map(post => <PostContainer key={post._id} post={post} type="preview"/>)}
@@ -61,7 +61,7 @@ export default function Page() {
             {data.length % 10 === 0 ? <div className='flex-row-center-center-none'><Button onClick={loadMorePosts} label='Load More'/></div> : null}
           </Fragment>}
         </div>
-        {statisticPreviewType && <StatisticPreview statisticToPreview={statisticPreviewType}/>}
+        {/* {statisticPreviewType && <StatisticPreview statisticToPreview={statisticPreviewType}/>} */}
       </div>
     </Fragment>
   )

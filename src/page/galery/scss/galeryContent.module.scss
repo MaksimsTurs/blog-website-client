@@ -1,5 +1,6 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
+@import './media-query/galeryContent.media-query.scss';
 
 .galery_information_container {
   border-bottom: $border-container-soft;
@@ -12,19 +13,27 @@
     font-weight: bold;
   }
 
-  .galery_file_count_container {
-    color: $color-common;
-    border-radius: $border-radiues-button;
-    border: 1px solid $color-common;
-    transition: all $transition-time-fast;
-    background-color: white;
-    padding: 0.5rem 2rem;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $color-common-soft;
+  .galery_action_button_container {
+    .galery_action_button_active {
+      background-color: $color-common !important;
+      color: white !important;
+    }
+  
+    .galery_action_button {
       color: $color-common;
+      border-radius: $border-radiues-button;
+      border: 1px solid $color-common;
       transition: all $transition-time-fast;
+      background-color: white;
+      padding: 0.5rem 2rem;
+      flex-grow: 1;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: $color-common-soft;
+        color: $color-common;
+        transition: all $transition-time-fast;
+      }
     }
   }
 }
@@ -35,11 +44,39 @@
   gap: 0.5rem;
   width: 100%;
 
-  .galery_content_body > img, video {
-    width: 100%;
-    height: 15rem;
-    object-fit: cover;
-    cursor: pointer;
+  .galery_content_body {
+    position: relative;
+
+    > img, video {
+      width: 100%;
+      height: 15rem;
+      object-fit: cover;
+      cursor: pointer;
+    }
+  }
+
+  .galery_edit_mode_action_container {
+    @include absolute-left-top-zindex-width-height();
+    @include flex-column-alignitems-justifycontent(flex-end);
+
+    svg {
+      transition: all $transition-time-fast;
+      color: white;
+      opacity: 0.3;
+      padding: 0.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      cursor: pointer;
+      
+      &:hover {
+        transition: all $transition-time-fast;
+        opacity: 0.8;
+      }
+    }
+
+    > svg:first-child { background-color: $color-common-hover; }
+
+    > svg:last-child { background-color: $color-error; }
   }
 
   .galery_content_close {
@@ -52,9 +89,4 @@
       border: 1px solid $color-common-hover;  
     }
   }
-}
-
-.galery_file_count_container_active {
-  background-color: $color-common !important;
-  color: white !important;
 }

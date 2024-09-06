@@ -30,7 +30,7 @@ const creatorPaths = [
 const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
 
 export default function SideMenu() {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
   
   const searchParams = useSearchParams()

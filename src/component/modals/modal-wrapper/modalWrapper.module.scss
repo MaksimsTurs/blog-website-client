@@ -1,0 +1,37 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.modal_wrapper_container {
+  @include absolute-left-top-zindex-width-height(0%, 0%, 100);
+  background-color: $color-black-medium-soft;
+  transition: all $transition-time-fast;
+  position: fixed;
+
+  .modal_wrapper_header {
+    border-bottom: $border-container-soft;
+    color: rgb(132, 132, 132);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal_wrapper_body {
+    @include absolute-left-top-zindex-width-height(50%, 50%, 120);
+    border-bottom: $border-container-soft;
+    transition: all $transition-time-fast;
+    transform: translate(-50%, -50%);
+    height: fit-content;
+    width: fit-content;
+    padding: 0.75rem 1rem;
+  }
+}
+
+.modal_wrapper_container_hidden {
+  transition: all $transition-time-fast;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal_wrapper_body_hidden {
+  transition: all $transition-time-fast;
+  top: -100% !important;
+}

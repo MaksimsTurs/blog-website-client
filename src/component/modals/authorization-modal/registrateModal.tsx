@@ -7,12 +7,12 @@ import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 import type { User } from '@/global.type'
 
-import FormWrapper from '../form-wrapper/formWrapper'
-import TextInput from '../input/textInput/textInput'
-import FileInput from '../input/fileInput/fileInput'
+import FormWrapper from '@/component/form-wrapper/formWrapper'
+import TextInput from '@/component/input/textInput/textInput'
+import FileInput from '@/component/input/fileInput/fileInput'
 
-import Thing from '@/lib/object/object'
-import CharacterArray from '@/lib/string/string'
+import Objects from '@/lib/object/object'
+import CharacterArray from '@/lib/string/characters'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 
@@ -26,13 +26,13 @@ const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
 }
 
 export default function RegistrationModal() {
+  const auth = useAuth()
   const mainContainerRef = useRef<HTMLDivElement>(null)
   const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
-  const auth = useAuth()
   const { submit, reset, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 
   const registrate = (data: User) => {
-    const formData = Thing.createFormDataFromJSON(data)
+    const formData = Objects.createFormDataFromJSON(data)
 
     if((formData.get('avatar') as File).size === 0) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
     

@@ -11,7 +11,7 @@ import TextInput from "@/component/input/textInput/textInput"
 import TextArea from '@/component/input/textArea/textArea'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import LocalError from '@/component/errors/local-error/localError'
 import WriteNewLoader from './loader'
@@ -95,9 +95,9 @@ export default function WriteNewPost() {
         if(currContent?.contentType === 'post') {
           const state = option.state as Content[] || []
 
-          option.removeCache(`/post-${updated._id}`)
+          option.removeCache(`post-${updated._id}`)
 
-          for(let index: number = (currContent?.onPage || 0) + 1; index >= 0; index--) {
+          for(let index: number = (currContent?.onPage || 0) + 1; index > 0; index--) {
             option.removeCache(`${currContent.contentType}-${index}`)
           }
 

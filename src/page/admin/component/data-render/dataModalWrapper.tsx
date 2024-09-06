@@ -10,10 +10,11 @@ import { useParams } from 'react-router-dom'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/use-request/useRequest'
 
-import CharacterArray from '@/lib/string/string'
+import CharacterArray from '@/lib/string/characters'
 
 import DataModalWrapperLoader from '../dataModalWrapperLoader'
 import LocalError from '@/component/errors/local-error/localError'
+import XButton from '@/component/buttons/x-button/xbutton'
 
 export default function DataModalWrapper<T>({ Component }: DataModalWrapperProps<T>) {
   const searchParams = useSearchParams()
@@ -40,7 +41,7 @@ export default function DataModalWrapper<T>({ Component }: DataModalWrapperProps
         <div className={`${scss.modal_wrapper_body} main-content-container flex-column-normal-normal-none`}>
           <section className={`${scss.modal_wrapper_header} flex-row-center-space-between-none`}>
             <p>{CharacterArray.firstLetterToUpperCase(toPreview)}</p>
-            <X onClick={closeModal} size={17}/>
+            <XButton onClick={closeModal}/>
           </section>
           {(!itemToPreview && toPreviewID && !isPending) &&
           <div style={{ padding: '1rem' }}>

@@ -2,10 +2,10 @@ import firstLetterToUpperCase from "./props/firstLetterToUpperCase"
 import generateDefaultAvatar from "./props/generateDefaultAvatar"
 import getAssetExtension from "./props/getAssetExtention"
 
-const CharacterArray = {
+const Characters = {
   getAssetExtension,
   firstLetterToUpperCase,
   generateDefaultAvatar
 }
 
-export default CharacterArray
+export default Characters

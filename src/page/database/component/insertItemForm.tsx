@@ -2,7 +2,7 @@ import scss from '../scss/insertItemForm.module.scss'
 import '@/scss/global.scss'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 import FileInput from '@/component/input/fileInput/fileInput'
 import TextArea from '@/component/input/textArea/textArea'
 import TextInput from '@/component/input/textInput/textInput'

@@ -1,5 +1,5 @@
 import type { Galery } from "@/global.type"
-import { Dispatch, SetStateAction } from "react"
+import type { Dispatch, SetStateAction } from "react"
 
 export type SlideModalProps = {
   galery: Galery
@@ -10,4 +10,9 @@ export type SlideModalProps = {
 export type GaleryContentProps = {
   galery?: Galery
   setCurrentSlide: Dispatch<SetStateAction<number | undefined>>
+}
+
+export type InsertSlidesGaleryModal = {
+  isUpdate?: boolean
+  modalKey: string
 }

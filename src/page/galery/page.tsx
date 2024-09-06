@@ -12,10 +12,11 @@ import Array from "@/lib/array/array"
 import { URL_SEARCH_PARAMS } from '@/conts'
 
 import SlideModal from './component/slideModal'
-import InsertGaleryModal from './component/insertGaleryModal'
+import InsertSlidesGaleryModal from "./component/insertSlidesGaleryModal"
 import PageError from "@/component/errors/page-error/pageError"
 import Loader from './loader'
 import GaleryContent from './component/galeryContent'
+import MutatingLoader from "@/component/loader/mutatig-loader/mutatingLoader"
 import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 
 import type { Galery } from '@/global.type'
@@ -32,7 +33,7 @@ export default function Page() {
 
   const isAdmin: boolean = permitor.role(['Admin']).permited()
 
-  const { data, error, isFetching } = useRequest<Galery[]>({ deps: [`galery`], request: async () => await fetcher.get('/get/galeries') })
+  const { data, error, isFetching, isMutating } = useRequest<Galery[]>({ deps: [`galery`], request: async () => await fetcher.get('/get/galery') })
 
   const selectedGalery: Galery | undefined = data?.find(galery => galery._id === galeryID)
 
@@ -46,7 +47,8 @@ export default function Page() {
 
   return(
     <Fragment>
-      <InsertGaleryModal/>
+      <InsertSlidesGaleryModal modalKey='IS-ADD-GALERY-MODAL-OPEN'/>
+      {isMutating && <MutatingLoader/>}
       {isFetching ? <Loader/> :
       error ? <PageError error={error}/> :
       <Fragment>

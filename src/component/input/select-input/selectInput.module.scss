@@ -28,8 +28,8 @@
 
   .select_list_item {
     transition: all $transition-time-very-fast;
+    // border-radius: $border-radius-container;
     border-bottom: 1px solid $color-black-soft;
-    border-radius: $border-radius-container;
     border: 1px solid transparent;
     font-size: 0.9rem;
     padding: 0.5rem;
@@ -38,18 +38,15 @@
     &:last-child { border-bottom: 1px solid transparent; }
 
     &:hover {
+      color: $color-common-hover;
       transition: all $transition-time-very-fast;
       background-color: $color-common-hover-soft;
-      border: 1px solid $color-common-hover;
-      color: $color-common-hover;
     }
   }
   
   .select_list_item_selected {
-    transition: all $transition-time-very-fast;
     background-color: $color-common-hover-soft;
-    border-bottom: 1px solid $color-common-hover !important;
-    border: 1px solid $color-common-hover;
     color: $color-common-hover;
+    transition: all $transition-time-very-fast;
   }
 }

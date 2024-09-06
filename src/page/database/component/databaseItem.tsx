@@ -18,7 +18,7 @@ import type { DatabaseItemProps } from '../page.type'
 import type { Database } from '@/global.type'
 
 import ImageComponent from '@/component/image-component/image'
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 import LocalError from '@/component/errors/local-error/localError'
 import FormWrapper from '@/component/form-wrapper/formWrapper'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'

@@ -40,7 +40,7 @@ export default function User() {
       {user.error ? 
        <PageError error={user.error}/> :
        <Fragment>
-         {user.data ? <EditUser _id={user.data._id}/> : null}
+         {user.data && <EditUser _id={user.data._id}/>}
          <div className='flex-row-normal-center-none'>
            <div className={`${scss.user_data_body} flex-column-normal-normal-medium`}>
              {(!user.isFetching && user.data) ? <UserDataHeader user={user.data}/> : <UserHeaderLoader/>}

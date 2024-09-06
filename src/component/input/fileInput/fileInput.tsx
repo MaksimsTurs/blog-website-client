@@ -10,7 +10,7 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 
-export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats }: FileInputProps) {
+export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats, className, register }: FileInputProps) {
   const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(initValue)
 
   const inputRef = useRef<HTMLInputElement>(null), isVideo = useRef<boolean>(false)
@@ -42,12 +42,12 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
 
   return(
     <Fragment>
-      <input tabIndex={-1} ref={inputRef} accept={supportedExtentions.join(',')} id={name} name={name} type='file' onChange={upload}/>
+      <input ref={inputRef} accept={supportedExtentions.join(',')} id={name} name={name} type='file' onInput={upload} {...register?.(name)}/>
       {!uploadedAsset ? 
-        <label className={scss.file_input_label} htmlFor={name}>
+        <label className={`${scss.file_input_label} ${className}`} htmlFor={name}>
           <section className={scss.file_input_text}><FileImage /><p>{label}</p></section>
         </label> :
-        <div className={scss.file_input_label}>
+        <div className={`${scss.file_input_label} ${className}`}>
           {isVideo.current ? <video className={scss.file_input_uploaded_asset} src={uploadedAsset}/> : <img className={scss.file_input_uploaded_asset} src={uploadedAsset} alt="User uploaded avatar" />}
           <section className={`${scss.asset_input_buttons} flex-column-normal-normal-medium`}>
             <button className={`${scss.asset_button} flex-row-center-center-none`} type='button' onClick={removeAsset}><X/></button>

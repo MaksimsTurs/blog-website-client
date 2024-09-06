@@ -8,15 +8,21 @@ export default function useOutsideClick(key: string, modalContainer: RefObject<H
   const [searchParams, setSearchParams] = useSearchParams()
   
   useEffect(() => {
-    modalContainer.current?.addEventListener('click', (event: any) => {
+    const outsideModalClick = (event: any): void => {
       if(event.target === event.currentTarget) {
         setSearchParams(prev => {
-          prev.set(key, String(!prev.get(key)))
+          prev.delete(key)
           return prev
-        })
+        }, { replace: true })
       }
-    })
-  }, [])
+    }
+
+    modalContainer.current?.addEventListener('click', outsideModalClick)
+
+    return () => {
+      modalContainer.current?.removeEventListener('click', outsideModalClick)
+    }
+  }, [searchParams.get(key)])
 
   return JSON.parse(searchParams.get(key) || 'false')
 }

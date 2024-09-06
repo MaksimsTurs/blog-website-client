@@ -1,0 +1,40 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.insert_modal_container > * {
+  align-items: flex-start;
+  padding: 0rem;
+  box-shadow: none;
+  border: none;
+}
+
+.insert_modal_body {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 43rem;
+
+  .insert_modal_input_container {
+    flex-grow: 1;
+
+    .insert_modal_file_input {
+      height: 5rem;
+    }
+  }
+}
+
+.insert_item_button {
+  border-radius: $border-radiues-button;
+  background-color: $color-common;
+  border: 1px solid $color-common;
+  transition: all $transition-time-fast;
+  color: white;
+  padding: 0.35rem;
+  width: 2rem;
+  height: 2rem;
+
+  &:hover {
+    transition: all $transition-time-fast;
+    color: $color-common;
+    background-color: white;
+  }
+}

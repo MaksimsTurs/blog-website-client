@@ -1,0 +1,40 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.confirm_modal_container {
+  @include absolute-left-top-zindex-width-height(0%, 0%, 100);
+  background-color: $color-black-medium-soft;
+  transition: all $transition-time-very-fast;
+  opacity: 0;
+  visibility: hidden;
+
+  .confirm_modal_body { min-width: 10rem; padding: 0rem; overflow: hidden; }
+
+  .confirm_modal_header { 
+    border-bottom: 1px solid $color-common-hover;
+    color: $color-common-hover;
+    background-color: $color-common-hover-soft; 
+    padding: 0.5rem 1rem;
+  }
+
+  .confirm_modal_button {
+    background-color: green;
+    border: 1px solid green;
+
+    &:hover > * {
+      color: green;
+    }
+  }
+
+  .confirm_modal_text_body {
+    padding: 1rem;
+
+    > p { margin-bottom: 1rem; }
+  }
+}
+
+.confirm_modal_open {
+  transition: all $transition-time-very-fast;
+  opacity: 1;
+  visibility: visible;
+}

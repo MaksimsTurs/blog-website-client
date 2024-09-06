@@ -28,6 +28,10 @@ export default function useSelect({ isMultiple, defaultValue }: { isMultiple?: b
     select([])
   }
 
+  const reset = (): void => {
+    select(defaultValue || [])
+  }
+
   const include = (value: string): boolean => {
     return selected.includes(value)
   }
@@ -35,6 +39,7 @@ export default function useSelect({ isMultiple, defaultValue }: { isMultiple?: b
   return {
     selected,
     clear,
+    reset,
     Wrapper: function({ children, title, className, pagesCount }: PropsWithChildren<SelectInputWrapperProps>) {
       return(
         <div className={scss.select_list_wrapper}>

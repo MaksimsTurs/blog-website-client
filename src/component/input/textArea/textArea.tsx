@@ -12,7 +12,8 @@ import FileInput from '../fileInput/fileInput';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 import ContentViewer from '@/component/content-viewer/contentViewer';
 import LocalError from '@/component/errors/local-error/localError';
-import Button from '@/component/button/button';
+import Button from '@/component/buttons/button/button';
+import XButton from '@/component/buttons/x-button/xbutton';
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
@@ -21,7 +22,7 @@ import useSelect from '../select-input/useSelectItem';
 
 import TextEditor from './text-editor/textEditor';
 
-import CharacterArray from '@/lib/string/string';
+import CharacterArray from '@/lib/string/characters';
 import Array from '@/lib/array/array';
 
 import { URL_SEARCH_PARAMS } from '@/conts';
@@ -41,7 +42,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
 
   const isOpen = useOutsideClick(URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN'], mainContainerRef)
   const ImageInput = useImageInput({})
-  const ImageOptionInput = useSelect({})
+  const ImageOptionInput = useSelect({ defaultValue: ['From url'] })
   
   const searchParams = useSearchParams()
 
@@ -168,7 +169,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     setImgUrl(undefined)
     setError(undefined)
     ImageInput.clear()
-    ImageOptionInput.clear()
+    ImageOptionInput.reset()
 
     if(closeModal) searchParams.remove([URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN']])
     if(resetAsset) asset.current = undefined
@@ -228,16 +229,16 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
         <div ref={mainContainerRef} className={isOpen ? `${scss.text_area_asset_modal_container} flex-row-center-center-none` : `${scss.text_area_asset_modal_container} ${scss.text_area_asset_modal_container_hidden} flex-row-center-center-none`}>
           <div className={`${scss.text_area_asset_modal_body} main-content-container flex-column-normal-normal-small`}>
             <div className={`${scss.text_area_asset_modal_header} flex-row-normal-space-between-medium`}>
-              <p>Upload File</p>
-              <X onClick={closeUploadModal}/>
+              <p>Insert File</p>
+              <XButton onClick={closeUploadModal}/>
             </div>
             <TextInput onInput={inputImgAlt} value={imgAlt || ''} name='' type='text' placeholder='Put img Alt attributte here!'/>
             <TextInput onInput={inputContext} value={context || ''} name='' type='text' placeholder='Put you context here!'/>
-            {ImageOptionInput.selected?.[0] === 'Existet file from server' ? 
+            {ImageOptionInput.selected.at(0) === 'Existet file from server' ? 
             ImageInput.Component :
-            ImageOptionInput.selected?.[0] === 'From file system' ? 
+            ImageOptionInput.selected.at(0) === 'From file system' ? 
             <FileInput label='Upload asset!' name='file' asset={asset} isChange={isUpload} supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
-            ImageOptionInput.selected?.[0] === 'From url' ? 
+            ImageOptionInput.selected.at(0) === 'From url' ? 
             <TextInput onInput={inputImgUrl} value={imgUrl || ''} name='' type='text' placeholder='Put you img URL here!'/> : null}
             <ImageOptionInput.Wrapper title='Add file option'>
               <ImageOptionInput.Item value='Existet file from server'>Existet file from server</ImageOptionInput.Item>

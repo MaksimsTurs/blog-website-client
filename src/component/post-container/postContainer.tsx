@@ -5,7 +5,6 @@ import PostHeader from "./component/postHeader";
 import PostWrapper from "./component/postWrapper";
 import PostTags from './component/postTags';
 import ContentViewer from '../content-viewer/contentViewer';
-
 import type { Content } from '@/global.type';
 import type { PostCommentsData } from '@/page/post/page.type';
 import type { PostContainerProps } from "./postContainer.type";
@@ -42,7 +41,6 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const isAdmin: boolean = permission.role(['Admin']).permited()
   const isHidden: boolean = post.isHidden
 
-  
   const postID: string = (type === 'preview' || type === 'post') ? post._id : id!
   const currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0
   const hiddenClass: string = ((isHidden && isAdmin) || (isContentCreator && isHidden)) ? scss.post_hidden : ''
@@ -53,7 +51,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   if(isHidden && isPostPage && !isAdmin && !isContentCreator && type === 'post') redirect('/')
 
   const showSomeData = (showThe: string): void => {
-    searchParams.set({ [URL_SEARCH_PARAMS['STATISTIC-TO-CHECK']]: showThe, [URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID']]: post._id, [URL_SEARCH_PARAMS['LIST-PAGE']]: 0 })
+    searchParams.set({ [URL_SEARCH_PARAMS['STATISTIC-TO-PREVIEW']]: showThe, [URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID']]: post._id, [URL_SEARCH_PARAMS['LIST-PAGE']]: 0 })
   }
 
   const likeThisPost = async (): Promise<void> => {

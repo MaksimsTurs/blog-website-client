@@ -24,7 +24,7 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
   }
 
   function register(name: string): FormFieldsRegisterReturn {
-    const defaultValuePerName: string | boolean | undefined = getDefaultValue(name)
+    const defaultValuePerName: string | boolean | undefined | null = getDefaultValue(name)
     const value: string | boolean = formValues?.[name] || (typeof defaultValuePerName !== 'undefined' ? defaultValuePerName : '')
 
     if(typeof defaultValuePerName === 'boolean' && typeof formValues?.[name] === 'undefined') {
@@ -33,11 +33,14 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
 
     return { 
       name, 
-      value: isSubmited.current && isResetButtonPressed.current ? '' : value, 
+      value: (isSubmited.current && isResetButtonPressed.current) && typeof value === 'object' ? '' : value, 
       checked: isSubmited.current && isResetButtonPressed.current ? false : (value as boolean),
       onChange: (event: any) => {
         setFormValues(prev => {
-          if(event.target.type === 'checkbox') return {...prev, [name]: event.target.checked || false }
+          const type = event.target.type
+
+          if(type === 'checkbox') return {...prev, [name]: event.target.checked || false }
+          if(type === 'file') return {...prev, [name]: Array.from(event.target.files)[0] }
           return {...prev, [name]: event.target.value }
         })
       }

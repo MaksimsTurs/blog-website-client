@@ -24,14 +24,6 @@
       color: rgb(145, 145, 145); 
       margin-bottom: 0.5rem;
       padding-bottom: 0.5rem;
-
-
-      > svg {
-        width: $icon-medium;
-        height: $icon-medium;
-
-        &:hover { color: $color-error; cursor: pointer; }
-      }
     }
   }
 }
@@ -67,7 +59,7 @@
   
 .text_area_action_buttons_container {
   position: fixed;
-  left: 21%;
+  left: 20%;
   top: 11.3%;
   z-index: 1;
   display: flex;

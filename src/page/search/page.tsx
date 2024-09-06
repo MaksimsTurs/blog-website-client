@@ -4,7 +4,7 @@ import '@/scss/global.scss'
 import HomeLoader from '../home/loader';
 import Empty from '@/component/empty/empty';
 import PageError from '@/component/errors/page-error/pageError';
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 import Pagination from '@/component/pagination/pagination'
 import PostContainer from '@/component/post-container/postContainer'
 import SortInput from './component/sortInput';

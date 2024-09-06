@@ -9,8 +9,8 @@ import useAuth from '@/custom-hook/use-auth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import UserContainerLoader from './component/userContainerLoader'
-import LoginModal from '../authorization-modal/loginModal'
-import RegistrationModal from '../authorization-modal/registrateModal'
+import LoginModal from '../modals/authorization-modal/loginModal'
+import RegistrationModal from '../modals/authorization-modal/registrateModal'
 import ImageComponent from '../image-component/image'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
@@ -18,6 +18,7 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 export default function Header() {
   const auth = useAuth()
   const searchParams = useSearchParams()
+
   const isSideMenuOpen: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false')
 
   const openAuthorizationModal = (modal: 'login' | 'registrate'): void => {
@@ -58,7 +59,7 @@ export default function Header() {
             <section className={`${scss.header_user_text} flex-row-center-normal-medium`}><UserPlus />Registrate</section>
           </button>
           <button onClick={() => openAuthorizationModal('login')}>Login</button>
-        </section> : 
+        </section> :
         <section className={`${scss.header_user_container} flex-row-center-center-medium`}>
           <Link className={scss.header_user_link} to={`/user/${auth.user._id}`}><ImageComponent styles={{ loader: { width: '2rem', height: '2rem' }}} src={auth.user.avatar} alt={auth.user.name}/></Link>
         </section>}

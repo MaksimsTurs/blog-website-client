@@ -17,7 +17,9 @@ export type FileInputProps = {
   label: string
   initValue?: string
   asset?: MutableRefObject<File | undefined>
+  register?: FormFieldsRegisterCallback
   isChange?: boolean
+  className?: string
   supportedFormats?: ('image/webp' | 'image/jpg' | 'image/png' | 'image/jpeg' | 'video/mp4')[]
 } & Pick<InputProps['attributes'], 'name'>
 

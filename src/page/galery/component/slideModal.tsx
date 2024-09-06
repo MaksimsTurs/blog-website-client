@@ -2,9 +2,11 @@ import scss from '../scss/slideModal.module.scss'
 
 import type { SlideModalProps } from "../page.type";
 
-import CharacterArray from '@/lib/string/string';
+import CharacterArray from '@/lib/string/characters';
 
 import { ChevronLeft, ChevronRight, CircleAlert, X } from 'lucide-react'
+
+import XButton from '@/component/buttons/x-button/xbutton';
 
 export default function SlideModal({ galery, currentSlide, setCurrentSlide }: SlideModalProps) {
   const imageExtentions: string[] = ['webp', 'jpeg', 'png', 'jpg']
@@ -26,7 +28,7 @@ export default function SlideModal({ galery, currentSlide, setCurrentSlide }: Sl
     <div className={`${scss.galery_current_galery_modal_body} flex-column-normal-normal-none main-content-container`}>
       <div className={`${scss.galery_modal_title} flex-row-normal-space-between-medium`}>
         <h4>{currentSlide + 1}/{galery.content.length}</h4>
-        <X onClick={closeSlidesModal}/>
+        <XButton onClick={closeSlidesModal}/>
       </div>
       <div className={`${scss.galery_slides_container} flex-row-normal-norma-none`}>
         <div className={`${scss.galery_slide_buttons} flex-row-center-space-between-none`}>

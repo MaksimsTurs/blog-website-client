@@ -5,8 +5,13 @@
   margin-bottom: 0.5rem;
 }
 
-.about_body_name > a {
-  color: $color-common-hover;
-  text-decoration: underline;
-  width: fit-content;
+.about_body_name {
+  flex-wrap: wrap;
+  row-gap: 0rem;
+
+  > a {
+    color: $color-common-hover;
+    text-decoration: underline;
+    width: fit-content;
+  }
 }

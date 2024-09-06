@@ -7,8 +7,8 @@ import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 import type { User } from '@/global.type'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
-import FormWrapper from '../form-wrapper/formWrapper'
-import TextInput from '../input/textInput/textInput'
+import FormWrapper from '@/component/form-wrapper/formWrapper'
+import TextInput from '@/component/input/textInput/textInput'
 
 import { useRef } from 'react'
 
@@ -25,14 +25,10 @@ export default function LoginModal() {
   const mainContainerRef = useRef<HTMLDivElement>(null)
   const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
 
-  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION, {
-    name: 'Name',
-    email: 'Email',
-    password: 'Passowrd'
-  })
+  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 
-  const login = (user: User): void => {
-    auth.create({ apiURL: '/login', body: user, redirectURL: '/', setToken: true })
+  const login = async(user: User): Promise<void> => {
+    await auth.create({ apiURL: '/login', body: user, redirectURL: '/', setToken: true })
     reset()
   }
 

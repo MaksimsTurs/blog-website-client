@@ -9,13 +9,16 @@ import type { CreateParams, UserSessionData } from "./useAuth.type";
 
 import useSearchParams from "../use-search-params/useSearchParams";
 
-export default function useAuth() {
+import { URL_SEARCH_PARAMS } from "@/conts";
+
+export default function 
+useAuth() {
   const redirect = useNavigate()
   const userContext = useContext(AuthContext)
   const searchParams = useSearchParams()
 
-  const isLogOpen: string | null = searchParams.get('login-modal')
-  const isRegOpen: string | null = searchParams.get('registration-modal')
+  const isLogOpen: string | null = searchParams.get(URL_SEARCH_PARAMS["IS-LOGIN-MODAL-OPEN"])
+  const isRegOpen: string | null = searchParams.get(URL_SEARCH_PARAMS["IS-REGISTRATE-MODAL-OPEN"])
 
   return {
     ...userContext?.userState,

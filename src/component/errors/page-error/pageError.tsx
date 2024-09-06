@@ -3,7 +3,7 @@ import '@/scss/global.scss'
 
 import type { PageErrorProps } from './pageError.type'
 
-import Button from '@/component/button/button'
+import Button from '@/component/buttons/button/button'
 
 export default function PageError({ error, description }: PageErrorProps) {
   const reloadPage = (): void => {
