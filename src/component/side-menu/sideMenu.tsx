@@ -30,7 +30,7 @@ const creatorPaths = [
 const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
 
 export default function SideMenu() {
-  const { pathname, search } = useLocation()
+  const { pathname } = useLocation()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
   
   const searchParams = useSearchParams()
@@ -41,10 +41,10 @@ export default function SideMenu() {
   
   const paths = [
     { title: 'Home', path: '/', icon: <Home className={scss.aside_menu_icon}/> },
-    { title: 'Search', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
-    { title: 'Settings', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
-    { title: 'Galery', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
-    { title: 'Database', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> },
+    { title: 'Suchen', path: '/search', icon: <Search className={scss.aside_menu_icon}/> },
+    { title: 'Einstellungen', path: '/setting', icon: <Settings className={scss.aside_menu_icon}/> },
+    { title: 'Galerie', path: '/galery', icon: <Images className={scss.aside_menu_icon}/> },
+    { title: 'Datenbank', path: '/database', icon: <LibraryBig className={scss.aside_menu_icon}/> },
     { title: 'About', path: '/about', icon: <CircleHelp className={scss.aside_menu_icon}/> }
   ]
   
@@ -86,11 +86,11 @@ export default function SideMenu() {
           <SideMenuLoader/> :
           <section className='flex-column-normal-normal-small'>
             {paths.map(path => (
-                <Link className={(pathname.split('/')[1] === path.path.split('/')[1]) ? `${scss.aside_link_active} flex-row-center-normal-medium` : `flex-row-center-normal-medium`} key={path.title} to={path.path}>
-                  {path.icon}
-                  <p className={scss.aside_menu_text_wrapper}>{path.title}</p>
-                </Link>
-              ))}
+              <Link className={(pathname.split('/')[1] === path.path.split('/')[1]) ? `${scss.aside_link_active} flex-row-center-normal-medium` : `flex-row-center-normal-medium`} key={path.title} to={path.path}>
+                {path.icon}
+                <p className={scss.aside_menu_text_wrapper}>{path.title}</p>
+              </Link>
+            ))}
           </section>}
         </div>
         {creator.contentDraft.length > 0 &&

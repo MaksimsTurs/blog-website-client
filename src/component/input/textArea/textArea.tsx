@@ -22,7 +22,7 @@ import useSelect from '../select-input/useSelectItem';
 
 import TextEditor from './text-editor/textEditor';
 
-import CharacterArray from '@/lib/string/characters';
+import CharacterArray from '@/lib/string/strings';
 import Array from '@/lib/array/array';
 
 import { URL_SEARCH_PARAMS } from '@/conts';

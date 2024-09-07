@@ -1,37 +1,51 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
-.setting_font_example {
-  flex-wrap: nowrap;
-  display: -webkit-box;
-  line-clamp: 1;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;  
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.setting_set_font_button {
+.setting_font_item {
   transition: all $transition-time-fast;
   border: 1px solid $color-common;
   border-radius: $border-radiues-button;
   color: $color-common;
+  overflow: hidden;
   height: fit-content;
   flex-grow: 1;
   flex-shrink: 0;
   max-width: fit-content;
-  padding: 0.5rem;
-
+  cursor: pointer;
+  
   &:hover {
-    transition: all $transition-time-fast;
-    background-color: $color-common-hover;
     border: 1px solid $color-common-hover;
+
+    .setting_set_font_button {
+      background-color: $color-common-hover;
+      transition: all $transition-time-fast;
+      border-bottom: 1px solid $color-common-hover;
+      color: white;
+    }
+  }
+
+  .setting_font_example {
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+    color: black;
+  }
+  
+  .setting_set_font_button {
+    color: $color-common;
+    border-bottom: 1px solid $color-common;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    padding: 0.5rem;
+  }  
+}
+
+.setting_selected_font {
+  border: 1px solid $color-common-hover;
+
+  .setting_set_font_button {
+    background-color: $color-common-hover;
+    transition: all $transition-time-fast;
+    border-bottom: 1px solid $color-common-hover;
     color: white;
   }
 }
 
-.setting_selected_font {
-  background-color: $color-common-hover;
-  border: 1px solid $color-common-hover;
-  color: white;
-}

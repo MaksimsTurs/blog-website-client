@@ -1,14 +1,12 @@
 import "@/scss/root.scss"
 import '@/scss/global.scss'
 
-import type { WebsiteSetting } from "./store/website-setting/setting.type"
-
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Provider, useSelector } from "react-redux"
+import { Provider } from "react-redux"
 import { Fragment, lazy, Suspense } from "react"
 
-import store, { RootState } from "./store/store"
+import store from "./store/store"
 
 import Header from "./component/header/header"
 import ScrollTo from "./component/scroll-to-top/scrollTo"
@@ -39,10 +37,12 @@ import GaleryLoader from './page/galery/loader'
 import PageError from "./component/errors/page-error/pageError"
 import ProtectedRoute from "./component/protected-route/protectedRoute"
 
-const App = () => {
-  const websiteSetting = useSelector<RootState, WebsiteSetting>(state => state.websiteSetting)
+import useWebsiteSetting from "./custom-hook/use-website-setting/useWebsiteSetting"
 
-  document.getElementById('root')!.style.fontFamily = websiteSetting.font
+const App = () => {
+  const website = useWebsiteSetting()
+
+  document.getElementById('root')!.style.fontFamily = website.setting.font
 
   return(
     <Fragment>

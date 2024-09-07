@@ -61,7 +61,7 @@ export default function Page() {
             {data.length % 10 === 0 ? <div className='flex-row-center-center-none'><Button onClick={loadMorePosts} label='Load More'/></div> : null}
           </Fragment>}
         </div>
-        {/* {statisticPreviewType && <StatisticPreview statisticToPreview={statisticPreviewType}/>} */}
+        {statisticPreviewType && <StatisticPreview statisticToPreview={statisticPreviewType}/>}
       </div>
     </Fragment>
   )

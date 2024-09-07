@@ -9,7 +9,10 @@ export default function ScrollTo() {
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
-      setIsOnTop(document.body.getBoundingClientRect().top === 0)
+      const documentHeight: number = document.body.scrollHeight / 2
+      const viewMiddle: number = (window.scrollY + window.innerHeight)
+
+      setIsOnTop(!(documentHeight <= viewMiddle))
     })
   }, [])
 

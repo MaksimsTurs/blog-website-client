@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/use-request/useRequest'
 
-import CharacterArray from '@/lib/string/characters'
+import CharacterArray from '@/lib/string/strings'
 
 import DataModalWrapperLoader from '../dataModalWrapperLoader'
 import LocalError from '@/component/errors/local-error/localError'

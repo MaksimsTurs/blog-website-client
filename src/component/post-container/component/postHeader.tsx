@@ -12,7 +12,7 @@ import useHavePermission from '@/custom-hook/use-permitor/useHavePermission'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import DateParser from '@/lib/date-parser/dateParser'
-import CharacterArray from '@/lib/string/characters'
+import CharacterArray from '@/lib/string/strings'
 import fetcher from '@/lib/fetcher/fetcher'
 import coockie from '@/lib/coockie/coockie'
 import localStorage from '@/lib/local-storage/localStorage'

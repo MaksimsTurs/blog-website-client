@@ -9,7 +9,7 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 
 import { useParams } from 'react-router-dom';
 
-import CharacterArray from '@/lib/string/characters';
+import CharacterArray from '@/lib/string/strings';
 
 export default function DataEditModalWrapper({ children }: PropsWithChildren) {
   const searchParams = useSearchParams()

@@ -13,6 +13,8 @@ import type { PreviewAuthorDataProps } from '../page.type'
 export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
   const color = author.role === 'Admin' ? '#F48023' : '#1682FD'
 
+  console.log(author)
+
   const createdAtDifference: string = DateParser
     .getDifference(author.createdAt)
     .getSortDate({

@@ -12,7 +12,7 @@ import TextInput from '@/component/input/textInput/textInput'
 import FileInput from '@/component/input/fileInput/fileInput'
 
 import Objects from '@/lib/object/object'
-import CharacterArray from '@/lib/string/characters'
+import CharacterArray from '@/lib/string/strings'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 

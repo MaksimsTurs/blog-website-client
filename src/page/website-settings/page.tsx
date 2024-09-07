@@ -1,14 +1,12 @@
 import scss from './page.module.scss'
 import '@/scss/global.scss'
 
-import { useDispatch, useSelector } from 'react-redux'
-
-import { changeWebsiteFont } from '@/store/website-setting/setting'
-
-import type { AppDispatch, RootState } from '@/store/store'
 import type { WebsiteSetting } from '@/store/website-setting/setting.type'
 
+import { GridWrapper } from '@/component/grid/grid'
 import SettingWrapper from './component/settingWrapper'
+
+import useWebsiteSetting from '@/custom-hook/use-website-setting/useWebsiteSetting'
 
 const fonts: WebsiteSetting['font'][] = [
   'Fira Code, monospace', 
@@ -20,24 +18,29 @@ const fonts: WebsiteSetting['font'][] = [
 ]
 
 export default function Settings() {
-  const dispatch = useDispatch<AppDispatch>()
-  const websiteSetting = useSelector<RootState, WebsiteSetting>(state => state.websiteSetting)
-
-  const changeFont = (fontName: WebsiteSetting['font']): void => {
-    dispatch(changeWebsiteFont(fontName))
-  }
+  const website = useWebsiteSetting()
 
   return(
     <div className='flex-column-normal-normal-medium'>
-      <SettingWrapper title='Font' description='Font of page and post content.'>
-        <ul className='flex-column-normal-normal-medium'>
-          {fonts.map(font => (
-            <li key={font} className='flex-row-center-space-between-medium'>
-              <button className={`${font === websiteSetting.font ? scss.setting_selected_font : ''} ${scss.setting_set_font_button}`} onClick={() => changeFont(font)}>{font}</button>
-              <p className={scss.setting_font_example} style={{ fontFamily: font }}>Lorem ipsum, dolor sit amet elit. Maiores ea sapiente sunt minus placeat molestiae commodi nesciunt nulla? Autem.</p>
-            </li>
+      <SettingWrapper title='Schriftart' description='Schriftart der für Website angewendet wird.'>
+        <GridWrapper gap='0.5rem' size='12rem'>
+          {fonts.map((font: WebsiteSetting['font']) => (
+            <div key={font} onClick={() => website.configure.setWebsiteFont(font)} className={`${scss.setting_font_item} ${font === website.setting.font ? scss.setting_selected_font : ''} flex-column-center-space-between-medium`}>
+              <button className={scss.setting_set_font_button}>{font.replace(/\,.*/, '')}</button>
+              <p className={scss.setting_font_example} style={{ fontFamily: font }}>Lorem ipsum, dolor sit amet elit. Maiores ea sapiente sunt minus.</p>
+            </div>
           ))}
-        </ul>
+        </GridWrapper>
+      </SettingWrapper>
+      <SettingWrapper title='Posts Schriftart' description='Schriftart der für Posts angewendet wird.'>
+        <GridWrapper gap='0.5rem' size='12rem'>
+          {fonts.map((font: WebsiteSetting['font']) => (
+            <div key={font} onClick={() => website.configure.setPostsFont(font)} className={`${scss.setting_font_item} ${font === website.setting.postFont ? scss.setting_selected_font : ''} flex-column-center-space-between-medium`}>
+              <button className={scss.setting_set_font_button}>{font.replace(/\,.*/, '')}</button>
+              <p className={scss.setting_font_example} style={{ fontFamily: font }}>Lorem ipsum, dolor sit amet elit. Maiores ea sapiente sunt minus.</p>
+            </div>
+          ))}
+        </GridWrapper>
       </SettingWrapper>
     </div>
   )

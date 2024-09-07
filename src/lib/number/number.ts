@@ -1,9 +1,9 @@
 import formatNum from "./props/formatNum"
 import shortNum from "./props/shortNum"
 
-const Integer = {
+const Numbers = {
   formatNum,
   shortNum
 }
 
-export default Integer
+export default Numbers

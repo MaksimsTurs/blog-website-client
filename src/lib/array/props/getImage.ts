@@ -1,4 +1,4 @@
-import CharacterArray from "@/lib/string/characters"
+import CharacterArray from "@/lib/string/strings"
 
 export default function getImage(urls: string[]): string {
   const imageExtention: string[] = ['webp', 'jpeg', 'jpg', 'png']

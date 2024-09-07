@@ -5,12 +5,16 @@ import PostHeader from "./component/postHeader";
 import PostWrapper from "./component/postWrapper";
 import PostTags from './component/postTags';
 import ContentViewer from '../content-viewer/contentViewer';
+
 import type { Content } from '@/global.type';
 import type { PostCommentsData } from '@/page/post/page.type';
+import type { RootState } from '@/store/store';
 import type { PostContainerProps } from "./postContainer.type";
+import type { WebsiteSetting } from '@/store/website-setting/setting.type';
 
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Fragment } from 'react/jsx-runtime';
+import { useSelector } from 'react-redux';
 import { Eye, Heart, MessageCircle } from 'lucide-react';
 
 import DateParser from '@/lib/date-parser/dateParser';
@@ -19,6 +23,7 @@ import useAuth from '@/custom-hook/use-auth/useAuth';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 import useMutate from '@/custom-hook/use-request/useMutate';
+import useWebsiteSetting from '@/custom-hook/use-website-setting/useWebsiteSetting';
 
 import fetcher from '@/lib/fetcher/fetcher';
 import coockie from '@/lib/coockie/coockie';
@@ -33,6 +38,7 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const auth = useAuth()
   const searchParams = useSearchParams()
   const permission = useHavePermission()
+  const website = useWebsiteSetting()
 
   const isPostPage: boolean = pathname.search('/post') > -1
   const isHomePage: boolean = pathname === '/'
@@ -89,14 +95,14 @@ export default function PostContainer({ post, type }: PostContainerProps) {
           {(type === 'comment' || type === 'preview') ? <PostHeader tags={post.tags || []} title={post.title || ''} content={post.content} isHidden={post.isHidden} postID={postID} contentID={post._id} type={type} createdAt={post.createdAt} user={post?.author}/> : null}
           {type === 'post' ? 
             <div className={scss.post_content_container}>
-              <h4 className={scss.post_title}>{post.title}</h4>
+              <h4 style={{ fontFamily: website.setting.postFont }} className={scss.post_title}>{post.title}</h4>
               <p className={scss.post_content_date}>{createdAtDifference}</p>
               <ContentViewer content={post.content}/>
             </div> : null}
           {type === 'preview' ? 
             <div className={scss.post_content_container}>
-              <Link to={`/post/${post._id}`}>{post.title}</Link>
-              <ContentViewer className={scss.post_short_view} content={post.content.slice(0, 200)}/>
+              <Link style={{ fontFamily: website.setting.postFont }} to={`/post/${post._id}`}>{post.title}</Link>
+              <ContentViewer content={`${post.content.slice(0, 250)}...`}/>
             </div> : null}
           {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
             <div className={`${scss.post_tags_statistic_container} flex-row-center-space-between-medium`}>

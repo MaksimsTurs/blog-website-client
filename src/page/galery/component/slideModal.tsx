@@ -2,7 +2,7 @@ import scss from '../scss/slideModal.module.scss'
 
 import type { SlideModalProps } from "../page.type";
 
-import CharacterArray from '@/lib/string/characters';
+import CharacterArray from '@/lib/string/strings';
 
 import { ChevronLeft, ChevronRight, CircleAlert, X } from 'lucide-react'
 

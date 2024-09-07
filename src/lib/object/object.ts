@@ -1,9 +1,9 @@
 import createFormDataFromJSON from "./props/createFormDataFromJSON"
 import inObject from "./props/inObject"
 
-const Thing = {
+const Objects = {
   createFormDataFromJSON,
   inObject
 }
 
-export default Thing
+export default Objects

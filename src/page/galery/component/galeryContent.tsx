@@ -15,7 +15,7 @@ import usePermitor from '@/custom-hook/use-permitor/useHavePermission';
 
 import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts';
 
-import Strings from '@/lib/string/characters';
+import Strings from '@/lib/string/strings';
 import fetcher from '@/lib/fetcher/fetcher';
 import getAssetExtension from '@/lib/string/props/getAssetExtention';
 

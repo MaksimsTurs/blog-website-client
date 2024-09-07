@@ -8,20 +8,6 @@
 
 	.post_title { font-size: $font-xx-large; font-weight: bolder; }
 
-	.post_short_view { 
-		position: relative;
-
-		> div {
-			word-break: break-all;
-			display: -webkit-box;
-			line-clamp: 1;
-			-webkit-line-clamp: 1;
-			-webkit-box-orient: vertical;  
-			text-overflow: ellipsis;
-			overflow: hidden;
-		}
-	}
-
 	.post_content_date {
 		font-size: $font-small;
 		color: $color-black-medium-soft;

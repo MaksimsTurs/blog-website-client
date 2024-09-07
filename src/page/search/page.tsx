@@ -44,10 +44,11 @@ export default function Search() {
   const selectedTag: string | null = searchParams.get('tag')
   const page: number = parseInt(searchParams.get('page') || '0')
   
+  
   const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
   const modalContainerRef = useRef<HTMLDivElement>(null)
   const clearHandlerRef = useRef<{ clearTagsArray: () => void } | undefined>()
-
+  
   const isOpen: boolean = !is930px ? true : useOutsideClick(URL_SEARCH_PARAMS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
@@ -117,7 +118,7 @@ export default function Search() {
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='content'/>
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='author'/>
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='title'/>
-            <TextTagInput ref={clearHandlerRef} getTags={getTags} placeholder='Find by tags'/>
+            <TextTagInput ref={clearHandlerRef} getTags={getTags} value={tagRef.current} placeholder='Find by tags'/>
             <div className={`${scss.search_filter_body_buttons} flex-row-normal-normal-small`}>
               <Button onClick={getSorted} label="Sort"/>
               <Button onClick={resetSort} label="Reset"/>

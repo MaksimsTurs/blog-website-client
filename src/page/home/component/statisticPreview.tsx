@@ -18,7 +18,7 @@ import type { KeyValueObject } from '@/global.type'
 
 import fetcher from "@/lib/fetcher/fetcher"
 import Integer from '@/lib/number/number'
-import CharacterArray from '@/lib/string/characters'
+import CharacterArray from '@/lib/string/strings'
 
 import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
