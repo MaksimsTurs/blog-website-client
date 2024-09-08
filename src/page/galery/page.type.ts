@@ -15,4 +15,5 @@ export type GaleryContentProps = {
 export type InsertSlidesGaleryModal = {
   isUpdate?: boolean
   modalKey: string
+  title: string
 }

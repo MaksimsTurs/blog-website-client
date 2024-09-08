@@ -2,10 +2,10 @@ import scss from './textArea.module.scss'
 import '@/scss/global.scss'
 
 import type { TextAreaProps } from "../input.type";
-import type { ServerResponseError } from '@/global.type';
+import type { CustomInputsRef, ServerResponseError } from '@/global.type';
 
 import { Bold, Link2, FileImage, Eye, X, Heading1, Heading2 } from 'lucide-react';
-import { Fragment, memo, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, Fragment, memo, SyntheticEvent, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import TextInput from '../textInput/textInput';
 import FileInput from '../fileInput/fileInput';
@@ -22,12 +22,12 @@ import useSelect from '../select-input/useSelectItem';
 
 import TextEditor from './text-editor/textEditor';
 
-import CharacterArray from '@/lib/string/strings';
+import Strings from '@/lib/string/strings';
 import Array from '@/lib/array/array';
 
 import { URL_SEARCH_PARAMS } from '@/conts';
 
-export default memo(function({ placeholder, defaultValue, getValue }: TextAreaProps) {
+export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaProps, ref) {
   const [textAreaContent, setTextAreaContent] = useState<string>(defaultValue)
   const [error, setError] = useState<string | undefined>()
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false)
@@ -36,7 +36,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
   const [imgUrl, setImgUrl] = useState<string>()
   const [context, setContext] = useState<string>()
 
-  const asset = useRef<File>()
+  const uploadedAssetsRef = useRef<CustomInputsRef<File[]>>()
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const mainContainerRef = useRef<HTMLDivElement>(null)
 
@@ -52,41 +52,37 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     const bolded: string = TextEditor.edit.wrapp(textAreaContent, textAreaRef.current!, 'BOLD')
     setTextAreaContent(bolded)
     TextEditor.shortCut.pushIntoHistory(bolded)
-    if(getValue) getValue(bolded)
   }
 
   const headerOne = (): void => {
     const headered: string = TextEditor.edit.wrapp(textAreaContent, textAreaRef.current!, 'HEADER_1')
     setTextAreaContent(headered)
     TextEditor.shortCut.pushIntoHistory(headered)
-    if(getValue) getValue(headered)
   }
 
   const headerTwo = (): void => {
     const headered: string = TextEditor.edit.wrapp(textAreaContent, textAreaRef.current!, 'HEADER_2')
     setTextAreaContent(headered)
     TextEditor.shortCut.pushIntoHistory(headered)
-    if(getValue) getValue(headered)
   }
 
   const link = (): void => {
     const link: string = TextEditor.edit.wrapp(textAreaContent, textAreaRef.current!, 'LINK')
     setTextAreaContent(link)
     TextEditor.shortCut.pushIntoHistory(link)
-    if(getValue) getValue(link)
   }
 
   const addAsset = useCallback(async(): Promise<void> => {
     const isVideo: boolean = !Array.include(
       ['webp', 'png', 'jpeg', 'jpg'], 
-      [CharacterArray.getAssetExtension(ImageInput.selected?.[0] || imgUrl || ''), asset.current?.type.replace(/image|video/, '').replace('/', '') || '']
+      [Strings.getAssetExtension(ImageInput.selected?.[0] || imgUrl || ''), uploadedAssetsRef.current?.value.at(0)?.type.replace(/image|video/, '').replace('/', '') || '']
     )
 
     const error = TextEditor.upload.validate({ 
       uploadType: ImageOptionInput.selected?.[0], 
       url: ImageInput.selected?.[0] || imgUrl, 
       alt: imgAlt, 
-      asset: asset.current
+      asset: uploadedAssetsRef.current?.value.at(0)
     }, isVideo)
     
     setError(error)
@@ -98,20 +94,18 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     if(ImageOptionInput.selected[0] === 'From file system') {
       try {
         setIsUpload(true)
-        uploadedFileURL = (await TextEditor.upload.upload(asset.current!)).assetURL
+        uploadedFileURL = (await TextEditor.upload.upload(uploadedAssetsRef!.current!.value.at(0)!)).assetURL
       } catch(error) {
         setError((error as ServerResponseError).message)
         setIsUpload(false)
       }
 
-      if(/video/g.test(asset.current?.type || '') || isVideo) {
+      if(/video/g.test(uploadedAssetsRef.current?.value.at(0)?.type || '') || isVideo) {
         const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'VIDEO')
         setTextAreaContent(fileText)
-        if(getValue) getValue(fileText)
       } else {
         const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'IMAGE', imgAlt!, context)
         setTextAreaContent(fileText)
-        if(getValue) getValue(fileText)
       }
 
       setIsUpload(false)
@@ -122,21 +116,18 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     if(isVideo) {
       const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'VIDEO')
       setTextAreaContent(fileText)
-      if(getValue) getValue(fileText)  
       resetState(true, true)
       return
     }
 
     const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'IMAGE', imgAlt!, context)
     setTextAreaContent(fileText)
-    if(getValue) getValue(fileText)
     resetState(true, true)
-  }, [imgAlt, imgUrl, asset, context, ImageOptionInput.selected, ImageInput.selected])
+  }, [imgAlt, imgUrl, uploadedAssetsRef.current?.value, context, ImageOptionInput.selected, ImageInput.selected])
 
   const inputContent = (event: SyntheticEvent<HTMLTextAreaElement>): void => {
     setTextAreaContent(event.currentTarget.value)
     TextEditor.shortCut.pushIntoHistory(event.currentTarget.value)
-    if(getValue) getValue(event.currentTarget.value)
   }
 
   const inputImgUrl = (event: SyntheticEvent<HTMLInputElement>): void => {
@@ -172,16 +163,18 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
     ImageOptionInput.reset()
 
     if(closeModal) searchParams.remove([URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN']])
-    if(resetAsset) asset.current = undefined
-
-    if(getValue) getValue(textAreaContent)
+    if(resetAsset) uploadedAssetsRef.current?.clear()
   }
+
+  useImperativeHandle(ref, () => ({
+    clear: () => setTextAreaContent(''),
+    value: textAreaContent
+  }), [textAreaContent])
 
   useEffect(() => {
     if(initRender) {
       TextEditor.shortCut.pushIntoHistory(defaultValue || '')
       setTextAreaContent(defaultValue || '')
-      if(getValue) getValue(defaultValue || '')
     }
   }, [defaultValue])
 
@@ -237,7 +230,7 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
             {ImageOptionInput.selected.at(0) === 'Existet file from server' ? 
             ImageInput.Component :
             ImageOptionInput.selected.at(0) === 'From file system' ? 
-            <FileInput label='Upload asset!' name='file' asset={asset} isChange={isUpload} supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
+            <FileInput ref={uploadedAssetsRef} label='Upload asset!' name='file' supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
             ImageOptionInput.selected.at(0) === 'From url' ? 
             <TextInput onInput={inputImgUrl} value={imgUrl || ''} name='' type='text' placeholder='Put you img URL here!'/> : null}
             <ImageOptionInput.Wrapper title='Add file option'>
@@ -261,4 +254,4 @@ export default memo(function({ placeholder, defaultValue, getValue }: TextAreaPr
       </div>
     </Fragment>
   ) 
-})
+}))

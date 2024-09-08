@@ -15,10 +15,9 @@ export type InputProps = {
 
 export type FileInputProps = {
   label: string
-  initValue?: string
+  value?: string
   asset?: MutableRefObject<File | undefined>
   register?: FormFieldsRegisterCallback
-  isChange?: boolean
   className?: string
   supportedFormats?: ('image/webp' | 'image/jpg' | 'image/png' | 'image/jpeg' | 'video/mp4')[]
 } & Pick<InputProps['attributes'], 'name'>
@@ -34,12 +33,9 @@ export type InputAttributes = {
   onInput?: (event: SyntheticEvent<HTMLInputElement | any>) => any
 }
 
-export type TextAreaProps = {
-  getValue?: (string: string) => any
-} & Pick<InputAttributes, 'placeholder' | 'defaultValue'>
+export type TextAreaProps = Pick<InputAttributes, 'placeholder' | 'defaultValue'>
 
 export type TextTagInputProps = { 
-  getTags?: (tags: string[]) => void 
   value?: string[]
 } & Pick<InputAttributes, 'placeholder'>
 

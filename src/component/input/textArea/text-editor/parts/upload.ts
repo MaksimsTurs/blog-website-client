@@ -11,7 +11,7 @@ export default {
 
     if((toValidate.uploadType === 'From url' || toValidate.uploadType === 'Existet file from server') && (!toValidate.url || toValidate.url?.length === 0)) return 'URL is undefined!'
 
-    if(toValidate.uploadType === 'From file system' && !toValidate.alt && !isVideo) return 'You need to select file from file system first!'
+    if(toValidate.uploadType === 'From file system' && !toValidate.alt && !isVideo) return 'You need to select file from file system first, or alt attribute is undefined!'
   },
   upload: async function(file) {
     return await fetcher.post('/api/upload', Thing.createFormDataFromJSON({ file }))

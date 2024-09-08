@@ -47,7 +47,7 @@ export default function Page() {
 
   return(
     <Fragment>
-      <InsertSlidesGaleryModal modalKey='IS-ADD-GALERY-MODAL-OPEN'/>
+      <InsertSlidesGaleryModal modalKey='IS-ADD-GALERY-MODAL-OPEN' title="Neue Galerie erstellen"/>
       {isMutating && <MutatingLoader/>}
       {isFetching ? <Loader/> :
       error ? <PageError error={error}/> :

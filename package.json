@@ -1,6 +1,6 @@
 {
   "name": "ruzzkiy-mir",
-  "version": "0.21.45",
+  "version": "0.22.45",
   "type": "module",
   "engines": {
     "node": ">= 20.12.0",

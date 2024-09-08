@@ -29,7 +29,7 @@ export default function RegistrationModal() {
   const auth = useAuth()
   const mainContainerRef = useRef<HTMLDivElement>(null)
   const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
-  const { submit, reset, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
+  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 
   const registrate = (data: User) => {
     const formData = Objects.createFormDataFromJSON(data)
@@ -45,11 +45,11 @@ export default function RegistrationModal() {
   return(
     <div ref={mainContainerRef} className={isOpen ? scss.authorization_modal_container : scss.authorization_modal_container_hidden}>
       <FormWrapper isPending={auth.isLoading} buttonLabel='Registrate' errors={auth.error?.message ? [auth.error.message] : []} className={scss.authorization_modal_body} onSubmit={submit(registrate)}>
-        <TextInput errors={errors} name='name'  placeholder='You name'/>
-        <TextInput errors={errors} name='email' placeholder='You e-mail' type='email'/>
-        <TextInput errors={errors} name='password' placeholder='You password' type='password'/>
-        <TextInput errors={errors} name='confirmPassword' placeholder='Confirm you password' type='password'/>
-        <FileInput name='avatar' label='Chose you avatar!'/>
+        <TextInput register={register} errors={errors} name='name'  placeholder='You name'/>
+        <TextInput register={register} errors={errors} name='email' placeholder='You e-mail' type='email'/>
+        <TextInput register={register} errors={errors} name='password' placeholder='You password' type='password'/>
+        <TextInput register={register} errors={errors} name='confirmPassword' placeholder='Confirm you password' type='password'/>
+        <FileInput register={register} name='avatar' label='Chose you avatar!'/>
       </FormWrapper>
     </div>
   )

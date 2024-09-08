@@ -4,17 +4,12 @@ import '@/scss/global.scss'
 import type { FileInputProps } from '../input.type'
 
 import { FileImage, Pencil, X } from 'lucide-react'
-import { Fragment, type SyntheticEvent, useEffect, useRef, useState } from 'react'
+import { Fragment, type SyntheticEvent, useRef, useState } from 'react'
 
-import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-
-import { URL_SEARCH_PARAMS } from '@/conts'
-
-export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats, className, register }: FileInputProps) {
-  const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(initValue)
+export default function FileInput({ name, label, asset, value, supportedFormats, className, register }: FileInputProps) {
+  const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(value)
 
   const isVideo = useRef<boolean>(false)
-  const searchParams = useSearchParams()
 
   const supportedExtentions: string[] = supportedFormats || ['image/webp', 'image/jpg', 'image/png', 'image/jpeg']
 
@@ -35,10 +30,6 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
     setUploadedAsset(undefined)
     if(asset) asset.current = undefined
   }
-
-  useEffect(() => {
-    removeAsset()
-  }, [isChange, searchParams.get(URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN'])])
 
   return(
     <Fragment>

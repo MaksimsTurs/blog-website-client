@@ -19,7 +19,7 @@ import fetcher from '@/lib/fetcher/fetcher'
 import createFormDataFromJSON from '@/lib/object/props/createFormDataFromJSON'
 import coockie from '@/lib/coockie/coockie'
 
-import type { Database } from '@/global.type'
+import type { CustomInputsRef, Database } from '@/global.type'
 import type { InsertItemFormProps } from '../page.type'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
@@ -30,19 +30,25 @@ const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { 
 
 export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps) {
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
-
-  const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION)
+  
+  const contentRef = useRef<CustomInputsRef<string>>()
+  const uploadedAsset = useRef<CustomInputsRef<File>>()
   const { mutate, isMutating, error } = useMutate<Database[]>('database')
+  const navigate = useNavigate()
   const ImageInput = useImageInput({})
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
 
-  const navigate = useNavigate()
-
-  const contentRef = useRef<string>('')
-
-  const getContent = (content: string): void => {
-    contentRef.current = content
-  }
+  const { submit, reset, setError, register, formState: { errors }} = useForm(
+    USE_FORM_VALIDATION, 
+    undefined, 
+    () => {
+      contentRef.current?.clear()
+      uploadedAsset.current?.clear()
+      ImageInput.clear()
+      navigate('/database')
+      setIsInsertMode(false)
+    }
+  )
 
   const changeThumbnailSource = (event: SyntheticEvent<HTMLInputElement>): void => {
     setUseUploadedImages(event.currentTarget.checked)
@@ -61,19 +67,16 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     delete data.url
     delete data.thumbnail
 
-    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
+    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : uploadedAsset.current?.value
 
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
    
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
-      
-      navigate('/database')
-      setIsInsertMode(false)
-      ImageInput.clear()
-      reset()
+      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current?.value, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
       return [...option.state || [], newItem]
     })
+
+    reset()
   }
 
   return(
@@ -81,10 +84,10 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
       {isMutating && <MutatingLoader/>}
       <div className={`${scss.insert_item_form_container} flex-row-normal-center-none`}>
         <FormWrapper onSubmit={submit(insertItem)}>
-          {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
+          {useUploadedImages ? ImageInput.Component : <FileInput ref={uploadedAsset} name='thumbnail' label='Insert thumnbail'/>}
           <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
           <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
-          <TextArea getValue={getContent} placeholder='Wirte item content'/>
+          <TextArea ref={contentRef} placeholder='Wirte item content'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
             <Button label='Insert item' type='submit'/>
             <Button label='Back' onClick={goBack}/>

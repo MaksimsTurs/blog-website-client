@@ -2,6 +2,8 @@ export type KeyValueObject<T = any> = { [key: string]: T }
 
 export type ServerResponseError = { code: number, message: string }
 
+export type CustomInputsRef<T = any> = { value: T, clear: () => void }
+
 export type UserRoles = 'User' | 'Admin' | 'Creator'
 
 export type User = {

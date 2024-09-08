@@ -5,23 +5,20 @@ import type { KeyValueObject } from "@/global.type";
 import { createRef, useRef, useState } from "react";
 
 import formValidator from "./tool/formValidator";
-import form from "./form";
+import form from "./form/form";
 
-export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>, defaultValue?: FormFieldsValues<T, R>) {
-  let isSubmited = useRef<boolean>(false)
-  let isResetButtonPressed = useRef<boolean>(false)
-  
-  const inputsRefs = useRef<Map<string, RefObject<HTMLInputElement>>>(new Map())
-
+export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>, defaultValue?: FormFieldsValues<T, R>, onReset?: () => void) {
   const [formState, setFormState] = useState<FormState>({ errors: undefined })
-
-  const formValues = useRef<KeyValueObject<any>>(defaultValue || {})
-
+  
+  const isSubmited = useRef<boolean>(false)
+  const inputsRefs = useRef<Map<string, RefObject<HTMLInputElement>>>(new Map())
+  const formValues = useRef<KeyValueObject<any>>({})
+    
   function reset(): void {
-    isResetButtonPressed.current = true
+    formValues.current = {}
     setFormState({})
     form.reset(inputsRefs.current)
-    formValues.current = {}
+    if(onReset) onReset()
   }
 
   function setError(name: string, message?: string) {
@@ -29,17 +26,24 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
   }
 
   function register(name: string): FormFieldsRegisterReturn {
-    if(!inputsRefs.current.has(name)) inputsRefs.current.set(name, createRef())
-    
+    if(!inputsRefs.current.has(name)) {
+      inputsRefs.current.set(name, createRef())
+    } else if(inputsRefs.current.has(name) && !formValues.current[name] && !isSubmited.current) {
+      const value = defaultValue?.[name as keyof typeof defaultValue] || ''
+
+      form.set.value(value, inputsRefs.current.get(name)?.current)
+      formValues.current[name] = value
+    }
+
     return { 
       name, 
       ref: inputsRefs.current.get(name) as LegacyRef<HTMLInputElement>,
       onChange: (event: any) => {
         const type = event.target.type
 
-        if(type === 'checkbox') formValues.current[name] = event.target.checked || false
+        if(type === 'checkbox')  formValues.current[name] = event.target.checked || false
         else if(type === 'file') formValues.current[name] = event.target.files
-        else formValues.current[name] = event.target.value
+        else                     formValues.current[name] = event.target.value
       }
     }
   }
@@ -56,16 +60,10 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
 
         validationResult = formValidator<T>(formValues.current, validation)
         
-        if(!validationResult) return target(formValues.current as T)
-
         setFormState(prev => ({...prev, errors: validationResult }))
 
-        if(Object.values(validationResult).filter(Boolean).length === 0) {
-          new Promise((resolve) => resolve(target(formValues.current as T)))
-            .finally(() => {
-              isResetButtonPressed.current = false
-              isSubmited.current = false
-            })
+        if(Object.values(validationResult || {}).filter(Boolean).length === 0) {
+          new Promise((resolve) => resolve(target(formValues.current as T))).finally(() => isSubmited.current = false)
         }
       }
     })

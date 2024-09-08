@@ -75,7 +75,7 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
 
   return(
     <Fragment>
-      <InsertSlidesGaleryModal isUpdate modalKey='IS-ADD-FILE-MODAL-OPEN'/>
+      <InsertSlidesGaleryModal isUpdate title='Dateien hinzufügen' modalKey='IS-ADD-FILE-MODAL-OPEN'/>
       {!galery ? <LocalError error={`Galery with _id "${searchParams.get(URL_SEARCH_PARAMS['GALERY-ID'])}" not found!`}/> :
       <div className='flex-column-normal-normal-none'>
         <div className={scss.galery_information_container}>

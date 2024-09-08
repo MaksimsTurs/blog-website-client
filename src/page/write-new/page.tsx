@@ -1,6 +1,6 @@
 import scss from './page.module.scss'
 
-import type { Content, ServerResponseError } from '@/global.type'
+import type { Content, CustomInputsRef, ServerResponseError } from '@/global.type'
 import type { AppDispatch, RootState } from '@/store/store'
 import type { PostCommentsData } from '../post/page.type'
 import type { CreatorState, ContentDraft } from '@/store/creator/creator.type'
@@ -41,11 +41,12 @@ export default function WriteNewPost() {
   const dispatch = useDispatch<AppDispatch>()
   const redirect = useNavigate()
   const creator = useSelector<RootState, CreatorState>(state => state.creator)
+  const postTagsRef = useRef<CustomInputsRef<string[]> | undefined>()
+  const postContentRef = useRef<CustomInputsRef<string> | undefined>()
 
   const searchParams = useSearchParams()
   const auth = useAuth()
   const permitor = usePermitor()
-  const resetHandlerRef = useRef<{ clearTagsArray: () => void } | undefined>()
   
   const contentID: string | null = searchParams.get('content-id')
   const draftID: string | null = searchParams.get('draft-id')
@@ -74,13 +75,17 @@ export default function WriteNewPost() {
   const key: string = currContent?.isFromAdmin ? '' : currContent?.contentType === 'comment' ? `post-${currContent.onPost}-comments-${currContent.onPage}` : 'all-posts'
   
   const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>(key)
-  const { submit, reset, register, formState: { errors }} = useForm<Content>(USE_FORM_VALIDATION, { title: currContent?.title, isHidden: currContent?.isHidden })
+  const { submit, reset, register, formState: { errors }} = useForm<Content>(
+    USE_FORM_VALIDATION, 
+    { title: currContent?.title, isHidden: currContent?.isHidden },
+    () => {
+      postTagsRef.current?.clear()
+      postContentRef.current?.clear()
+    }
+  )
 
   const passError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
-  
-  const tagsRef = useRef<string[]>(currContent?.tags || [])
-  const contentRef = useRef<string>(currContent?.content || '')
-  
+    
   const createNew = async(data: any): Promise<void> => {
     delete data.alt
     delete data.uploadImg
@@ -88,7 +93,7 @@ export default function WriteNewPost() {
 
     mutate(async function(option) {
       if(currContent?.isEdit) {
-        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: contentRef.current, tags: tagsRef.current, id: draftID || contentID }, AUTHORIZATION_OBJECT)
+        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: postContentRef.current?.value, tags: postTagsRef.current?.value, id: draftID || contentID }, AUTHORIZATION_OBJECT)
 
         localStorage.remove(updated._id!)
 
@@ -123,23 +128,20 @@ export default function WriteNewPost() {
       }
 
       //Insert post
-      const post = await fetcher.post<Content>(`/insert/post`, {...data, content: contentRef.current, tags: tagsRef.current }, AUTHORIZATION_OBJECT)
+      const post = await fetcher.post<Content>(`/insert/post`, {...data, content: postContentRef.current?.value, tags: postTagsRef.current?.value }, AUTHORIZATION_OBJECT)
       const state = option.state as Content[] || []
 
       redirect(`/post/${post._id}`)
       return [...state || [], post]
     })
-    reset()
-  }
 
-  const getTags = (tags: string[]): void => {
-    tagsRef.current = tags
+    reset()
   }
 
   const saveDraft = (): void => {
     const newDraftID: string = draftID || contentID || window.crypto.randomUUID()
       
-    dispatch(editOrinsertContentDraft({...currContent, _id: newDraftID!, content: contentRef.current }))
+    dispatch(editOrinsertContentDraft({...currContent, _id: newDraftID!, content: postContentRef.current?.value || '' }))
       
     searchParams.set({ 'draft-id': newDraftID })
     searchParams.remove(['content-id'])
@@ -151,14 +153,7 @@ export default function WriteNewPost() {
     dispatch(removeContentDraft(draftID || contentID!))
 
     searchParams.remove(['draft-id'])
-    tagsRef.current = []
-    contentRef.current = ''
-    resetHandlerRef.current!.clearTagsArray()
     reset()
-  }
-
-  const getTextAreaContentValue = (content: string): void => {
-    contentRef.current = content
   }
 
   return(
@@ -172,9 +167,9 @@ export default function WriteNewPost() {
               <Fragment>
                 <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
                 <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
-                <TextTagInput ref={resetHandlerRef} getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
+                <TextTagInput ref={postTagsRef} placeholder='Post tags' value={currContent?.tags}/>
               </Fragment> : null}
-            <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
+            <TextArea ref={postContentRef} defaultValue={currContent?.content} placeholder='Write content body here...'/>
             <div className={scss.create_new_buttons_container}>
               <Button label={currContent?.isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
               <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>

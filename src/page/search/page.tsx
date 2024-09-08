@@ -15,6 +15,7 @@ import { ArrowDownWideNarrow, ArrowUpNarrowWide, Eye, Filter, Heart, MessageCirc
 import { Fragment, useRef, useState } from 'react';
 
 import type { SortData, SortOption, SortedPosts } from './page.type';
+import type { CustomInputsRef } from '@/global.type';
 
 import useRequest from '@/custom-hook/use-request/useRequest';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
@@ -44,17 +45,15 @@ export default function Search() {
   const selectedTag: string | null = searchParams.get('tag')
   const page: number = parseInt(searchParams.get('page') || '0')
   
-  
-  const tagRef = useRef<string[]>(selectedTag ? [selectedTag] : [])
   const modalContainerRef = useRef<HTMLDivElement>(null)
-  const clearHandlerRef = useRef<{ clearTagsArray: () => void } | undefined>()
+  const sortTagRef = useRef<CustomInputsRef<string[]>>()
   
   const isOpen: boolean = !is930px ? true : useOutsideClick(URL_SEARCH_PARAMS['IS-FILTER-MODAL-OPEN'], modalContainerRef)  
 
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
     deps: [`sort-${page}`],
     noCache: true,
-    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...sortData, sortOption, tags: tagRef.current }, AUTHORIZATION_OBJECT) 
+    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...sortData, sortOption, tags: sortTagRef.current?.value }, AUTHORIZATION_OBJECT) 
   })
 
   const changeSort = (name: string): void => {
@@ -63,20 +62,15 @@ export default function Search() {
     else setSortOption({ [name]: 'descending' })
   }
 
-  const getTags = (tags: string[]): void => {
-    tagRef.current = tags
-  }
-
   const changeSortData = (name: string, value: any): void => {
     setSortData(prev => ({...prev, [name]: value }))
   }
 
   const resetSort = (): void => {
-    tagRef.current = []
     setSortData({ author: '', content: '', title: '' })
     setSortOption(undefined)
     searchParams.set({ 'page': 0 })
-    clearHandlerRef.current && clearHandlerRef.current.clearTagsArray()
+    if(sortTagRef.current) sortTagRef.current.clear()
   }
 
   const openFilterModal = (): void => {
@@ -118,7 +112,7 @@ export default function Search() {
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='content'/>
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='author'/>
             <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='title'/>
-            <TextTagInput ref={clearHandlerRef} getTags={getTags} value={tagRef.current} placeholder='Find by tags'/>
+            <TextTagInput ref={sortTagRef} value={[selectedTag || '', ...sortTagRef.current?.value || []]} placeholder='Find by tags'/>
             <div className={`${scss.search_filter_body_buttons} flex-row-normal-normal-small`}>
               <Button onClick={getSorted} label="Sort"/>
               <Button onClick={resetSort} label="Reset"/>
