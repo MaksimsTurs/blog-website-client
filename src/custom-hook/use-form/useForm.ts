@@ -1,22 +1,27 @@
 import type { FormFieldsRegisterReturn, FormFieldsValidation, FormFieldsValues, FormState } from "./useForm.type";
-import type { SyntheticEvent } from "react";
+import type { LegacyRef, RefObject, SyntheticEvent } from "react";
 import type { KeyValueObject } from "@/global.type";
 
-import { useRef, useState } from "react";
+import { createRef, useRef, useState } from "react";
 
 import formValidator from "./tool/formValidator";
-import getDefaultValue from "./tool/getDefaultValue";
+import form from "./form";
 
 export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>, defaultValue?: FormFieldsValues<T, R>) {
   let isSubmited = useRef<boolean>(false)
   let isResetButtonPressed = useRef<boolean>(false)
   
+  const inputsRefs = useRef<Map<string, RefObject<HTMLInputElement>>>(new Map())
+
   const [formState, setFormState] = useState<FormState>({ errors: undefined })
-  const [formValues, setFormValues] = useState<KeyValueObject<any>>((isSubmited.current && isResetButtonPressed.current) ? {} : (defaultValue || {}))
-  
+
+  const formValues = useRef<KeyValueObject<any>>(defaultValue || {})
+
   function reset(): void {
-    setFormValues({})
     isResetButtonPressed.current = true
+    setFormState({})
+    form.reset(inputsRefs.current)
+    formValues.current = {}
   }
 
   function setError(name: string, message?: string) {
@@ -24,25 +29,17 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
   }
 
   function register(name: string): FormFieldsRegisterReturn {
-    const defaultValuePerName: string | boolean | undefined | null = getDefaultValue(name)
-    const value: string | boolean = formValues?.[name] || (typeof defaultValuePerName !== 'undefined' ? defaultValuePerName : '')
-
-    if(typeof defaultValuePerName === 'boolean' && typeof formValues?.[name] === 'undefined') {
-      setFormValues(prev => ({...prev, [name]: defaultValuePerName }))
-    }
-
+    if(!inputsRefs.current.has(name)) inputsRefs.current.set(name, createRef())
+    
     return { 
       name, 
-      value: (isSubmited.current && isResetButtonPressed.current) && typeof value === 'object' ? '' : value, 
-      checked: isSubmited.current && isResetButtonPressed.current ? false : (value as boolean),
+      ref: inputsRefs.current.get(name) as LegacyRef<HTMLInputElement>,
       onChange: (event: any) => {
-        setFormValues(prev => {
-          const type = event.target.type
+        const type = event.target.type
 
-          if(type === 'checkbox') return {...prev, [name]: event.target.checked || false }
-          if(type === 'file') return {...prev, [name]: Array.from(event.target.files)[0] }
-          return {...prev, [name]: event.target.value }
-        })
+        if(type === 'checkbox') formValues.current[name] = event.target.checked || false
+        else if(type === 'file') formValues.current[name] = event.target.files
+        else formValues.current[name] = event.target.value
       }
     }
   }
@@ -57,14 +54,14 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
 
         event.preventDefault()
 
-        validationResult = formValidator<T>(formValues, validation)
+        validationResult = formValidator<T>(formValues.current, validation)
         
-        if(!validationResult) return target(formValues as T)
+        if(!validationResult) return target(formValues.current as T)
 
         setFormState(prev => ({...prev, errors: validationResult }))
 
         if(Object.values(validationResult).filter(Boolean).length === 0) {
-          new Promise((resolve) => resolve(target(formValues as T)))
+          new Promise((resolve) => resolve(target(formValues.current as T)))
             .finally(() => {
               isResetButtonPressed.current = false
               isSubmited.current = false

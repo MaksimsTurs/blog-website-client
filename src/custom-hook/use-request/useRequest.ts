@@ -29,9 +29,7 @@ export default function _useRequest<T>(reqParam: UseRequestParams<T>): UseReques
   }
 
   async function request() {
-    const cache = context?.cache?.[cacheKey]?.data
-
-    if(!cache && reqParam.request) {
+    if(!currState?.data && reqParam.request) {
       context!.change!(prev => ({...prev, [cacheKey]: { isFetching: true, isPending: true, isMutating: false }}))
       try {
         const response = await reqParam.request(reqParam.deps)
@@ -47,7 +45,7 @@ export default function _useRequest<T>(reqParam: UseRequestParams<T>): UseReques
         setError(passError)
       }
     } else {
-      context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isMutating: false, isPending: false, data: cache }}))
+      context!.change!(prev => ({...prev, [cacheKey]: { isFetching: false, isMutating: false, isPending: false, data: currState?.data }}))
     }
     initRender.current = false
   }

@@ -13,7 +13,7 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 export default function FileInput({ name, label, asset, initValue, isChange, supportedFormats, className, register }: FileInputProps) {
   const [uploadedAsset, setUploadedAsset] = useState<string | undefined>(initValue)
 
-  const inputRef = useRef<HTMLInputElement>(null), isVideo = useRef<boolean>(false)
+  const isVideo = useRef<boolean>(false)
   const searchParams = useSearchParams()
 
   const supportedExtentions: string[] = supportedFormats || ['image/webp', 'image/jpg', 'image/png', 'image/jpeg']
@@ -32,8 +32,8 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
   }
 
   const removeAsset = (): void => {
-    if(inputRef.current) inputRef.current.value = ''
     setUploadedAsset(undefined)
+    if(asset) asset.current = undefined
   }
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function FileInput({ name, label, asset, initValue, isChange, sup
 
   return(
     <Fragment>
-      <input ref={inputRef} accept={supportedExtentions.join(',')} id={name} name={name} type='file' onInput={upload} {...register?.(name)}/>
+      <input accept={supportedExtentions.join(',')} id={name} name={name} type='file' onInput={upload} {...register?.(name)}/>
       {!uploadedAsset ? 
         <label className={`${scss.file_input_label} ${className}`} htmlFor={name}>
           <section className={scss.file_input_text}><FileImage /><p>{label}</p></section>

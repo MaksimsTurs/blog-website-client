@@ -1,4 +1,5 @@
 import type { KeyValueObject } from "@/global.type"
+import type { LegacyRef } from "react"
 
 export type FormState = { errors?: FormFieldsErrors }
 
@@ -10,6 +11,7 @@ export type FormFieldsRegisterReturn = {
   name: string
   value?: any
   checked?: boolean
+  ref: LegacyRef<any>
   onChange?: (event: any) => any
 }
 

@@ -25,7 +25,7 @@ export default function InsertSlidesGaleryModal({ isUpdate, modalKey }: InsertSl
   const [countOfFiles, setCountOfFiles] = useState<number>(0)
 
   const { submit, register, reset } = useForm()
-  const { mutate } = useMutate<Galery[]>('galery')
+  const { mutate, isMutating } = useMutate<Galery[]>('galery')
   const searchParams = useSearchParams()
   
   const incrementCount = (): void => {
@@ -34,13 +34,14 @@ export default function InsertSlidesGaleryModal({ isUpdate, modalKey }: InsertSl
 
   const insertOrUpdateGalery = (data: any): void => {
     const URL: string = !isUpdate ? '/insert/galery' : '/update/galery'
+    
     mutate(async(option) => {
       const newOrUpdatedGalery = await fetcher.post<Galery>(URL, Objects.createFormDataFromJSON({...data, _id: searchParams.get(URL_SEARCH_PARAMS['GALERY-ID']) }), AUTHORIZATION_OBJECT)
       const currState = option?.state || []
-
+      
       if(isUpdate) return currState.map(galery => galery._id === newOrUpdatedGalery._id ? newOrUpdatedGalery : galery)
-
-      return [...currState, newOrUpdatedGalery]
+        
+        return [...currState, newOrUpdatedGalery]
     })
     reset()
   }
@@ -57,7 +58,7 @@ export default function InsertSlidesGaleryModal({ isUpdate, modalKey }: InsertSl
           {[...Array(countOfFiles)].map((_, index) => (
             <div key={index} className={`${scss.insert_modal_input_container} flex-column-normal-normal-small`}>
               <TextInput register={register} name={`${index}-context`} placeholder='File context'/>
-              <FileInput register={register} className={scss.insert_modal_file_input} name={`${index}-file`} label='Select slide'/>
+              <FileInput supportedFormats={['video/mp4', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp']} register={register} className={scss.insert_modal_file_input} isChange={isMutating} name={`${index}-file`} label='Select slide'/>
             </div>
           ))}
         </div>

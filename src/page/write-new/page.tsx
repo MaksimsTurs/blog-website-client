@@ -45,6 +45,7 @@ export default function WriteNewPost() {
   const searchParams = useSearchParams()
   const auth = useAuth()
   const permitor = usePermitor()
+  const resetHandlerRef = useRef<{ clearTagsArray: () => void } | undefined>()
   
   const contentID: string | null = searchParams.get('content-id')
   const draftID: string | null = searchParams.get('draft-id')
@@ -128,6 +129,7 @@ export default function WriteNewPost() {
       redirect(`/post/${post._id}`)
       return [...state || [], post]
     })
+    reset()
   }
 
   const getTags = (tags: string[]): void => {
@@ -147,9 +149,11 @@ export default function WriteNewPost() {
 
   const deleteDraft = (): void => {
     dispatch(removeContentDraft(draftID || contentID!))
+
     searchParams.remove(['draft-id'])
     tagsRef.current = []
     contentRef.current = ''
+    resetHandlerRef.current!.clearTagsArray()
     reset()
   }
 
@@ -168,9 +172,9 @@ export default function WriteNewPost() {
               <Fragment>
                 <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
                 <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
-                <TextTagInput getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
+                <TextTagInput ref={resetHandlerRef} getTags={getTags} placeholder='Post tags' value={tagsRef.current}/>
               </Fragment> : null}
-            <TextArea defaultValue={contentRef.current} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
+            <TextArea defaultValue={currContent?.content} placeholder='Write content body here...' getValue={getTextAreaContentValue}/>
             <div className={scss.create_new_buttons_container}>
               <Button label={currContent?.isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
               <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>
