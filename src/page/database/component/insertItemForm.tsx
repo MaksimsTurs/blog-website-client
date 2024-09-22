@@ -17,7 +17,6 @@ import useImageInput from '@/component/input/image-input/useImageInput'
 
 import fetcher from '@/lib/fetcher/fetcher'
 import createFormDataFromJSON from '@/lib/object/props/createFormDataFromJSON'
-import coockie from '@/lib/coockie/coockie'
 
 import type { CustomInputsRef, Database } from '@/global.type'
 import type { InsertItemFormProps } from '../page.type'
@@ -25,6 +24,7 @@ import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AUTHORIZATION_OBJECT } from '@/conts'
 
 const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
@@ -32,23 +32,13 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
   
   const contentRef = useRef<CustomInputsRef<string>>()
-  const uploadedAsset = useRef<CustomInputsRef<File>>()
+
+  const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION, undefined, () => contentRef.current?.clear())
   const { mutate, isMutating, error } = useMutate<Database[]>('database')
-  const navigate = useNavigate()
   const ImageInput = useImageInput({})
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
 
-  const { submit, reset, setError, register, formState: { errors }} = useForm(
-    USE_FORM_VALIDATION, 
-    undefined, 
-    () => {
-      contentRef.current?.clear()
-      uploadedAsset.current?.clear()
-      ImageInput.clear()
-      navigate('/database')
-      setIsInsertMode(false)
-    }
-  )
+  const navigate = useNavigate()
 
   const changeThumbnailSource = (event: SyntheticEvent<HTMLInputElement>): void => {
     setUseUploadedImages(event.currentTarget.checked)
@@ -67,15 +57,19 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     delete data.url
     delete data.thumbnail
 
-    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : uploadedAsset.current?.value
+    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
 
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
    
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current?.value, thumbnail }), { 'Authorization': `${coockie.getOne('PR_TOKEN')}` })
+      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current?.value, thumbnail }), AUTHORIZATION_OBJECT)
+      
+      navigate('/database')
       return [...option.state || [], newItem]
     })
-
+    
+    ImageInput.clear()
+    setIsInsertMode(false)
     reset()
   }
 
@@ -84,8 +78,8 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
       {isMutating && <MutatingLoader/>}
       <div className={`${scss.insert_item_form_container} flex-row-normal-center-none`}>
         <FormWrapper onSubmit={submit(insertItem)}>
-          {useUploadedImages ? ImageInput.Component : <FileInput ref={uploadedAsset} name='thumbnail' label='Insert thumnbail'/>}
-          <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
+          {useUploadedImages ? ImageInput.Component : <FileInput register={register} name='thumbnail' label='Insert thumnbail'/>}
+          <CheckBoxInput register={register} errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
           <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
           <TextArea ref={contentRef} placeholder='Wirte item content'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>

@@ -66,7 +66,7 @@ export default function EditUser({ _id }: EditUserProps) {
       <ModalWrapper title='Edit user' modalKey='IS-EDIT-USER-MODAL-OPEN'>
         <FormWrapper onSubmit={submit(updateUser)} className={scss.edit_user_body}>
           <TextInput errors={errors} name='name' placeholder='You name'/>
-          <FileInput name="avatar" label='Chose you avatar!' isChange={isMutating}/>
+          <FileInput name="avatar" label='Chose you avatar!'/>
           <div className='flex-row-normal-normal-small'>
             <Button className={scss.edit_user_log_out} onClick={logOut} label='Log out'/>
             <Button type='submit' label='Save changes'/>

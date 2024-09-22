@@ -13,6 +13,7 @@ import DataModalWrapper from '../data-render/dataModalWrapper';
 import DataBurgerWrapper from '../data-render/dataBurgerWrapper';
 import PaginationList from '@/component/pagination-list/paginationList';
 import AdminActionButton from '../adminActionButton';
+import ImageComponent from '@/component/image-component/image';
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 
@@ -79,7 +80,7 @@ export default function PostModal() {
             {!props.data.author ? 
               <div><Empty option={{ size: 'SMALL' }} label='No author found!'/></div> :
               <Link to={`/admin/user?id=${props.data.author._id}`} className={`${scss.post_auhtor_container} flex-row-normal-normal-medium`}>
-                <img src={props.data.author.avatar} alt={props.data.author.name} />
+                <ImageComponent classNames={{ svg: scss.post_user_avatar, img: scss.post_user_avatar }} src={props.data.author.avatar} alt={props.data.author.name} />
                 <div className={`${scss.post_author_data_body} flex-column-normal-normal-none`}>
                   <p>{props.data.author.name}</p>
                   <p>{props.data.author.role}</p>
@@ -94,7 +95,13 @@ export default function PostModal() {
                 {currViews.length === 0 ? 
                   <Empty option={{ size: 'SMALL' }} label='No body have viewed!'/> :
                   <ul className={scss.post_list_body}>
-                    {currViews?.map(view => <Link to={`/admin/user?id=${view._id}`}><li key={`${view._id + Math.random() * 100}`} className='flex-row-center-normal-medium'><img src={view.avatar} alt={view.name}/><p>{view.name}</p></li></Link>)} 
+                    {currViews?.map(view => 
+                      <Link to={`/admin/user?id=${view._id}`}>
+                        <li key={`${view._id + Math.random() * 100}`} className='flex-row-center-normal-medium'>
+                          <ImageComponent classNames={{ svg: scss.post_user_avatar, img: scss.post_user_avatar }} src={view.avatar} alt={view.name}/>
+                          <p>{view.name}</p>
+                        </li>
+                      </Link>)} 
                   </ul>}
               </div>
           </DataBurgerWrapper>
@@ -104,7 +111,13 @@ export default function PostModal() {
                 {currLikes.length === 0 ? 
                 <Empty option={{ size: 'SMALL' }} label='No body have liked!'/> :
                 <ul className={scss.post_list_body}>
-                  {currLikes?.map(like => <Link to={`/admin/user?id=${like._id}`}><li key={`${like._id + Math.random() * 100}`} className='flex-row-center-normal-medium'><img src={like.avatar} alt={like.name}/><p>{like.name}</p></li></Link>)} 
+                  {currLikes?.map(like => 
+                    <Link to={`/admin/user?id=${like._id}`}>
+                      <li key={`${like._id + Math.random() * 100}`} className='flex-row-center-normal-medium'>
+                        <ImageComponent classNames={{ svg: scss.post_user_avatar, img: scss.post_user_avatar }} src={like.avatar} alt={like.name}/>
+                        <p>{like.name}</p>
+                      </li>
+                    </Link>)} 
                 </ul>}
               </div>
           </DataBurgerWrapper>

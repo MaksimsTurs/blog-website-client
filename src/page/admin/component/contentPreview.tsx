@@ -2,6 +2,7 @@ import scss from '../scss/contentPreview.module.scss'
 import '@/scss/global.scss'
 
 import DataWrapper from "./data-render/dataWrapper";
+import ImageComponent from '@/component/image-component/image';
 
 import type { ContentPreviewProps } from '../page.type';
 
@@ -27,7 +28,7 @@ export default function ContentPreview({ contentData, authorData }: ContentPrevi
       <div style={{ justifyContent: 'space-between' }} className='flex-column-normal-normal-medium'>
         {authorData ? 
         <div className='flex-row-normal-normal-medium'>
-          <img className={scss.content_author_avatar} src={authorData.avatar} alt={authorData.name}/>
+          <ImageComponent classNames={{ img: scss.content_author_avatar, svg: scss.content_author_avatar }} src={authorData.avatar} alt={authorData.name}/>
           <div className='flex-column-normal-norma-none'>
             <p className={scss.content_author_name}>{authorData.name}</p>
             <p className={scss.content_author_registrated}>{createdAtDifference}</p>

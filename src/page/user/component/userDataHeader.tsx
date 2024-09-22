@@ -16,14 +16,11 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 export default function UserDataHeader({ user }: UserDataHeaderProps) {
   const isCurrentUser: boolean = usePermitor().equal('_id', user._id).permited()
   const isAdmin: boolean = user?.role === 'Admin'
+  
   const roleColor: string = isAdmin ? "#F48023" : "#1682FD"
   const roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
   
   const searchParams = useSearchParams()
-
-  const openUpdateModal = (): void => {
-    searchParams.set({ [URL_SEARCH_PARAMS['IS-EDIT-USER-MODAL-OPEN']]: true })
-  }
 
   const createdAtDifference: string = DateParser
     .getDifference(user.createdAt)
@@ -36,11 +33,15 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
       second: '[second] seconds ago!'
     })
 
+  const openUpdateModal = (): void => {
+    searchParams.set({ [URL_SEARCH_PARAMS['IS-EDIT-USER-MODAL-OPEN']]: true })
+  }
+
   return(
     <div className={`${scss.user_data_header} main-content-container flex-column-normal-normal-small`}>
       <div className={`${scss.user_data_header_top} flex-row-normal-center-none`}>
         <div className={`${scss.user_data_img_container} flex-column-normal-normal-small`}>
-          <ImageComponent classNames={{ img: scss.user_data_img, svg: scss.user_data_img, loader: scss.user_data_img_loader }} src={user.avatar} alt={user.name}/>
+          <ImageComponent classNames={{ img: scss.user_data_img, loader: scss.user_data_img_loader, svg: scss.user_data_img }} src={user.avatar} alt={user.name}/>
           <div style={{ color: roleColor }} className={`${scss.user_data_role_container} flex-row-center-normal-small`}>{roleIcon}<p>{user.role}</p></div>
         </div>
         {isCurrentUser && <Settings className={scss.user_data_header_edit_button} size={30} onClick={openUpdateModal}/>}
@@ -55,7 +56,7 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
           <p>{createdAtDifference}</p>
         </section>
         <section>
-          <p>Contents</p>
+          <p>Posts</p>
           <p>{user.myContent.length}</p>
         </section>
       </div>

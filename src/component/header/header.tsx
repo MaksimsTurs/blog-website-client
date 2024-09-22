@@ -61,7 +61,7 @@ export default function Header() {
           <button onClick={() => openAuthorizationModal('login')}>Login</button>
         </section> :
         <section className={`${scss.header_user_container} flex-row-center-center-medium`}>
-          <Link className={scss.header_user_link} to={`/user/${auth.user._id}`}><ImageComponent styles={{ loader: { width: '2rem', height: '2rem' }}} src={auth.user.avatar} alt={auth.user.name}/></Link>
+          <Link className={scss.header_user_link} to={`/user/${auth.user._id}`}><ImageComponent styles={{ svg: { width: '2rem', height: '2rem' }, loader: { width: '2rem', height: '2rem' }}} src={auth.user.avatar} alt={auth.user.name}/></Link>
         </section>}
       </header>
     </Fragment>

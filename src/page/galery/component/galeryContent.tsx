@@ -27,9 +27,10 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
 
   const [activeSort, setActiveSort] = useState<string[]>([])
   const [isSlideEditMode, setIsSlideEditMode] = useState<boolean>(false)
+  const [contextToEditID, setContextToEditID] = useState<string | undefined>()
 
   const searchParams = useSearchParams()
-  const { mutate, error } = useMutate<Galery[]>('galery')
+  const { mutate } = useMutate<Galery[]>('galery')
   const isAdmin: boolean = usePermitor().role(['Admin']).permited() 
   
   const imageExtentions: string[] = ['webp', 'jpeg', 'png', 'jpg']
@@ -48,6 +49,10 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
         return stateGalery
       })
     })
+  }
+
+  const editContext = (_id: string): void => {
+    setContextToEditID(_id)
   }
  
   const openSlideModal = (index: number): void => {
@@ -106,7 +111,7 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
             if(activeSort.length === 2 || activeSort.length === 0) {
               return(
                 <div key={content.url} className={scss.galery_content_body} onClick={isSlideEditMode ? undefined : () => openSlideModal(index)}>
-                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
+                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon onClick={() => editContext(content._id)}/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
                   {imageExtentions.includes(extention) ? <img src={content.url}/> : <video src={content.url}/>}
                 </div>
               )
@@ -115,14 +120,14 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
             if(activeSort.includes('image') && imageExtentions.includes(extention)) {
               return(
                 <div key={content.url} className={scss.galery_content_body} onClick={isSlideEditMode ? undefined : () => openSlideModal(index)}>
-                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
+                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon onClick={() => editContext(content._id)}/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
                   <img src={content.url}/>
                 </div>
               )
             } else if(activeSort.includes('video') && (!extention || extention === 'mp4')) {
               return(
                 <div key={content.url} className={scss.galery_content_body} onClick={isSlideEditMode ? undefined : () => openSlideModal(index)}>
-                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
+                  {isSlideEditMode && <div className={`${scss.galery_edit_mode_action_container}`}><PencilIcon onClick={() => editContext(content._id)}/><ImageMinus onClick={() => removeImage(content.url)}/></div>}
                   <video src={content.url}/>
                 </div>
               )

@@ -43,7 +43,7 @@ export type Galery = {
   countOfImages: number
   countOfVideos: number
   galerySize: number
-  content: { url: string, description?: string }[]
+  content: { _id: string, url: string, description?: string }[]
 }
 
 export type Database = {

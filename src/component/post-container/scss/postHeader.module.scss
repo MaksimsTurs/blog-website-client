@@ -17,7 +17,7 @@
     &:hover > .post_action_container { display: flex; }
     
     .post_action_container {
-      @include absolute-left-top-zindex-width-height(-320%, 180%, 2, fit-content, fit-content);
+      @include absolute-left-top-zindex-width-height(-300%, 180%, 2, fit-content, fit-content);
       border-radius: $border-radiues-button;
       border: 1px solid $border-container-soft;
       display: none;

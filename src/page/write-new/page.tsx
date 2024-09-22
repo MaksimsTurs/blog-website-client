@@ -103,10 +103,6 @@ export default function WriteNewPost() {
 
           option.removeCache(`post-${updated._id}`)
 
-          for(let index: number = (currContent?.onPage || 0) + 1; index > 0; index--) {
-            option.removeCache(`${currContent.contentType}-${index}`)
-          }
-
           if(!currContent.isFromAdmin) redirect(`/post/${updated._id}`)
           else redirect(`/admin/${currContent.contentType}`)
 

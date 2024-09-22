@@ -16,7 +16,7 @@ export default {
   PAIR_BRACKETS_REGEXP: /\((.*?)\)/g,
   TAG_BRACKET_REGEXP: /<.*>(.*)<.*>/,
   //Secure regexp
-  HTTPS_PROTOCOL_REGEXP: /((blob:?.+http?|https)|http|https):\/{2}/g,
-  HTML_TAG_WITH_HANDLERS_REGEXP: /<.*? on.* .*?>/gm,
-  SCRIPT_TAG_REGEXP: /<script.*?>([\s\S]*?)<\/script>/gm
+  HTML_TAG_REGEXP: /(\<.*\>([\s\S]*?)\<\/.*\>)|(\<.*\>)/g,
+  UNSAFE_HTML_HANDLERS: /\"{1,}\s{0,}on.*/,
+  PROTOCOL_REGEXP: /^((blob:?.+http?|https)|http|https):\/{2}/g
 } as ContentRegexp

@@ -18,20 +18,21 @@ export type ContentRegexp = {
   IMAGE_REGEXP: RegExp 
   LINK_REGEXP: RegExp
   VIDEO_REGEXP: RegExp
-//---------Other useful RegExp-----------//
+//----------Other useful RegExp-----------//
   QUOTE_BRACKETS_REGEXP: RegExp
   DEFAULT_REGEXP: RegExp
-  HTTPS_PROTOCOL_REGEXP: RegExp
-  HTML_TAG_WITH_HANDLERS_REGEXP: RegExp
-  SCRIPT_TAG_REGEXP: RegExp
   SQUARE_BRACKETS_REGEXP: RegExp
   PAIR_BRACKETS_REGEXP: RegExp
   TAG_BRACKET_REGEXP: RegExp
+//-------------Secure RegExp---------------//
+  PROTOCOL_REGEXP: RegExp
+  UNSAFE_HTML_HANDLERS: RegExp
+  HTML_TAG_REGEXP: RegExp
 }
 
 export type ContentSecure = {
-  URL: (url: string) => boolean
-  DOM: (line: string) => boolean
+  URL: (url: string, information: ContentParsingErrorInformation) => void
+  containsHTMLTag: (content: string, information: ContentParsingErrorInformation) => void
 }
 
 export type ContentKinds =

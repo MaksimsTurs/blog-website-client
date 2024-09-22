@@ -13,8 +13,6 @@ import type { PreviewAuthorDataProps } from '../page.type'
 export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
   const color = author.role === 'Admin' ? '#F48023' : '#1682FD'
 
-  console.log(author)
-
   const createdAtDifference: string = DateParser
     .getDifference(author.createdAt)
     .getSortDate({
@@ -28,7 +26,7 @@ export default function PreviewAuthorData({ author }: PreviewAuthorDataProps) {
 
   return(
     <div style={{ height: 'fit-content', flexShrink: 0 }} className='flex-column-center-normal-none main-content-container'>
-      <ImageComponent classNames={{ img: scss.author_avatar }} src={author.avatar} alt={author.name}/>
+      <ImageComponent classNames={{ img: scss.author_avatar, svg: scss.author_avatar }} src={author.avatar} alt={author.name}/>
       <div className='flex-column-center-normal-none'>
         <Link to={`/user/${author._id}`} className={scss.author_name}>{author.name}</Link>
         <div className='flex-row-center-center-medium' style={{ color }}>

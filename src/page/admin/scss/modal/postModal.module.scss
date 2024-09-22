@@ -20,23 +20,18 @@
         padding-left: 0.5rem;
       }
     }
-
-    img {
-      border-radius: $border-radius-container;
-      object-fit: cover;
-      width: 3rem;
-      height: 3rem;
-    }
   }
+}
+
+.post_user_avatar {
+  border-radius: $border-radius-container;
+  object-fit: cover;
+  width: 3rem;
+  height: 3rem;
 }
 
 .post_auhtor_container {
   margin-top: 0.5rem;
-
-  > img {
-    border-radius: $border-radius-container;
-    width: 5rem;
-  }
 
   .post_author_data_body {
     p {

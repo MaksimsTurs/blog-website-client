@@ -6,6 +6,7 @@ import AdminActionButton from '../adminActionButton'
 import DataBurgerWrapper from '../data-render/dataBurgerWrapper'
 import Empty from '@/component/empty/empty'
 import PaginationList from '@/component/pagination-list/paginationList'
+import ImageComponent from '@/component/image-component/image'
 
 import type { Content, User } from '@/global.type'
 
@@ -54,7 +55,7 @@ export default function CommentModal() {
           {!props.data.author ? 
             <div><Empty option={{ size: 'SMALL' }} label='No author found!'/></div> :
             <Link to={`/admin/user?id=${props.data.author._id}`} className={`${scss.comment_auhtor_container} flex-row-normal-normal-medium`}>
-              <img src={props.data.author.avatar} alt={props.data.author.name} />
+              <ImageComponent src={props.data.author.avatar} alt={props.data.author.name} />
               <div className={`${scss.comment_author_data_body} flex-column-normal-normal-none`}>
                 <p>{props.data.author.name}</p>
                 <p>{props.data.author.role}</p>

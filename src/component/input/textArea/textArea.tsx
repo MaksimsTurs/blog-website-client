@@ -2,7 +2,7 @@ import scss from './textArea.module.scss'
 import '@/scss/global.scss'
 
 import type { TextAreaProps } from "../input.type";
-import type { CustomInputsRef, ServerResponseError } from '@/global.type';
+import type { ServerResponseError } from '@/global.type';
 
 import { Bold, Link2, FileImage, Eye, X, Heading1, Heading2 } from 'lucide-react';
 import { forwardRef, Fragment, memo, SyntheticEvent, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
@@ -36,7 +36,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
   const [imgUrl, setImgUrl] = useState<string>()
   const [context, setContext] = useState<string>()
 
-  const uploadedAssetsRef = useRef<CustomInputsRef<File[]>>()
+  const asset = useRef<File>()
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const mainContainerRef = useRef<HTMLDivElement>(null)
 
@@ -75,14 +75,14 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
   const addAsset = useCallback(async(): Promise<void> => {
     const isVideo: boolean = !Array.include(
       ['webp', 'png', 'jpeg', 'jpg'], 
-      [Strings.getAssetExtension(ImageInput.selected?.[0] || imgUrl || ''), uploadedAssetsRef.current?.value.at(0)?.type.replace(/image|video/, '').replace('/', '') || '']
+      [Strings.getAssetExtension(ImageInput.selected?.[0] || imgUrl || ''), asset.current?.type.replace(/image|video/, '').replace('/', '') || '']
     )
 
     const error = TextEditor.upload.validate({ 
       uploadType: ImageOptionInput.selected?.[0], 
       url: ImageInput.selected?.[0] || imgUrl, 
       alt: imgAlt, 
-      asset: uploadedAssetsRef.current?.value.at(0)
+      asset: asset.current
     }, isVideo)
     
     setError(error)
@@ -94,13 +94,13 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
     if(ImageOptionInput.selected[0] === 'From file system') {
       try {
         setIsUpload(true)
-        uploadedFileURL = (await TextEditor.upload.upload(uploadedAssetsRef!.current!.value.at(0)!)).assetURL
+        uploadedFileURL = (await TextEditor.upload.upload(asset.current!)).assetURL
       } catch(error) {
         setError((error as ServerResponseError).message)
         setIsUpload(false)
       }
 
-      if(/video/g.test(uploadedAssetsRef.current?.value.at(0)?.type || '') || isVideo) {
+      if(/video/g.test(asset.current?.type || '') || isVideo) {
         const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'VIDEO')
         setTextAreaContent(fileText)
       } else {
@@ -123,7 +123,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
     const fileText: string = TextEditor.edit.resource(uploadedFileURL, textAreaContent, textAreaRef.current!, 'IMAGE', imgAlt!, context)
     setTextAreaContent(fileText)
     resetState(true, true)
-  }, [imgAlt, imgUrl, uploadedAssetsRef.current?.value, context, ImageOptionInput.selected, ImageInput.selected])
+  }, [imgAlt, imgUrl, asset, context, ImageOptionInput.selected, ImageInput.selected])
 
   const inputContent = (event: SyntheticEvent<HTMLTextAreaElement>): void => {
     setTextAreaContent(event.currentTarget.value)
@@ -163,7 +163,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
     ImageOptionInput.reset()
 
     if(closeModal) searchParams.remove([URL_SEARCH_PARAMS['IS-UPLOAD-MODAL-OPEN']])
-    if(resetAsset) uploadedAssetsRef.current?.clear()
+    if(resetAsset) asset.current = undefined
   }
 
   useImperativeHandle(ref, () => ({
@@ -230,7 +230,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
             {ImageOptionInput.selected.at(0) === 'Existet file from server' ? 
             ImageInput.Component :
             ImageOptionInput.selected.at(0) === 'From file system' ? 
-            <FileInput ref={uploadedAssetsRef} label='Upload asset!' name='file' supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
+            <FileInput label='Upload asset!' name='file' asset={asset} supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
             ImageOptionInput.selected.at(0) === 'From url' ? 
             <TextInput onInput={inputImgUrl} value={imgUrl || ''} name='' type='text' placeholder='Put you img URL here!'/> : null}
             <ImageOptionInput.Wrapper title='Add file option'>

@@ -1,11 +1,11 @@
 import type { ContentParserParseLineAs, LinkLikeDictionary } from "../contentParser.type";
 
 import have from "./have";
-import secure from "./secure";
 import regexp from "./regexp";
-import error from "./error";
 import benchmark from "./benchmark";
 import kind from "./kind";
+import secure from "./secure";
+import error from "./error";
 
 export default {
   intendention: function() {
@@ -52,20 +52,22 @@ export default {
   img: function(obj, lines) {
     benchmark.countKind(kind.IMG)
     let parsed: string = '', imgDictionary: LinkLikeDictionary = {}, entries = []
-
+    
     //Collect all images
     for(; obj.index < lines.length;) {
       if(have.img(lines[obj.index])) {
         const [text, context, src] = lines[obj.index].replace(/\<(.*)\>/g, '$1').trim().split(/;/)
-        
-        if(!src && secure.URL(context)) {
+
+        if(!src) {
+          secure.URL(context, { content: lines[obj.index], function: 'parse.img', message: `URL are undefined or unsafe!` })
           imgDictionary[obj.index] = { text, link: context }
-        } else if(src && secure.URL(src)) {
+        } else if(src) {
+          secure.URL(src, { content: lines[obj.index], function: 'parse.img', message: `URL are undefined or unsafe!` })
           imgDictionary[obj.index] = { text, link: src, context }
         } else {
-          error.throw({ content: lines[obj.index], function: 'parseAs.img', message: `"context": ${context} or "src": ${src} is not defined or not secure!` })
+          error.throw({ content: lines[obj.index], function: 'parse.img', message: '"src" and "context" are not defined!' })
         }
-        
+
         obj.index++
       } else break
     }
@@ -98,10 +100,7 @@ export default {
 
     while(matchers?.[index]) {
       const link: string[] = matchers[index].replace(regexp.SQUARE_BRACKETS_REGEXP, '$1').split(/;/)
-
-      if(!secure.URL(link[1])) {
-         error.throw({ content: line, function: 'parseAs.link', message: `Type of URL "${link[1]}" is "${typeof link[1]}", URL is not string or URL is not secure!` })
-      }
+      secure.URL(link[1], { content: link.join('|'), function: 'parse.link', message: 'Link are unsafe or not defined!' })
       
       parsed = parsed.replace(matchers[index], `<a target="_blank" class="link content_flex" href="` + link[1] + `">` + link[0] + `</a>`)
       index++
@@ -112,10 +111,7 @@ export default {
   video: function(line) {
     benchmark.countKind(kind.VIDEO)
     let videoURL: string | undefined = line.replace(regexp.VIDEO_REGEXP, '$1')  
-
-    if(!secure.URL(videoURL)) {
-      error.throw({ content: line, function: 'parseAs.video', message: `Type of video URL "${videoURL}" is "${typeof videoURL}", video URL is not string or URL is not secure!` })
-    }
+    secure.URL(videoURL, { content: videoURL, function: 'parse.video', message: 'Video URL are unsafe or not defined!' })
     
     return(
       `

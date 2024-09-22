@@ -8,13 +8,10 @@ import ContentViewer from '../content-viewer/contentViewer';
 
 import type { Content } from '@/global.type';
 import type { PostCommentsData } from '@/page/post/page.type';
-import type { RootState } from '@/store/store';
 import type { PostContainerProps } from "./postContainer.type";
-import type { WebsiteSetting } from '@/store/website-setting/setting.type';
 
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Fragment } from 'react/jsx-runtime';
-import { useSelector } from 'react-redux';
 import { Eye, Heart, MessageCircle } from 'lucide-react';
 
 import DateParser from '@/lib/date-parser/dateParser';

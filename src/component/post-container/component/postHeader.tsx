@@ -14,7 +14,6 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import DateParser from '@/lib/date-parser/dateParser'
 import CharacterArray from '@/lib/string/strings'
 import fetcher from '@/lib/fetcher/fetcher'
-import coockie from '@/lib/coockie/coockie'
 import localStorage from '@/lib/local-storage/localStorage'
 
 import type { Content } from '@/global.type'
@@ -23,7 +22,7 @@ import type { PostCommentsData } from '@/page/post/page.type'
 import ImageComponent from '@/component/image-component/image'
 import ConfirmModal from '@/component/modals/confirm-modal/confirmModal'
 
-import { URL_SEARCH_PARAMS } from '@/conts'
+import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 
 export default function PostHeader({ user, createdAt, type, contentID, postID, content, tags, title, isHidden }: PostHeaderProps) {
   const permission = useHavePermission()
@@ -71,7 +70,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
     mutate(async (option) => {
       //Remove item handlers
       if(action === 'remove') {
-        const removedItem = await fetcher.get<Content>(`/admin/remove/${CharacterArray.firstLetterToUpperCase(typeForAPI)}/${contentID}`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+        const removedItem = await fetcher.get<Content>(`/admin/remove/${CharacterArray.firstLetterToUpperCase(typeForAPI)}/${contentID}`, AUTHORIZATION_OBJECT)
         
         //Remove some comment from post page
         if(isPostPage && type === 'comment') {
@@ -93,7 +92,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
       }
 
       //Hidde item handlers
-      const hiddenItem = await fetcher.post<Content>(`/admin/${typeForAPI}/update`, { id: contentID, isHidden: action === 'hidde' }, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+      const hiddenItem = await fetcher.post<Content>(`/admin/${typeForAPI}/update`, { id: contentID, isHidden: action === 'hidde', flag: action }, AUTHORIZATION_OBJECT)
       
       //Hidde some comment from post page
       if(isPostPage) {

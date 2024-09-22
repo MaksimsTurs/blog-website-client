@@ -45,7 +45,7 @@ export default function Post() {
         <div style={{ flexGrow: '1' }} className='flex-column-normal-normal-medium'> 
           <Fragment>
             {isPending ? <PostContainerLoader/> : !data ? <PageError error={{ code: 404, message: 'Post not found!' }}/> : <PostContainer post={data!} type="post"/>}
-            <Empty option={{ height: 'FULL', flexCenterCenter: true }} label='Kommentar funktion ist zu zeit aus!'/>
+            <Empty option={{ height: 'FULL', flexCenterCenter: true }} label='Kommentar funktion ist zu zeit ausgeshaltet!'/>
             {/* <CommentContainer page={page} postID={id!} isPostHidden={data?.isHidden || false}/> */}
           </Fragment>
         </div>

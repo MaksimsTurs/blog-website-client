@@ -12,13 +12,14 @@ export default memo(function ImageComponent({ alt, classNames, src, styles }: Im
   
   useEffect(() => {
     const checkImageSource = async (): Promise<void> => {
-      try {
-        await fetch(src || '')
-        setImageState({ isLoading: false, source: src })
-      } catch(error) {
-        console.error(error)
+      const response = await fetch(src || '')
+
+      if(!response.ok) {
         setImageState({ isLoading: false })
+        return
       }
+
+      setImageState({ isLoading: false, source: src })
     }
 
     checkImageSource()
@@ -26,7 +27,9 @@ export default memo(function ImageComponent({ alt, classNames, src, styles }: Im
 
   return (
     <Fragment>
-      {imageState.isLoading ? <ImageLoader className={classNames?.loader} style={styles?.loader}/> : !imageState.source ? <CircleUserRound className={`${classNames?.img} ${scss.default_image}`}/> : null}
+      {imageState.isLoading ? 
+      <ImageLoader className={classNames?.loader} style={styles?.loader}/> : 
+      !imageState.source ? <CircleUserRound className={`${classNames?.svg} ${scss.default_image}`} style={styles?.svg}/> : null}
       <img src={src} alt={alt} className={classNames?.img} style={{...styles?.img, display: imageState.source && !imageState.isLoading ? 'block' : 'none' }}/>
     </Fragment>
   )

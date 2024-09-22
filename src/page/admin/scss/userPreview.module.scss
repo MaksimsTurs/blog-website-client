@@ -32,13 +32,8 @@
       }
     }
 
-    &:first-child {
-      padding-right: 0.5rem;
-    }
-
     &:not(:first-child) {
       margin-left: 0.5rem;
-      padding-right: 0.5rem;
       flex-grow: 1;
     }
   }

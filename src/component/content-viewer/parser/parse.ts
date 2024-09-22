@@ -2,15 +2,17 @@ import ContentParser from "./contentParser"
 
 export default function parse(content: string): string {
   ContentParser.benchmark.reset()
+  // ContentParser.secure.containsHTMLTag(content, { content, function: 'parse', message: `Content contains unsafe HTML tag!` })
 
   if(!content) return ''
 
   let lines: string[] = content.split('\\n')
   let parsed: string = ''
-
+  
   if(lines.length === 1) lines = content.split('\n')
-
+    
   for(let obj = { index: 0 }; obj.index < lines.length; obj.index++) {
+
     if(ContentParser.have.intendention(lines[obj.index])) {
       parsed += ContentParser.parseAs.intendention()
       continue
@@ -63,8 +65,6 @@ export default function parse(content: string): string {
   }
 
   parsed = `<div style="width: 100%;" class="flex-column-normal-normal-none">` + parsed + `</div>`
-
-  if(!ContentParser.secure.DOM(parsed)) ContentParser.error.throw({ content: parsed, function: 'parse', message: 'HTML Contains handlers or script tag!' })
 
   return parsed
 }

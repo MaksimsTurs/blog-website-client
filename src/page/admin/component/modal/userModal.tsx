@@ -30,11 +30,11 @@ import { ShieldHalf, SquarePen, UserRound } from 'lucide-react'
 import { Fragment } from 'react/jsx-runtime';
 
 import fetcher from '@/lib/fetcher/fetcher';
-import Thing from '@/lib/object/object';
+import Objects from '@/lib/object/object';
 
 export default function UserModal() {
   const searchParams = useSearchParams()
-  const { mutate, isMutating, error } = useMutate<ContentData<User>>(`user-${searchParams.get('page') || 0}`)
+  const { mutate, error } = useMutate<ContentData<User>>(`user-${searchParams.get('page') || 0}`)
   const { submit, reset, register } = useForm<User>(undefined)
 
   const SelectBan = useSelect({})
@@ -54,7 +54,7 @@ export default function UserModal() {
       const role: string | undefined = SelectRole.selected?.[0]
       const ban: string | undefined = SelectBan.selected?.[0]
   
-      const updatedUser = await fetcher.post<User>('/admin/user/update', Thing.createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), AUTHORIZATION_OBJECT)
+      const updatedUser = await fetcher.post<User>('/admin/user/update', Objects.createFormDataFromJSON({...userNewData, id: searchParams.get('id'), role, ban }), AUTHORIZATION_OBJECT)
   
       reset()
       searchParams.remove(['user-edit-modal'])
@@ -111,7 +111,7 @@ export default function UserModal() {
                 <SelectRole.Item value='7'>7 Days</SelectRole.Item>
                 <SelectRole.Item value='14'>14 Days</SelectRole.Item>
               </SelectBan.Wrapper>
-              <FileInput label='Change user avatar' name='avatar' isChange={isMutating}/>
+              <FileInput label='Change user avatar' name='avatar'/>
               {error && <LocalError error={error.message}/>}
             </FormWrapper>
           </DataEditModalWrapper>
@@ -131,7 +131,7 @@ export default function UserModal() {
                 {maxMyContentPage > 1 ? <PaginationList pagesCount={maxMyContentPage} listKey='user-content'/> : null}
                 {currMyContent.length === 0 ? <Empty option={{ flexCenterCenter: true, size: 'SMALL' }} label='User have no content!'/> :
                 currMyContent.map(content => 
-                  <Link to={`/admin/${Thing.inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
+                  <Link to={`/admin/${Objects.inObject<Content>(content, ['viewedBy']) ? 'post' : 'comment'}?id=${content._id}`}>
                     <li key={content._id} className='flex-column-normal-normal-none'>
                       <h5>{content.title}</h5>
                       <section className={`${scss.user_modal_data_container} flex-row-normal-normal-big`}><p>Likes:</p><p>{content.likedBy.length}</p></section>
