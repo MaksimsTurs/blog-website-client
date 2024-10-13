@@ -6,7 +6,6 @@ import { Fragment } from 'react/jsx-runtime'
 
 import useRequest from '@/custom-hook/use-request/useRequest'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
-import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 import fetcher from '@/lib/fetcher/fetcher'
 
@@ -32,8 +31,6 @@ export default function User() {
 
   const user = useRequest<User>({ deps: [`user-${id}`], request: async () => fetcher.get<User>(`/user/${id}`) })
   const userContent = useRequest<UserContentData>({ prev: [`user-${id}-content-${page > 0 ? page - 1 : page}`], deps: [`user-${id}-content-${page}`], request: async () => await fetcher.get(`/user/${id}/content/${page}`) })
-
-  useMetadata({ title: user.data?.name, description: `Hier kannst du detalierte daten von ${user.data?.name} ansehen.` })
 
   return(
     <Fragment>

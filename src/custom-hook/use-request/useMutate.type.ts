@@ -3,7 +3,7 @@ export type MutateParams<T> = {
 }
 
 export type MutateRequestFunctionParams<T> = {
-  deps: string
+  deps?: string
   state: T | undefined
   removeCache: (key: string) => void
 }

@@ -4,9 +4,7 @@
 .data_simple_container {
   border-bottom: 1px solid $color-black-soft;
   flex-wrap: wrap;
-  padding: 0rem 1rem 0.25rem 1rem;
-
-  &:last-child { border-bottom: none; }
+  padding: 0rem 0rem 0.25rem 0rem;
 
   .data_simple_key { font-weight: bold; }
   

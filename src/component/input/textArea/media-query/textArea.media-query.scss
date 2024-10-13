@@ -1,0 +1,18 @@
+@media(width <= 600px) {
+  .text_area_container {
+    flex-direction: column;
+
+    .text_area_action_buttons_container {
+      padding-left: 0rem;
+
+      .text_area_action_buttons_fixed_wrapper_body { 
+        position: static !important; 
+      }
+  
+      .text_area_action_buttons_fixed_body { 
+        position: static !important; 
+        flex-direction: row !important; 
+      }
+    }
+  }
+}

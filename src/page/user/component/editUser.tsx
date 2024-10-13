@@ -22,7 +22,7 @@ import type { EditUserProps } from '../page.type';
 import type { User } from '@/global.type';
 import type { UserSessionData } from '@/custom-hook/use-auth/useAuth.type';
 
-import Thing from '@/lib/object/object';
+import Objects from '@/lib/object/object';
 import fetcher from '@/lib/fetcher/fetcher';
 
 import { URL_SEARCH_PARAMS } from '@/conts';
@@ -41,7 +41,7 @@ export default function EditUser({ _id }: EditUserProps) {
   const updateUser = (data: User): void => {
     if(isAdminOrIDEqual) {
       mutate(async function(option) {
-        const newUserData = await fetcher.post<User>('/update/user', Thing.createFormDataFromJSON({...data, _id }))
+        const newUserData = await fetcher.post<User>('/update/user', Objects.createFormDataFromJSON({...data, _id }))
         
         auth.create({ setSession: newUserData })
         stopEditing()
@@ -67,9 +67,9 @@ export default function EditUser({ _id }: EditUserProps) {
         <FormWrapper onSubmit={submit(updateUser)} className={scss.edit_user_body}>
           <TextInput errors={errors} name='name' placeholder='You name'/>
           <FileInput name="avatar" label='Chose you avatar!'/>
-          <div className='flex-row-normal-normal-small'>
-            <Button className={scss.edit_user_log_out} onClick={logOut} label='Log out'/>
-            <Button type='submit' label='Save changes'/>
+          <div className={`${scss.edit_user_buttons} flex-row-normal-normal-small`}>
+            <Button className={scss.edit_user_log_out} onClick={logOut}>Abmelden</Button>
+            <Button type='submit'>Speichern</Button>
           </div>
         </FormWrapper>
       </ModalWrapper>

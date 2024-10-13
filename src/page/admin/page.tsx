@@ -18,13 +18,14 @@ import ContentPreview from './component/contentPreview'
 import UserPreview from './component/userPreview'
 import Empty from '@/component/empty/empty'
 import DataLoader from './component/data-render/dataLoader'
-import Modals from './component/modal/modals'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
+import DataViewOptions from './component/dataViewOptions'
 import PageError from '@/component/errors/page-error/pageError'
 
 import { useParams, Navigate } from 'react-router-dom'
 
 import { URL_SEARCH_PARAMS, AUTHORIZATION_OBJECT } from '@/conts'
+import { Fragment } from 'react/jsx-runtime'
 
 export default function Admin() {
   const { tab } = useParams()
@@ -33,33 +34,36 @@ export default function Admin() {
   const permitor = usePermitor()
 
   const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
+  const isSomeItemSelected: boolean = Boolean(searchParams.get('id'))
 
   if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
 
   const { isMutating, isPending, data, prev, error } = useRequest<ContentData<Content | User>>({ 
-    deps: [`${tab}-${currPage}`], 
-    prev: [`${tab}-${currPage === 0 ? currPage : currPage - 1}`], 
+    deps: [`admin/${tab}/${currPage}`], 
+    prev: [`admin/${tab}/${currPage === 0 ? currPage : currPage - 1}`], 
     request: async () => await fetcher.get(`/admin/${tab}/${currPage}`, AUTHORIZATION_OBJECT) 
   })
 
   const pagesCount: number = data?.pagesCount || prev?.pagesCount || 0
-  const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar', 'email'])
+  const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar'])
 
   return(
-    <div style={{ height: '100%',paddingRight: '11rem', }} className='flex-row-normal-normal-none'>
-      <Modals/>
-      {isMutating ? <MutatingLoader/> : null}
-      {error ? <PageError error={error}/> :
-      <div style={{ width: '100%', height: '100%' }} className='flex-column-normal-normal-medium'>
-        {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
-        {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label={`Nothing found...`}/>}
-        {isPending ? 
-         <DataLoader/> : 
-         <div className={scss.admin_list_container}>
-           {data && data.data.map(item => isRenderUser ? <UserPreview key={item._id} user={item as User}/> : <ContentPreview key={item._id} contentData={item as Content} authorData={(item as Content).author}/>)}
-         </div>}
-         {isPending ? <PaginationLoader/> : pagesCount > 1 ? <Pagination pagesCount={pagesCount}/> : null}        
-        </div>}
+    <div style={{ height: '100%', paddingRight: '9.5rem', width: '100%' }} className='flex-row-normal-normal-none'>
+      {(isSomeItemSelected && !isPending) ? <DataViewOptions/> :
+      <Fragment>
+        {isMutating && <MutatingLoader/>}
+        {error ? <PageError error={error}/> :
+        <div style={{ width: '100%' }} className='flex-column-normal-normal-medium'>
+          {isPending ? <PaginationLoader/> : pagesCount > 1 && <Pagination pagesCount={pagesCount}/>} 
+          {data?.data.length === 0 && <Empty option={{ flexCenterCenter: true, height: 'FULL' }} label={`Nothing found...`}/>}
+          {isPending ? 
+          <DataLoader/> : 
+          <div className={scss.admin_list_container}>
+            {data && data.data.map(item => isRenderUser ? <UserPreview key={item._id} user={item as User}/> : <ContentPreview key={item._id} contentData={item as Content} authorData={(item as Content).author}/>)}
+          </div>}
+          {isPending ? <PaginationLoader/> : pagesCount > 1 && <Pagination pagesCount={pagesCount}/>} 
+          </div>}
+        </Fragment>}
       <AdminSideMenu/>
     </div>
   )

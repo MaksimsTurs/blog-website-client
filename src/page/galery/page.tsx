@@ -1,7 +1,6 @@
 import usePermitor from "@/custom-hook/use-permitor/useHavePermission"
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/use-request/useRequest'
-import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 
 import { Plus } from "lucide-react"
 import { useState, Fragment } from 'react'
@@ -22,8 +21,6 @@ import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 import type { Galery } from '@/global.type'
 
 export default function Page() {
-  useMetadata({ title: 'Galery' })
-
   const permitor = usePermitor()
   const searchParams = useSearchParams()
 

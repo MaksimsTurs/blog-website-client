@@ -35,11 +35,6 @@
       transition: all $transition-time-fast;
       padding: 0.5rem 1rem;
       
-      .header_user_text {
-        position: absolute;
-        z-index: 1;
-      }
-      
       &:first-child {
         @include button-slide-right-animation();
       }

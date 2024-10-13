@@ -9,11 +9,14 @@
     padding: 0rem;
   }
 
-  .edit_user_log_out {
-    border: 1px solid #500 !important;
-    background-color: #500;
-    color: white;
+  .edit_user_buttons > button {
+    padding: 0.3rem 1rem;
 
-    &:hover > section { color: #500; }
+    &:first-child {
+      background-color: #500 !important;
+      color: white;
+      
+      &:hover { color: #500; border: 1px solid #500; }
+    }
   }
 }

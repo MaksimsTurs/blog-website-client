@@ -9,10 +9,10 @@ const DateParser: DateParse = {
     let differenceObject: Difference<number> = {
       second: formatTimeNumber((difference / 1000) % 60),
       minute: formatTimeNumber((difference / 1000 / 60) % 60),
-      hour:   formatTimeNumber(difference  / (1000 * 60 * 60) % 24),
-      day:    formatTimeNumber(difference  / (1000 * 60 * 60 * 24) % 9),
-      month:  formatTimeNumber(difference  / (1000 * 60 * 60 * 24 * 7) % 12),
-      year:   formatTimeNumber(difference  / (1000 * 60 * 60 * 24 * 7 * 12) % 365)
+      hour:   formatTimeNumber((difference / (1000 * 60 * 60)) % 24),
+      day:    formatTimeNumber((difference / (1000 * 60 * 60 * 24)) % 30.44),
+      month:  formatTimeNumber((difference / (1000 * 60 * 60 * 24 * 30.44)) % 12),
+      year:   formatTimeNumber(difference  / (1000 * 60 * 60 * 24 * 365.25))
     }
 
     return {...this, differenceObject }

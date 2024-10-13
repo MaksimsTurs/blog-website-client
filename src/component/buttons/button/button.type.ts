@@ -1,7 +1,7 @@
 import type { SyntheticEvent } from "react"
 
 export type ButtonProps = {
-  label: string
+  label?: string
   className?: string
   type?: 'submit'
   isDisable?: boolean

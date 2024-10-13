@@ -3,14 +3,14 @@
 @import './media-query/statisticPreview.media-query.scss';
 
 .preview_container {
-  width: 19rem;
+  width: 23rem;
   flex-shrink: 0;
   
   .preview_body { 
     position: fixed;
     padding: 1rem 1.5rem 0.5rem 1.5rem;
     background-color: white; 
-    width: 19rem;
+    width: 23rem;
     height: fit-content;
     right: 1.5rem;
   }
@@ -33,7 +33,7 @@
     padding: 0.5rem;
     cursor: pointer;
 
-    img {
+    .preview_avatar {
       width: $icon-xx-large;
       height: $icon-xx-large;
       border-radius: 50%;
@@ -44,8 +44,10 @@
     .preview_item_count {
       background-color: $color-common-hover-soft;
       color: $color-common-hover;
-      padding: 0.5rem 0.6rem;
-      font-size: 0.9rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0.5rem;
+      font-size: 0.8rem;
       border-radius: 50%;
     }
   }  

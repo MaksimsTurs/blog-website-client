@@ -9,16 +9,17 @@ export type SortedPosts = {
   posts: Content[]
 }
 
-export type SortData = {
+export type FilterOptions = {
   title: string
   content: string
   author: string
+  sortOption?: SortOption
 }
 
-export type SortInputProps = {
-  sortDataName: keyof SortData
-  sortData: SortData
-  changeSortData: (name: string, value: any) => void
+export type FilterInputProps = {
+  filterDataName: keyof FilterOptions
+  filterData: FilterOptions
+  changeFilterData: (name: string, value?: any) => void
 }
 
 export type SortTagsProps = {

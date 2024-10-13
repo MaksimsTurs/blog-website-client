@@ -1,0 +1,49 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.view_wrapper_body {
+  width: 100%;
+
+  .view_wrapper_child_container { width: 100%; }
+
+  .view_wrapper_title {
+    border-bottom: $border-container-soft;
+    font-size: $font-large;
+    padding-bottom: 0.5rem;
+
+    .view_wrapper_action_button {
+      background-color: $color-common;
+      border-radius: $border-radiues-button;
+      transition: all $transition-time-fast;
+      border: 1px solid transparent;
+      width: 2rem;
+      height: 2rem;
+      padding: 0.4rem;
+      color: white;
+      cursor: pointer;
+  
+      &:last-child {
+        background-color: #500;
+        border: 1px solid #500;
+
+        &:hover { color: #500; border: 1px solid #500; }
+      }
+
+      &:hover {
+        color: $color-common-hover;
+        transition: all $transition-time-fast;
+        border: 1px solid $color-common-hover;
+        background-color: white;
+      }
+    }
+
+    .view_wrapper_action_button_active {
+      color: $color-common-hover;
+      transition: all $transition-time-fast;
+      border: 1px solid $color-common-hover;
+      background-color: white;    
+    }
+
+    p { font-size: $font-x-large; }
+  }
+}

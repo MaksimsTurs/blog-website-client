@@ -4,7 +4,7 @@ import '@/scss/global.scss'
 import type { TextAreaProps } from "../input.type";
 import type { ServerResponseError } from '@/global.type';
 
-import { Bold, Link2, FileImage, Eye, X, Heading1, Heading2 } from 'lucide-react';
+import { Bold, Link2, FileImage, Eye, Heading1, Heading2 } from 'lucide-react';
 import { forwardRef, Fragment, memo, SyntheticEvent, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import TextInput from '../textInput/textInput';
@@ -210,15 +210,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
   return(
     <Fragment>
       {isUpload && <MutatingLoader/>}
-      <section className={scss.text_area_action_buttons_container}>
-        <button disabled={isPreviewMode} onClick={bold} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Bold/></button>
-        <button disabled={isPreviewMode} onClick={headerOne} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading1/></button>
-        <button disabled={isPreviewMode} onClick={headerTwo} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading2/></button>
-        <button disabled={isPreviewMode} onClick={link} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Link2/></button>
-        <button disabled={isPreviewMode} onClick={openImgModal} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><FileImage/></button>
-        <button onClick={showCurrentContent} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Eye/></button>
-      </section>
-      <div className={scss.text_area_container}>
+      <div className={`${scss.text_area_container} flex-row-normal-normal-medium`}>
         <div ref={mainContainerRef} className={isOpen ? `${scss.text_area_asset_modal_container} flex-row-center-center-none` : `${scss.text_area_asset_modal_container} ${scss.text_area_asset_modal_container_hidden} flex-row-center-center-none`}>
           <div className={`${scss.text_area_asset_modal_body} main-content-container flex-column-normal-normal-small`}>
             <div className={`${scss.text_area_asset_modal_header} flex-row-normal-space-between-medium`}>
@@ -239,9 +231,21 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
               <ImageOptionInput.Item value='From url'>From url</ImageOptionInput.Item>
             </ImageOptionInput.Wrapper>
             {error && <LocalError error={error}/>}
-            <Button label='Add Link' onClick={addAsset}/>
+            <Button label='Link hinzufügen' onClick={addAsset}/>
           </div>
         </div>
+        <section className={scss.text_area_action_buttons_container}>
+          <div className={scss.text_area_action_buttons_fixed_wrapper_body}>
+            <div className={`${scss.text_area_action_buttons_fixed_body} flex-column-normal-normal-small`}>
+              <button disabled={isPreviewMode} onClick={bold} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Bold/></button>
+              <button disabled={isPreviewMode} onClick={headerOne} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading1/></button>
+              <button disabled={isPreviewMode} onClick={headerTwo} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Heading2/></button>
+              <button disabled={isPreviewMode} onClick={link} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Link2/></button>
+              <button disabled={isPreviewMode} onClick={openImgModal} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><FileImage/></button>
+              <button onClick={showCurrentContent} type='button' className={`${scss.text_area_text_action} flex-row-center-center-none`}><Eye/></button>
+            </div>
+          </div>
+        </section>
         {isPreviewMode ? <ContentViewer content={textAreaContent}/> :
           <textarea 
             className={scss.text_area}

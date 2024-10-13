@@ -1,0 +1,15 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.user_view_edit_form {
+  align-items: flex-start;
+  width: 100%;
+  
+  > div {
+    width: 100%;
+    padding: 0rem !important;
+    border: 0rem !important;
+    box-shadow: none !important;
+    align-items: flex-start !important;
+  }
+}

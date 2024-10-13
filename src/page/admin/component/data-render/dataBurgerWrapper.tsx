@@ -17,7 +17,7 @@ export default function DataBurgerWrapper({ propKey, children }: PropsWithChildr
   }
 
   useEffect(() => {
-    if(childRef.current) childHeight.current = childRef.current.getBoundingClientRect().height + 7
+    if(childRef.current) childHeight.current = childRef.current.getBoundingClientRect().height + 10
   }, [])
 
   return(

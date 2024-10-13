@@ -15,7 +15,7 @@ import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 import type { DatabaseItemProps } from '../page.type'
-import type { Database } from '@/global.type'
+import type { CustomInputsRef, Database } from '@/global.type'
 
 import ImageComponent from '@/component/image-component/image'
 import Button from '@/component/buttons/button/button'
@@ -29,24 +29,22 @@ import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import FileInput from '@/component/input/fileInput/fileInput'
 
 import fetcher from '@/lib/fetcher/fetcher'
-import Thing from '@/lib/object/object'
+import Objects from '@/lib/object/object'
 
 const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 export default function DatabaseItem({ item }: DatabaseItemProps) {
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
   const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
+  const navigate = useNavigate()
+
+  const contentRef = useRef<CustomInputsRef<string>>()
 
   const searchParams = useSearchParams()
-
   const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION, { title: item.title })
   const { mutate, isMutating, changeError, error } = useMutate<Database[]>('database')
   const ImageInput = useImageInput({ defaultValue: [item.thumbnail] })
   const isAdmin: boolean = usePermitor().role(['Admin']).permited()
-
-  const navigate = useNavigate()
-
-  const contentRef = useRef<string>('')
 
   const closeCurrentItem = (): void => {
     searchParams.remove([URL_SEARCH_PARAMS['DATABASE-ID']])
@@ -58,10 +56,6 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
     setIsEditMode(prev => !prev)
     setError('thumbnail')
     setUseUploadedImages(false)
-  }
-
-  const getContent = (content: string): void => {
-    contentRef.current = content
   }
 
   const changeThumbnailSource = (event: SyntheticEvent<HTMLInputElement>): void => {
@@ -85,12 +79,13 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
 
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', Thing.createFormDataFromJSON({...data, _id: item._id, content: contentRef.current, thumbnail }), AUTHORIZATION_OBJECT)
+      const newItem = await fetcher.post<Database>('/update/ruzzkyi-mir', Objects.createFormDataFromJSON({...data, _id: item._id, content: contentRef.current?.value, thumbnail }), AUTHORIZATION_OBJECT)
       
       navigate('/database')
       setIsEditMode(false)
       
       ImageInput.clear()
+      contentRef.current?.clear()
       reset()
       
       return option.state!.map(item => item._id === newItem._id ? newItem : item)
@@ -107,10 +102,10 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
             {useUploadedImages ? ImageInput.Component : <FileInput name='thumbnail' label='Insert thumnbail'/>}
             <CheckBoxInput errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
             <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
-            <TextArea getValue={getContent} placeholder='Wirte item content' defaultValue={item.content}/>
+            <TextArea ref={contentRef} placeholder='Wirte item content' defaultValue={item.content}/>
             <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
-              <Button label='Update item' type='submit'/>
-              <Button label='Back' onClick={goBack}/>
+              <Button className={scss.database_form_button} type='submit'>Verändern</Button>
+              <Button className={scss.database_form_button} onClick={goBack}>Zurück</Button>
             </div>
             {error && <LocalError error={error.message}/>}
           </FormWrapper>

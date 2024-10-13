@@ -8,7 +8,6 @@ import { ArrowLeft, FileVideo, Image, ImageMinus } from 'lucide-react';
 import { Fragment, useState } from 'react';
 import { Pencil, Plus, PencilIcon } from 'lucide-react';
 
-import useMetadata from '@/custom-hook/use-metadata/useMetadata';
 import useMutate from '@/custom-hook/use-request/useMutate';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission';
@@ -23,8 +22,6 @@ import LocalError from '@/component/errors/local-error/localError';
 import InsertSlidesGaleryModal from './insertSlidesGaleryModal';
 
 export default function GaleryContent({ galery, setCurrentSlide }: GaleryContentProps) {
-  useMetadata({ title: galery?.title ? galery.title : 'Galery' })
-
   const [activeSort, setActiveSort] = useState<string[]>([])
   const [isSlideEditMode, setIsSlideEditMode] = useState<boolean>(false)
   const [contextToEditID, setContextToEditID] = useState<string | undefined>()
@@ -37,7 +34,7 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
 
   const removeImage = (url: string): void => {
     mutate(async(option) => {
-      await fetcher.post(`/remove/galery/image?url=${url}`, { _id: galery?._id }, AUTHORIZATION_OBJECT)
+      await fetcher.post('/remove/galery/image', { _id: galery?._id, url }, AUTHORIZATION_OBJECT)
       
       let state = option.state || []
 

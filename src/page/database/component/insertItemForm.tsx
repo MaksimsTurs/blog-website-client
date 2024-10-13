@@ -24,6 +24,7 @@ import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { AUTHORIZATION_OBJECT } from '@/conts'
 
 const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
@@ -83,8 +84,8 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
           <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
           <TextArea ref={contentRef} placeholder='Wirte item content'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
-            <Button label='Insert item' type='submit'/>
-            <Button label='Back' onClick={goBack}/>
+            <Button className={scss.insert_form_button} type='submit'>Senden</Button>
+            <Button className={scss.insert_form_button} onClick={goBack}>Zurück</Button>
           </div>
           {error && <LocalError error={error.message}/>}
         </FormWrapper>

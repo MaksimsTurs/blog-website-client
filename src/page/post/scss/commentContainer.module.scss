@@ -1,4 +1,9 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
-.comment_form_body { flex-grow: 1; }
+.comment_form_body > * {
+  flex-grow: 1; 
+  align-items: normal;
+}
+
+.comment_submit_button { padding: 0.5rem 1rem; }

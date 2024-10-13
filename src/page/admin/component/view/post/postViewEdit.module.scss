@@ -1,0 +1,17 @@
+@import '@/scss/mixin';
+@import '@/scss/variabel';
+
+.post_view_edit_form {
+  align-items: flex-start;
+  width: 100%;
+  
+  > div {
+    width: 100%;
+    padding: 0rem !important;
+    border: 0rem !important;
+    box-shadow: none !important;
+    align-items: flex-start !important;
+  }
+
+  .post_view_edit_submit_button { padding: 0.3rem 1rem; }
+}

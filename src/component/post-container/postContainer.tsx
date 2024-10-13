@@ -5,6 +5,7 @@ import PostHeader from "./component/postHeader";
 import PostWrapper from "./component/postWrapper";
 import PostTags from './component/postTags';
 import ContentViewer from '../content-viewer/contentViewer';
+import PostQuotes from './component/postQuote';
 
 import type { Content } from '@/global.type';
 import type { PostCommentsData } from '@/page/post/page.type';
@@ -12,7 +13,7 @@ import type { PostContainerProps } from "./postContainer.type";
 
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Fragment } from 'react/jsx-runtime';
-import { Eye, Heart, MessageCircle } from 'lucide-react';
+import { Eye, Heart, MessageCircle, Minus, Plus } from 'lucide-react';
 
 import DateParser from '@/lib/date-parser/dateParser';
 
@@ -23,11 +24,11 @@ import useMutate from '@/custom-hook/use-request/useMutate';
 import useWebsiteSetting from '@/custom-hook/use-website-setting/useWebsiteSetting';
 
 import fetcher from '@/lib/fetcher/fetcher';
-import coockie from '@/lib/coockie/coockie';
+import Numbers from '@/lib/number/number';
 
-import { URL_SEARCH_PARAMS } from '@/conts';
+import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts';
 
-export default function PostContainer({ post, type }: PostContainerProps) {
+export default function PostContainer({ setToQuote, post, type, isQuoted }: PostContainerProps) {
   const { id } = useParams()
   const { pathname } = useLocation()
   const redirect = useNavigate()
@@ -36,19 +37,19 @@ export default function PostContainer({ post, type }: PostContainerProps) {
   const searchParams = useSearchParams()
   const permission = useHavePermission()
   const website = useWebsiteSetting()
-
+  
   const isPostPage: boolean = pathname.search('/post') > -1
   const isHomePage: boolean = pathname === '/'
   const isLiked: boolean = post.likedBy.includes(auth.user?._id || '')
   const isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited()
   const isAdmin: boolean = permission.role(['Admin']).permited()
   const isHidden: boolean = post.isHidden
-
+  
   const postID: string = (type === 'preview' || type === 'post') ? post._id : id!
   const currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0
   const hiddenClass: string = ((isHidden && isAdmin) || (isContentCreator && isHidden)) ? scss.post_hidden : ''
   const key: string = type === 'post' ? `post-${post._id}` : `post-${postID}-comments-${currPage}`
-
+  
   const { mutate } = useMutate<Content | PostCommentsData>(key)
 
   if(isHidden && isPostPage && !isAdmin && !isContentCreator && type === 'post') redirect('/')
@@ -57,11 +58,20 @@ export default function PostContainer({ post, type }: PostContainerProps) {
     searchParams.set({ [URL_SEARCH_PARAMS['STATISTIC-TO-PREVIEW']]: showThe, [URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID']]: post._id, [URL_SEARCH_PARAMS['LIST-PAGE']]: 0 })
   }
 
+  const changeQuotes = (): void => {
+    if(setToQuote) {
+      setToQuote(prev => {
+        if(isQuoted) return prev.filter(quote => quote._id !== post._id)
+        return [...prev, post]
+      }) 
+    }
+  }
+
   const likeThisPost = async (): Promise<void> => {
     if(post.isHidden && !auth.user) return
 
     mutate( async (option) => {
-      const likedContent = await fetcher.get<Content>(`/${type}/${post._id}/like`, { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
+      const likedContent = await fetcher.get<Content>(`/${type}/${post._id}/like`, AUTHORIZATION_OBJECT)
 
       //Update post
       if(type === 'post') return likedContent
@@ -89,29 +99,34 @@ export default function PostContainer({ post, type }: PostContainerProps) {
     <Fragment>
       {isHomePage && !isContentCreator && !isAdmin && isHidden ? null :
         <PostWrapper className={hiddenClass}>
-          {(type === 'comment' || type === 'preview') ? <PostHeader tags={post.tags || []} title={post.title || ''} content={post.content} isHidden={post.isHidden} postID={postID} contentID={post._id} type={type} createdAt={post.createdAt} user={post?.author}/> : null}
-          {type === 'post' ? 
+          {(type === 'comment' || type === 'preview') && <PostHeader tags={post.tags || []} title={post.title || ''} content={post.content} isHidden={post.isHidden} postID={postID} contentID={post._id} type={type} createdAt={post.createdAt} user={post?.author}/>}
+          {type === 'post' &&
             <div className={scss.post_content_container}>
               <h4 style={{ fontFamily: website.setting.postFont }} className={scss.post_title}>{post.title}</h4>
               <p className={scss.post_content_date}>{createdAtDifference}</p>
               <ContentViewer content={post.content}/>
-            </div> : null}
-          {type === 'preview' ? 
+            </div>}
+          {type === 'preview' && 
             <div className={scss.post_content_container}>
               <Link style={{ fontFamily: website.setting.postFont }} to={`/post/${post._id}`}>{post.title}</Link>
               <ContentViewer content={`${post.content.slice(0, 250)}...`}/>
-            </div> : null}
-          {type === 'comment' ? <div className={scss.post_data}><ContentViewer content={post.content}/></div> : null}
+            </div>}
+          {type === 'comment' && 
+            <div className={scss.post_data}>
+              <ContentViewer content={post.content}/>
+              {(post.quotes?.length !== 0 && post.quotes) && post.quotes.map(quote => <PostQuotes key={quote._id} content={quote}/>)}
+            </div>}
             <div className={`${scss.post_tags_statistic_container} flex-row-center-space-between-medium`}>
-              {((type === 'post' || type === 'preview') && post.tags) ? <PostTags tags={post.tags}/> : null}
+              {((type === 'post' || type === 'preview') && post.tags) && <PostTags tags={post.tags}/>}
               <div className='flex-row-center-normal-big'>
-              {type === 'preview' ? 
+              {type === 'preview' &&
                 <Fragment>
-                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('views') : undefined} ><Eye />{post.viewedBy?.length}</p>
-                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('comments') : undefined}><MessageCircle />{post.comments?.length}</p>
-                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('likes') : undefined}><Heart />{post.likedBy?.length}</p>
-                </Fragment> : null}
-              {(type === 'comment' || type === 'post') && auth.user ? <button onClick={likeThisPost} className={`${isLiked ? scss.post_liked : ''} ${scss.post_statistic_data} flex-row-center-normal-small`}><Heart/>{post.likedBy.length}</button> : null}
+                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('views') : undefined} ><Eye />{Numbers.shortNum(post.viewedBy!.length)}</p>
+                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('comments') : undefined}><MessageCircle />{Numbers.shortNum(post.comments!.length)}</p>
+                  <p className={`${scss.post_statistic_data} flex-row-center-normal-small`} onClick={isHomePage ? () => showSomeData('likes') : undefined}><Heart />{Numbers.shortNum(post.likedBy.length)}</p>
+                </Fragment>}
+              {type === 'comment' && <button onClick={changeQuotes} className={`${scss.post_quote_button} ${isQuoted && scss.post_quote_button_selected} flex-row-center-center-none`}>{isQuoted ? <Minus/> : <Plus/>}</button>}
+              {(type === 'comment' || type === 'post') && auth.user ? <button onClick={likeThisPost} className={`${isLiked ? scss.post_liked : ''} ${scss.post_statistic_data} flex-row-center-normal-small`}><Heart/>{Numbers.shortNum(post.likedBy.length)}</button> : null}
             </div>
           </div>
         </PostWrapper>}

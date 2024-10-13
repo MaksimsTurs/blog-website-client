@@ -3,17 +3,10 @@
 
 .button {
   @include flex-alignitems-justifycontent(center, center);
-  @include button-slide-right-animation(5rem, 2rem);
+  @include button-slide-right-animation();
   border-radius: $border-radiues-button;
   box-shadow: $box-shadow-button;
   transition: all $transition-time-fast;
-  padding: 1.1rem;
-  
-  .button_label {
-    gap: 0.5rem;
-    position: absolute;
-    z-index: 1;
-  }
     
   &:hover {
     box-shadow: $box-shadow-button-hover;

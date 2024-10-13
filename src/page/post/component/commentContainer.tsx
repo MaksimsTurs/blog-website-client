@@ -2,86 +2,85 @@ import scss from '../scss/commentContainer.module.scss'
 import '@/scss/global.scss'
 
 import { Fragment } from "react/jsx-runtime";
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useRef, useState } from 'react';
 
 import type { CommentContainerProps, PostCommentsData } from "../page.type";
-import type { Content } from '@/global.type';
+import type { Content, CustomInputsRef } from '@/global.type';
 
-import Pagination from "@/component/pagination/pagination";
 import Empty from "@/component/empty/empty";
 import PostContainer from "@/component/post-container/postContainer";
 import FormWrapper from "@/component/form-wrapper/formWrapper";
 import TextArea from "@/component/input/textArea/textArea";
-import PaginationLoader from '@/component/pagination/component/paginationLoader';
-import ModalError from '@/component/modal-error/modalError';
-import CommentsLoader from './commentsLoader';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
+import Button from '@/component/buttons/button/button';
 
 import useForm from "@/custom-hook/use-form/useForm";
-import useAuth from '@/custom-hook/useAuth/useAuth';
-import useRequest from '@/custom-hook/use-request/useRequest';
+import useMutate from '@/custom-hook/use-request/useMutate';
+import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
+import usePermitor from '@/custom-hook/use-permitor/useHavePermission';
+import useAuth from '@/custom-hook/use-auth/useAuth';
+
+import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts';
 
 import fetcher from '@/lib/fetcher/fetcher';
+import Arrays from '@/lib/array/array';
 
-export default function CommentContainer({ page, postID, isPostHidden }: CommentContainerProps) {
-  const { submit } = useForm<Pick<Content, 'content'>>([])
-  const auth = useAuth()
+export default function CommentContainer({ isPostHidden, comments }: CommentContainerProps) {
   const redirect = useNavigate()
+  const { id } = useParams()
+  const textAreaRef = useRef<CustomInputsRef<string>>()
+  const [quotes, setToQuotes] = useState<Content[]>([])
 
-  const requestKey = [`post-${postID}-comments-${page}`]
+  const { submit } = useForm<Pick<Content, 'content'>>()
+  const searchParams = useSearchParams()
+  const isAdmin = usePermitor().role(['Admin']).permited()
+  const auth = useAuth()
 
-  const { isMutating, isPending, isFetching, error, prev, data, mutate, changeError } = useRequest<PostCommentsData>({
-    deps: requestKey,
-    prev: [`post-${postID}-comments-${(+page - 1) <= 0 ? 0 : +page - 1}`],
-    request: async () => await fetcher.get(`/post/${postID}/comments/${page}`),
-  })
+  if(isPostHidden && !isAdmin) return <Navigate to='/'/>
 
-  const insertComment = (commentData: any) => {
-    delete commentData.alt
-    delete commentData.url
-    delete commentData.uploadImg
+  const page: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
 
-    const increment = (data?.comments || []).length >= 10
+  const { isMutating, mutate, changeError } = useMutate<PostCommentsData>(`post-${id}-comments-${page}`)
 
-    mutate({
-      key: requestKey,
-      request: async (option) => {
-        if((page + 1) < (option.state?.pagesCount || 0)) {
-          changeError(option.deps, { code: 500, message: 'You need to be on the latest page to create comment!' })
-          return undefined
-        }
+  const insertComment = () => {
+    const increment: boolean = (comments || []).length >= 10
 
-        const comment = await fetcher.post<Content>('/insert/comment', {...commentData, postID }, { 'Authorization': `Bearer ${auth?.user?.token}` }) 
-        
-        if(increment) {
-          redirect(`/post/${postID}?page=${page + 1}`)
-          return { pagesCount: (page || 1) + 1, comments: option.state?.comments || [] }
-        } else {
-          return { pagesCount: option.state?.pagesCount || 0, comments: [...option.state?.comments || [], comment] }
-        }
+    mutate(async (option) => {
+      if((page + 1) < (option.state?.pagesCount || 0)) {
+        changeError({ code: 500, message: 'Du muss auf letzte seite sein um Kommentar zu hinzufügen!' })
+        return undefined
       }
-    })
-  } 
 
-  const removeError = (): void => {
-    changeError(requestKey)
-  }
+      const comment = await fetcher.post<Content>('/insert/comment', { postID: id, content: textAreaRef.current?.value, quotes }, AUTHORIZATION_OBJECT) 
+      
+      if(increment) {
+        redirect(`/post/${id}?page=${page + 1}`)
+        return { pagesCount: (page || 1) + 1, comments: option.state?.comments || [] }
+      } else return { pagesCount: option.state?.pagesCount || 0, comments: [...option.state?.comments || [], comment] }
+    })
+
+    textAreaRef.current?.clear()
+    setToQuotes([])
+  } 
 
   return(
     <Fragment>
-      <ModalError removeError={removeError} error={error}/>
       {isMutating ? <MutatingLoader/> : null}
-      {isFetching ? <PaginationLoader/> : ((prev || data)?.pagesCount || 0) > 0 ? <Pagination disableOn={isPending} pagesCount={(prev || data)!.pagesCount || 0}/> : null}      
-      {isFetching ? <CommentsLoader/> :
-       data!.comments.length === 0 ? <Empty option={{ flexCenterCenter: true }} label="No comments found!"/> :
-       data!.comments.map(comment => <PostContainer key={comment._id} post={comment} type="comment"/>)}
-      {isFetching ? <PaginationLoader/> : ((prev || data)?.pagesCount || 0) > 0 ? <Pagination pagesCount={(prev ||data)!.pagesCount || 0}/> : null}      
-      {(auth.user && !isPostHidden) ? 
-       <div className='flex-row-center-center-none'>
-         <FormWrapper onSubmit={submit(insertComment)} isPending={isMutating} className={scss.comment_form_body} buttonLabel='Write comment'>
-           <TextArea placeholder='Write your comment here...'/>
-         </FormWrapper>
-       </div> : null}
+      {comments!.length === 0 ? <Empty option={{ flexCenterCenter: true }} label="Keinen Kommentar wurde gefunden!"/> :
+       comments!.map(comment => 
+        <PostContainer 
+          type="comment"
+          key={comment._id} 
+          post={comment} 
+          setToQuote={setToQuotes} 
+          isQuoted={Arrays.includeObjectByKey(quotes, '_id', comment._id)}/>
+      )}
+      {auth.user &&
+      <FormWrapper onSubmit={submit(insertComment)} isPending={isMutating} className={scss.comment_form_body}>
+        <TextArea placeholder='Write your comment here...' ref={textAreaRef}/>
+        <Button className={scss.comment_submit_button} type='submit'>Senden</Button>
+      </FormWrapper>}
     </Fragment>
   )
 } 

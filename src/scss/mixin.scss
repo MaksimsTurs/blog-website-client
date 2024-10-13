@@ -30,45 +30,27 @@
   overflow: hidden;
 }
 
+@mixin button-slide-right-animation() {
+  width: fit-content;
+  background-size: 200% 100%;
+  background-image: linear-gradient(to right, $color-common 50%, white 50%);
+  transition: background-position $transition-time-fast ease;
+  border: 1px solid $color-common;
+  overflow: hidden;
+  color: white;
+
+  &:hover {
+    color: $color-common-hover;
+    border: 1px solid $color-common-hover;
+    transition: background-position $transition-time-fast ease;
+    background-position: -100% 0%;
+  }
+}
+
 @mixin loader-animation() {
   @keyframes loader {
     0% { left: -100%; }
     100% { left: 100%; }
-  }
-}
-
-@mixin button-slide-right-animation($width: 9.8rem, $height: 2.4rem) {
-  background-color: $color-common;
-  width: $width;
-  height: $height;
-  border: 1px solid $color-common;
-  overflow: hidden;
-  position: relative;
-  color: white;
-  
-  &::after {
-    content: '';
-    @include absolute-left-top-zindex-width-height(0%, 50%);
-    transition: all $transition-time-very-fast;
-    transform: translate(-50%, -50%);
-    border-radius: 40%;
-    background-color: white;
-    width: 0%;
-    height: 100%;
-    z-index: 0;
-  }
-
-  &:hover {
-    color: $color-common-hover !important;
-    transition: all $transition-time-fast;
-    border: 1px solid $color-common-hover;
-    background-color: white;
-
-    &::after {
-      transition: all $transition-time-fast;
-      width: 300%;
-      height: 300%;
-    }
   }
 }
 

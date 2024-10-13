@@ -30,6 +30,7 @@ export type Content = {
   viewedBy?: string[]
   comments?: Content[]
   tags?: string[]
+  quotes?: Content[]
   content: string
   isHidden: boolean
   likedBy: string[]

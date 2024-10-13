@@ -20,7 +20,7 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 
 const adminPaths = [
   { title: 'Admin', path: '/admin/post', icon: <Shield className={scss.aside_menu_icon}/> },
-  { title: 'Write post', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> },
+  { title: 'Post schreiben', path: '/write-post', icon: <SquarePen className={scss.aside_menu_icon}/> },
 ]
 
 const creatorPaths = [
@@ -95,7 +95,7 @@ export default function SideMenu() {
         </div>
         {creator.contentDraft.length > 0 &&
         <div className='flex-column-normal-normal-none'>
-          <p className={scss.aside_menu_title}>Draft's</p>
+          <p className={scss.aside_menu_title}>Entwürfe</p>
           <section className='flex-column-normal-normal-small'>
             {creator.contentDraft
               .slice(0, 5)

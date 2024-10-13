@@ -1,9 +1,7 @@
 @import '@/scss/mixin';
 @import '@/scss/variabel';
 
-.flex_center_center {
-  @include flex-alignitems-justifycontent(center, center);
-}
+@import './media-query/textArea.media-query.scss';
 
 .text_area_asset_modal_container {
   @include absolute-left-top-zindex-width-height(50%, 50%, 100);
@@ -36,9 +34,9 @@
 
 .text_area_container {
   display: flex;
-  flex-direction: column;
-  width: 58rem;
-  
+  width: 100%;
+  min-height: calc((41.6px * 6) + (8px * 3));
+
   .text_area {
     border-radius: $border-radius-container;
     border: $border-container-soft;
@@ -56,48 +54,53 @@
     }
   }
 }
-  
+
 .text_area_action_buttons_container {
-  position: fixed;
-  left: 20%;
-  top: 11.3%;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
+  padding-left: 49px;
+  position: relative;
   
-  .text_area_text_action {  
-    background-color: $color-common;
-    border-radius: $border-radiues-button;
-    transition: all $transition-time-fast;
-    border: 1px solid $color-common;
-    position: relative;
-    color: white;
-    padding: 0.5rem 1rem;
+  .text_area_action_buttons_fixed_wrapper_body {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 0%;
+    left: 0%;
+    
+    .text_area_action_buttons_fixed_body {
+      position: fixed;
 
-    &:disabled {
-      background-color: $color-common-soft;
-      color: $color-common;
-      cursor: auto;
-
-      &:hover {
-        background-color: $color-common-soft;
+      .text_area_text_action {  
+        background-color: $color-common;
+        border-radius: $border-radiues-button;
+        transition: all $transition-time-fast;
         border: 1px solid $color-common;
-        color: $color-common;
+        position: relative;
+        color: white;
+        padding: 0.5rem 1rem;
+
+        &:disabled {
+          background-color: $color-common-soft;
+          color: $color-common;
+          cursor: auto;
+
+          &:hover {
+            background-color: $color-common-soft;
+            border: 1px solid $color-common;
+            color: $color-common;
+          }
+        }
+
+        svg {
+          pointer-events: none;
+          width: 0.9rem;
+        }
+
+        &:hover {
+          transition: all $transition-time-fast;
+          border: 1px solid $color-common-hover;
+          color: $color-common-hover;
+          background-color: white;
+        }
       }
-    }
-
-    svg {
-      pointer-events: none;
-      width: 0.9rem;
-    }
-
-    &:hover {
-      transition: all $transition-time-fast;
-      border: 1px solid $color-common-hover;
-      color: $color-common-hover;
-      background-color: white;
-    }
+    }    
   }
 }

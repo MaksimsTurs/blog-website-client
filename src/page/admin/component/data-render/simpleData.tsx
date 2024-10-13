@@ -20,7 +20,7 @@ export default function SimpleData({ propKey, propValue, useLink, useCopyBoard }
   }, [isCopyied])
 
   return(
-    <section className={`${scss.data_simple_container} flex-row-center-space-between-none`}>
+    <section className={`${scss.data_simple_container} flex-row-center-space-between-medium`}>
       <p className={scss.data_simple_key}>{propKey}</p>
       <div className='flex-row-center-center-medium'>
         {useLink ? <Link className={scss.data_simple_value} to={propValue}>{propValue}</Link> : <p className={scss.data_simple_value}>{propValue}</p>}

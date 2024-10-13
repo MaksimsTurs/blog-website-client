@@ -6,7 +6,6 @@ import { URL_SEARCH_PARAMS } from '@/conts'
 
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import useRequest from '@/custom-hook/use-request/useRequest'
-import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 
 import DatabaseItem from './component/databaseItem'
@@ -20,8 +19,6 @@ import type { Database } from '@/global.type'
 import fetcher from '@/lib/fetcher/fetcher'
 
 export default function Page() {
-  useMetadata({ title: 'Database' })
-
   const [isInsertMode, setIsInsertMode] = useState<boolean>(false)
 
   const searchParams = useSearchParams()

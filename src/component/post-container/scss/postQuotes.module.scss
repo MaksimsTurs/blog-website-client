@@ -1,0 +1,40 @@
+@import '@/scss/variabel';
+@import '@/scss/mixin';
+
+.post_quotes_container {
+	border: 1px solid $color-common-soft;
+	padding: 0rem;
+	box-shadow: none;
+	margin-top: 0.5rem;
+	overflow: hidden;
+  height: 100%;
+  
+  .post_quotes_header {
+    transition: all $transition-time-fast;
+		background-color: $color-common-soft;
+		color: $color-common;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+
+		&:hover {
+      transition: all $transition-time-fast;
+			background-color: $color-common;
+			color: white;
+		}
+	}
+  
+	.quote_quoted_user_name {
+    color: $color-common-hover;
+		font-weight: bold;
+	}
+  
+	.post_quote_content_container {
+    padding: 0rem;
+    height: calc-size(0);
+	}
+}
+
+.post_quote_container_expanded {
+  height: 100% !important;
+  padding: 0.5rem 1rem !important;
+}

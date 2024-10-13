@@ -29,7 +29,6 @@
 
 .search_filter_container {
   height: fit-content;
-  min-width: 16rem;
 
   .search_sort_type_title {
     font-size: 0.9rem;
@@ -69,7 +68,8 @@
     }
   }
 
-  .search_filter_body_buttons > button {
-    width: 100% !important;
+  .search_filter_button {
+    font-size: $font-small;
+    padding: 0.35rem 0.95rem;
   }
 }

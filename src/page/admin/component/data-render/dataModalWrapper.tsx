@@ -3,7 +3,6 @@ import '@/scss/global.scss'
 
 import type { ContentData, DataModalWrapperProps } from '../../page.type'
 
-import { X } from 'lucide-react'
 import { Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 

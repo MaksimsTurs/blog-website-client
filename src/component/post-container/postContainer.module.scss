@@ -49,6 +49,32 @@
 	svg { animation: like 1s forwards; }
 }
 
+.post_quote_button { 
+	background-color: $color-common;
+	transition: all $transition-time-very-fast ease;
+	box-shadow: $box-shadow-button;
+	border: 1px solid $color-common;
+	border-radius: 5px;
+	color: white;
+	width: 1.5rem;
+	height: 1.5rem;
+	padding: 0.25rem; 
+
+	&:hover {
+		color: $color-common;
+		box-shadow: $box-shadow-button-hover;
+		transition: all $transition-time-very-fast ease;
+		background-color: white;
+	}
+}
+
+.post_quote_button_selected {
+	border-color: $color-common-hover;
+	background: $color-common-hover;
+
+	&:hover { color: $color-common-hover; }
+}
+
 @keyframes like {
 	0% {
 		transform: scale(1);

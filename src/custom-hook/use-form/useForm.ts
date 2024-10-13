@@ -30,9 +30,10 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
       inputsRefs.current.set(name, createRef())
     } else if(inputsRefs.current.has(name) && !formValues.current[name] && !isSubmited.current) {
       const value = defaultValue?.[name as keyof typeof defaultValue] || ''
+      const isChecbox: boolean = form.isType(inputsRefs.current.get(name)?.current?.type || '', 'checkbox')
 
       form.set.value(value, inputsRefs.current.get(name)?.current)
-      formValues.current[name] = value
+      formValues.current[name] = typeof value === 'string' && isChecbox ? false :  value 
     }
 
     return { 

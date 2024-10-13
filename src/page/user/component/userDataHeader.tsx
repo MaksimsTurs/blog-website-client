@@ -25,12 +25,12 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
   const createdAtDifference: string = DateParser
     .getDifference(user.createdAt)
     .getSortDate({
-      year: '[year] years [month] months ago!',
-      month: '[month] months [day] days ago!',
-      day: '[day] days [hour] hours ago!',
-      hour: '[hour] hours [minute] minutes ago!',
-      minute: '[minute] minutes [second] seconds ago!',
-      second: '[second] seconds ago!'
+      year: 'Vor [year] jahren [month] monat(en)!',
+      month: 'Vor [month] monaten [day] tag(en)!',
+      day: 'Vor [day] tagen [hour] stunden!',
+      hour: 'Vor [hour] stunden [minute] minuten!',
+      minute: 'Vor [minute] minuten [second] sekunden!',
+      second: 'Vor [second] sekunden!'
     })
 
   const openUpdateModal = (): void => {
@@ -56,7 +56,7 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
           <p>{createdAtDifference}</p>
         </section>
         <section>
-          <p>Posts</p>
+          <p>Content</p>
           <p>{user.myContent.length}</p>
         </section>
       </div>

@@ -7,11 +7,5 @@ export type ContentDraft = {
   content: string
   tags?: string[]
   title?: string
-  isFromAdmin?: boolean
-  isEdit?: boolean
-  //Some infromation for updating post/comment in other pages
-  contentType?: 'post' | 'comment'
-  onPage?: number
-  onPost?: string
   isHidden?: boolean
 }

@@ -9,9 +9,9 @@
     max-width: 60rem;
 
     .create_new_buttons_container {
-      display: flex;
-      gap: 0.5rem;
       width: 100%;
+
+      > button { padding: 0.45rem 1rem; }
     }
   }
 }

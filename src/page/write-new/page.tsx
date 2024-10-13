@@ -1,6 +1,6 @@
 import scss from './page.module.scss'
 
-import type { Content, CustomInputsRef, ServerResponseError } from '@/global.type'
+import type { Content, CustomInputsRef } from '@/global.type'
 import type { AppDispatch, RootState } from '@/store/store'
 import type { PostCommentsData } from '../post/page.type'
 import type { CreatorState, ContentDraft } from '@/store/creator/creator.type'
@@ -26,17 +26,14 @@ import useForm from '@/custom-hook/use-form/useForm'
 import useAuth from '@/custom-hook/use-auth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
-import useMetadata from '@/custom-hook/use-metadata/useMetadata'
 import useMutate from '@/custom-hook/use-request/useMutate'
 
-import localStorage from '@/lib/local-storage/localStorage'
 import fetcher from '@/lib/fetcher/fetcher'
 
 import { AUTHORIZATION_OBJECT } from '@/conts'
 
 const USE_FORM_VALIDATION: FormFieldsValidation<Content> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
-//Create content || Update content || Save draft || Update draft || Remove draft
 export default function WriteNewPost() {
   const dispatch = useDispatch<AppDispatch>()
   const redirect = useNavigate()
@@ -48,33 +45,13 @@ export default function WriteNewPost() {
   const auth = useAuth()
   const permitor = usePermitor()
   
-  const contentID: string | null = searchParams.get('content-id')
   const draftID: string | null = searchParams.get('draft-id')
 
   if(!permitor.role(['Admin', 'Creator']).permited()) return <Navigate to='/'/>
 
-  const currContent: ContentDraft | undefined = 
-    //Get content to edit
-    contentID ? 
-    localStorage.get<ContentDraft>(contentID, 'null') :
-    //Get content draft to edit
-    draftID ?
-    creator.contentDraft.find(content => content._id === draftID) :
-    undefined
-
-  const isPost: boolean = currContent?.contentType === 'post'
-
-  useMetadata({ 
-    title: 
-      currContent?.isEdit && currContent ? `${isPost ? currContent.title : 'Comment'} ändern` :
-      draftID && currContent ? `${isPost ? currContent.title : 'Entwurf'} ändern` :
-      'Neue post schreiben',
-    description: 'Hier kannst neue post oder entwurfe schreiben oder ändern.'
-  })
-
-  const key: string = currContent?.isFromAdmin ? '' : currContent?.contentType === 'comment' ? `post-${currContent.onPost}-comments-${currContent.onPage}` : 'all-posts'
+  const currContent: ContentDraft | undefined = draftID ? creator.contentDraft.find(content => content._id === draftID) : undefined
   
-  const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>(key)
+  const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>('/10')
   const { submit, reset, register, formState: { errors }} = useForm<Content>(
     USE_FORM_VALIDATION, 
     { title: currContent?.title, isHidden: currContent?.isHidden },
@@ -83,8 +60,6 @@ export default function WriteNewPost() {
       postContentRef.current?.clear()
     }
   )
-
-  const passError: ServerResponseError | undefined = error ? error : currContent?.isEdit && !currContent ? { code: 404, message: 'Content not found!' } : undefined
     
   const createNew = async(data: any): Promise<void> => {
     delete data.alt
@@ -92,38 +67,6 @@ export default function WriteNewPost() {
     delete data.url
 
     mutate(async function(option) {
-      if(currContent?.isEdit) {
-        const updated = await fetcher.post<Content>(`/admin/${currContent?.contentType}/update`, {...data, content: postContentRef.current?.value, tags: postTagsRef.current?.value, id: draftID || contentID }, AUTHORIZATION_OBJECT)
-
-        localStorage.remove(updated._id!)
-
-        //Edit post
-        if(currContent?.contentType === 'post') {
-          const state = option.state as Content[] || []
-
-          option.removeCache(`post-${updated._id}`)
-
-          if(!currContent.isFromAdmin) redirect(`/post/${updated._id}`)
-          else redirect(`/admin/${currContent.contentType}`)
-
-          return state.map(post => post._id === updated._id ? updated : post)
-        }
-        
-        //Edit comment
-        if(currContent?.contentType === 'comment') {
-          const state = option.state as PostCommentsData || { pagesCount: 0, comments: [] }
-
-          if(!currContent.isFromAdmin) {
-            redirect(`/post/${currContent?.onPost}?page=${currContent?.onPage}`)
-            return {...state, comments: state.comments.map(comment => comment._id === updated._id ? updated : comment) }
-          }
-
-          redirect('/admin/comment')
-          return undefined
-        }
-      }
-
-      //Insert post
       const post = await fetcher.post<Content>(`/insert/post`, {...data, content: postContentRef.current?.value, tags: postTagsRef.current?.value }, AUTHORIZATION_OBJECT)
       const state = option.state as Content[] || []
 
@@ -135,18 +78,15 @@ export default function WriteNewPost() {
   }
 
   const saveDraft = (): void => {
-    const newDraftID: string = draftID || contentID || window.crypto.randomUUID()
+    const newDraftID: string = draftID || window.crypto.randomUUID()
       
     dispatch(editOrinsertContentDraft({...currContent, _id: newDraftID!, content: postContentRef.current?.value || '' }))
       
     searchParams.set({ 'draft-id': newDraftID })
-    searchParams.remove(['content-id'])
-
-    localStorage.remove(contentID!)
   }
 
   const deleteDraft = (): void => {
-    dispatch(removeContentDraft(draftID || contentID!))
+    dispatch(removeContentDraft(draftID!))
 
     searchParams.remove(['draft-id'])
     reset()
@@ -159,19 +99,16 @@ export default function WriteNewPost() {
         <WriteNewLoader/> :
         <div className={`${scss.create_new_post_container} flex-row-normal-center-big`}>
           <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
-              {currContent?.contentType !== 'comment' ?
-              <Fragment>
-                <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
-                <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
-                <TextTagInput ref={postTagsRef} placeholder='Post tags' value={currContent?.tags}/>
-              </Fragment> : null}
+            <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
+            <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
+            <TextTagInput ref={postTagsRef} placeholder='Post tags' value={currContent?.tags}/>
             <TextArea ref={postContentRef} defaultValue={currContent?.content} placeholder='Write content body here...'/>
-            <div className={scss.create_new_buttons_container}>
-              <Button label={currContent?.isEdit ? `Edit ${currContent?.contentType}` : `Create post`} type='submit'/>
-              <Button label={currContent && !contentID ? "Save draft changes" : 'Save as draft'} onClick={saveDraft}/>
-              <Button label="Delete draft" onClick={deleteDraft}/>
+            <div className={`${scss.create_new_buttons_container} flex-row-center-normal-medium`}>
+              <Button type='submit'>Post speichern</Button>
+              <Button onClick={saveDraft}>{currContent ? "Entwurf speichern" : 'Als Entwurf speichern'}</Button>
+              {draftID && <Button onClick={deleteDraft}>Entwurf löschen</Button>}
             </div>
-            {passError && <LocalError error={passError.message}/>}
+            {error && <LocalError error={error.message}/>}
           </FormWrapper>
       </div>}
     </Fragment>

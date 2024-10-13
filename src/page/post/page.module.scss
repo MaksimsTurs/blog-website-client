@@ -4,4 +4,6 @@
 
 .post_page_container {
   height: 100%;
+
+  .post_page_body { flex-grow: 1; }
 }

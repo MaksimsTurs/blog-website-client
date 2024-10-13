@@ -1,30 +1,33 @@
 import scss from './page.module.scss'
 import '@/scss/global.scss'
 
+import _PostContainer from '@/component/post-container/postContainer'
 import HomeLoader from '../home/loader';
 import Empty from '@/component/empty/empty';
 import PageError from '@/component/errors/page-error/pageError';
 import Button from '@/component/buttons/button/button'
 import Pagination from '@/component/pagination/pagination'
-import PostContainer from '@/component/post-container/postContainer'
 import SortInput from './component/sortInput';
 import PaginationLoader from '@/component/pagination/component/paginationLoader';
 import TextTagInput from '@/component/input/text-tag-input/textTagInput';
 
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, Eye, Filter, Heart, MessageCircle } from 'lucide-react';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, memo, useRef, useState } from 'react';
 
-import type { SortData, SortOption, SortedPosts } from './page.type';
+import type { FilterOptions, SortedPosts } from './page.type';
 import type { CustomInputsRef } from '@/global.type';
 
 import useRequest from '@/custom-hook/use-request/useRequest';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick';
-import useMetadata from '@/custom-hook/use-metadata/useMetadata';
 
 import fetcher from '@/lib/fetcher/fetcher';
 
 import { URL_SEARCH_PARAMS, AUTHORIZATION_OBJECT } from '@/conts';
+
+const PostContainer = memo(_PostContainer)
+
+const is930px: boolean = window.matchMedia('(width <= 930px)').matches
 
 const sortOptions = [
   { name: 'Likes', icon: <Heart size={17}/> },
@@ -32,13 +35,8 @@ const sortOptions = [
   { name: 'Comments', icon: <MessageCircle size={17}/> }
 ]
 
-const is930px: boolean = window.matchMedia('(width <= 930px)').matches
-
 export default function Search() {
-  useMetadata({ title: 'Finden', description: 'Hier kannst du posts mit gegebenen sortierung optionen finden.' })
-
-  const [sortData, setSortData] = useState<SortData>({ author: '', content: '', title: '' })
-  const [sortOption, setSortOption] = useState<SortOption>()
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ author: '', content: '', title: '' })
   
   const searchParams = useSearchParams()
 
@@ -53,22 +51,25 @@ export default function Search() {
   const { isPending, data, error, request } = useRequest<SortedPosts>({ 
     deps: [`sort-${page}`],
     noCache: true,
-    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...sortData, sortOption, tags: sortTagRef.current?.value }, AUTHORIZATION_OBJECT) 
+    request: async () => await fetcher.post<SortedPosts>(`/sort/${page}`, {...filterOptions, tags: sortTagRef.current?.value }, AUTHORIZATION_OBJECT) 
   })
 
-  const changeSort = (name: string): void => {
-    if(sortOption?.[name] === 'descending') setSortOption({ [name]: 'ascending' })
-    else if(sortOption?.[name] === 'ascending') setSortOption({ [name]: undefined })
-    else setSortOption({ [name]: 'descending' })
-  }
+  const changeFilterData = (name: string, value?: any): void => {
+    if(value) {
+      setFilterOptions(prev => ({...prev, [name]: value }))
+      return
+    }
 
-  const changeSortData = (name: string, value: any): void => {
-    setSortData(prev => ({...prev, [name]: value }))
+    setFilterOptions(prev => {
+      if(prev.sortOption?.[name] === 'ascending')       prev = {...prev, sortOption: { [name]: undefined }}
+      else if(prev.sortOption?.[name] === 'descending') prev = {...prev, sortOption: { [name]: 'ascending' }}
+      else                                              prev = {...prev, sortOption: { [name]: 'descending' }}
+      return prev
+    })
   }
 
   const resetSort = (): void => {
-    setSortData({ author: '', content: '', title: '' })
-    setSortOption(undefined)
+    setFilterOptions({ author: '', content: '', title: '' })
     searchParams.set({ 'page': 0 })
     if(sortTagRef.current) sortTagRef.current.clear()
   }
@@ -77,7 +78,7 @@ export default function Search() {
     searchParams.set({ [URL_SEARCH_PARAMS['IS-FILTER-MODAL-OPEN']]: true })
   }
 
-  const getSorted = (): void => {
+  const getBySortOptions = (): void => {
     if(page === 0) request()
     else searchParams.set({ 'page': 0 })
   }
@@ -96,28 +97,28 @@ export default function Search() {
         </div>
         <div ref={modalContainerRef} className={isOpen ? scss.search_filter_container : `${scss.search_filter_container} ${scss.search_filter_container_hidden}`}>
           <div className='main-content-container flex-column-normal-normal-small'>
-            <p className={scss.search_sort_type_title}>Sort by</p>
-            <div className='flex-column-normal-normal-small'>
-              {sortOptions.map(option => (
-                <button
-                  key={option.name}
-                  onClick={() => changeSort(option.name)}
-                  className={sortOption?.[option.name] ? `${scss.search_sort_button} ${scss.search_sort_button_active} flex-row-center-center-medium` : `${scss.search_sort_button} flex-row-center-center-medium`}>
-                  {option.icon}
-                  <p>{option.name}</p>
-                  {sortOption?.[option.name] === 'descending' ? <ArrowDownWideNarrow size={14}/> : sortOption?.[option.name] === 'ascending' ?  <ArrowUpNarrowWide size={14}/> : null }
-                </button>
-              ))}
+              <p className={scss.search_sort_type_title}>Sort by</p>
+              <div className='flex-column-normal-normal-small'>
+                {sortOptions.map(option => (
+                  <button
+                    key={option.name}
+                    onClick={() => changeFilterData(option.name)}
+                    className={filterOptions.sortOption?.[option.name] ? `${scss.search_sort_button} ${scss.search_sort_button_active} flex-row-center-center-medium` : `${scss.search_sort_button} flex-row-center-center-medium`}>
+                    {option.icon}
+                    <p>{option.name}</p>
+                    {filterOptions.sortOption?.[option.name] === 'descending' ? <ArrowDownWideNarrow size={14}/> : filterOptions.sortOption?.[option.name] === 'ascending' ?  <ArrowUpNarrowWide size={14}/> : null }
+                  </button>
+                ))}
+              </div>
+              <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='content'/>
+              <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='author'/>
+              <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='title'/>
+              <TextTagInput ref={sortTagRef} value={[selectedTag || '', ...sortTagRef.current?.value || []]} placeholder='Find by tags'/>
+              <div className={`flex-row-normal-normal-small`}>
+                <Button className={scss.search_filter_button} onClick={getBySortOptions}>Sortieren</Button>
+                <Button className={scss.search_filter_button} onClick={resetSort}>Wiederherstellen</Button>
+              </div>
             </div>
-            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='content'/>
-            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='author'/>
-            <SortInput changeSortData={changeSortData} sortData={sortData} sortDataName='title'/>
-            <TextTagInput ref={sortTagRef} value={[selectedTag || '', ...sortTagRef.current?.value || []]} placeholder='Find by tags'/>
-            <div className={`${scss.search_filter_body_buttons} flex-row-normal-normal-small`}>
-              <Button onClick={getSorted} label="Sort"/>
-              <Button onClick={resetSort} label="Reset"/>
-            </div>
-          </div>
         </div>
       </div>}
     </Fragment>
