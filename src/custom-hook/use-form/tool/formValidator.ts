@@ -24,8 +24,8 @@ export default function formValidator<T>(formData?: KeyValueObject<any>, validat
           errorMessages[field] = validator.isMax(max?.message, max?.value, formData[field])
         break
         case 'isEqual':
-          const equal = validationData as { message?: string, toCompare?: keyof typeof formData }
-          errorMessages[field] = validator.isMax(equal?.message, formData[field], formData[equal?.toCompare || ''])
+          const equal = validationData as { message?: string, compareWith?: keyof typeof formData }
+          errorMessages[field] = validator.isMax(equal?.message, formData[field], formData[equal?.compareWith || ''])
         break
         case 'isPattern':
           const pattern = validationData as { message?: string, value?: RegExp }

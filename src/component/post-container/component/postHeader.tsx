@@ -109,12 +109,12 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
   const createdAtDifference: string = DateParser
     .getDifference(createdAt)
     .getSortDate({
-       year: '[year] year [month] months ago!',
-       month: '[month] month [day] days ago!',
-       day: '[day] day [hour] hours ago!',
-       hour: '[hour] hour [minute] minutes ago!',
-       minute: '[minute] minutes [second] seconds ago!',
-       second: '[second] seconds ago!'
+       year: '[year] jahr [month] monaten!',
+       month: '[month] monaten [day] tagen!',
+       day: '[day] tagen [hour] stunden!',
+       hour: '[hour] stunden [minute] minuten!',
+       minute: '[minute] minuten [second] sekunden!',
+       second: '[second] sekunden!'
     })
 
   return(

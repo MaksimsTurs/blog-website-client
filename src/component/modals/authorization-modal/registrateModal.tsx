@@ -31,12 +31,12 @@ export default function RegistrationModal() {
   const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
   const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 
-  const registrate = (data: User) => {
+  const registrate = async(data: User) => {
     const formData = Objects.createFormDataFromJSON(data)
 
     if((formData.get('avatar') as File).size === 0) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
     
-    auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
+    await auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
     reset()
   }
 

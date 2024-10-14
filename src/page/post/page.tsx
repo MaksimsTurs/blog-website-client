@@ -49,9 +49,9 @@ export default function Post() {
         <div className={`${scss.post_page_body} flex-column-normal-normal-medium`}> 
           <Fragment>
             {post.isPending ? <PostContainerLoader/> : !post.data ? <PageError error={{ code: 404, message: 'Post not found!' }}/> : <PostContainer post={post.data!} type="post"/>}
-            {/* {pagesCount > 2 && <Pagination pagesCount={pagesCount} disableOn/>} */}
+            {pagesCount > 2 && <Pagination pagesCount={pagesCount} disableOn/>}
             <CommentContainer comments={comments.data?.comments || []} isPostHidden={post.data?.isHidden || false}/>
-            {/* {pagesCount > 2 && <Pagination pagesCount={pagesCount} disableOn/>} */}
+            {pagesCount > 2 && <Pagination pagesCount={pagesCount} disableOn/>}
           </Fragment>
         </div>
         {post.isFetching ? <PreviewAuthorDataLoader/> : (post.data && post.data?.author) ? <PreviewAuthorData author={post.data!.author}/> : null}

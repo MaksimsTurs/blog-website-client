@@ -231,7 +231,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
               <ImageOptionInput.Item value='From url'>From url</ImageOptionInput.Item>
             </ImageOptionInput.Wrapper>
             {error && <LocalError error={error}/>}
-            <Button label='Link hinzufügen' onClick={addAsset}/>
+            <Button className={scss.text_area_image_button} onClick={addAsset}>Bild hinzufügen</Button>
           </div>
         </div>
         <section className={scss.text_area_action_buttons_container}>
