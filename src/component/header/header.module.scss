@@ -1,6 +1,5 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './scss/media-query/header.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './scss/media-query/header.media-query.scss';
 
 .header_container {
   border-bottom: $border-container-soft;
@@ -9,36 +8,53 @@
   background-color: white;
   padding: 0.5rem 1rem;
 
-  .header_website_name {
-    color: $color-common;
-    text-shadow: 1px 1px black;
-    font-size: 2rem;
-    font-weight: bolder;
-  }
+  .header_website_name_container {
+    width: 100%;
 
-  .header_side_menu_button {
-    width: fit-content;
-    height: fit-content;
-    display: none;
-    flex-direction: column;
-    gap: 0.2rem;
+    .header_website_name {
+      color: $color-common;
+      font-size: $font-xx-large;
+      transition: all $transition-time-fast ease;
+      text-shadow: 1px 1px 2px black;
+      font-weight: bolder;
+ 
+      &:hover {
+        color: $color-common-hover;
+        transition: all $transition-time-fast ease;
+        text-shadow: 1px 1px black;
+      }
+    }
     
-    svg { color: $color-common; }
+    .header_side_menu_button {
+      color: $color-common;
+      transition: all $transition-time-very-fast ease;
+      display: none;
+
+      &:hover {
+        color: $color-common-hover;
+        transition: all $transition-time-very-fast ease;
+      }
+    }
   }
 
   .header_user_action_container {
-    gap: 1rem;
-
-    button {
+    .header_user_action_button {
       border-radius: $border-radiues-button;
       box-shadow: $box-shadow-button;
-      transition: all $transition-time-fast;
+      transition: all $transition-time-fast ease;
       padding: 0.5rem 1rem;
       
-      &:first-child {
-        @include button-slide-right-animation();
+      &:hover {
+        box-shadow: $box-shadow-button-hover;
+        transition: all $transition-time-fast ease;
       }
 
+      svg { width: $icon-large; height: $icon-large; }
+
+      //Registration button
+      &:first-child { @include button-slide-right-animation(); }
+
+      //Log in button
       &:last-child {
         color: $color-common-hover;
         border: 1px solid transparent;
@@ -50,23 +66,13 @@
           background-color: transparent;
         }
       }
-      
-      &:hover {
-        box-shadow: $box-shadow-button-hover;
-        transition: all $transition-time-very-fast;
-      }
-
-      svg {
-        width: 1.25rem;
-        height: 1.25rem;
-      }
     }
   }
 
-  .header_user_link > img {
+  .header_user_link {
+    width: $icon-xx-large;
+    height: $icon-xx-large;
     object-fit: cover;
-    width: 2.25rem;
-    height: 2.25rem;
     border-radius: 50%;
   }
 }

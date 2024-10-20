@@ -30,25 +30,23 @@ import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts';
 
 export default function PostContainer({ setToQuote, post, type, isQuoted }: PostContainerProps) {
   const { id } = useParams()
-  const { pathname } = useLocation()
-  const redirect = useNavigate()
-
-  const auth = useAuth()
-  const searchParams = useSearchParams()
-  const permission = useHavePermission()
-  const website = useWebsiteSetting()
+  const { pathname } = useLocation(),
+        redirect = useNavigate(),
+        auth = useAuth(),
+        searchParams = useSearchParams(),
+        permission = useHavePermission(),
+        website = useWebsiteSetting()
   
-  const isPostPage: boolean = pathname.search('/post') > -1
-  const isHomePage: boolean = pathname === '/'
-  const isLiked: boolean = post.likedBy.includes(auth.user?._id || '')
-  const isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited()
-  const isAdmin: boolean = permission.role(['Admin']).permited()
-  const isHidden: boolean = post.isHidden
-  
-  const postID: string = (type === 'preview' || type === 'post') ? post._id : id!
-  const currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0
-  const hiddenClass: string = ((isHidden && isAdmin) || (isContentCreator && isHidden)) ? scss.post_hidden : ''
-  const key: string = type === 'post' ? `post-${post._id}` : `post-${postID}-comments-${currPage}`
+  const isPostPage: boolean = pathname.search('/post') > -1,
+        isHomePage: boolean = pathname === '/',
+        isLiked: boolean = post.likedBy.includes(auth.user?._id || ''),
+        isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited(),
+        isAdmin: boolean = permission.role(['Admin']).permited(),
+        isHidden: boolean = post.isHidden,
+        postID: string = (type === 'preview' || type === 'post') ? post._id : id!,
+        currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0,
+        hiddenClass: string = ((isHidden && isAdmin) || (isContentCreator && isHidden)) ? scss.post_hidden : '',
+        key: string = type === 'post' ? `post-${post._id}` : `post-${postID}-comments-${currPage}`
   
   const { mutate } = useMutate<Content | PostCommentsData>(key)
 

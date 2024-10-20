@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .user_modal_user_content {
   padding-right: 0.75rem;
@@ -12,13 +11,9 @@
     .user_modal_data_container {
       font-size: 0.8rem;
 
-      p:first-child {
-        font-weight: bold;
-      }
+      p:first-child { font-weight: bold; }
 
-      p:last-child {
-        color: $color-black-medium-soft;
-      }
+      p:last-child { color: $color-black-medium-soft; }
     }
 
     &:hover {
@@ -26,9 +21,7 @@
       transition: all $transition-time-very-fast;
       padding-left: 0.5rem;
 
-      .user_modal_data_container p:last-child {
-        color: $color-common !important;
-      }
+      .user_modal_data_container p:last-child { color: $color-common !important; }
     }
   }
 }

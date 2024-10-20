@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .comment_list_container {
   padding: 0.25rem;

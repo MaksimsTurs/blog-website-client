@@ -8,7 +8,7 @@ import type { User } from '@/global.type'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
-import TextInput from '@/component/input/textInput/textInput'
+import TextInput from '@/component/input/text-input/textInput'
 
 import { useRef } from 'react'
 
@@ -21,9 +21,9 @@ const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
 }
 
 export default function LoginModal() {
-  const auth = useAuth()
-  const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
+  const auth = useAuth(),
+        mainContainerRef = useRef<HTMLDivElement>(null),
+        isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
 
   const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
 

@@ -10,10 +10,11 @@ import { URL_SEARCH_PARAMS } from "@/conts"
 
 import ImageInputLoader from "./imageInputLoader"
 
-export default function useImageInput({ defaultValue }: { defaultValue?: string[] }) {
-  const searchParams = useSearchParams()
+const IMAGE_REGEXP: RegExp = /\.(webp|png)/
 
-  const SelectInput = useSelect({ defaultValue })
+export default function useImageInput({ defaultValue }: { defaultValue?: string[] }) {
+  const searchParams = useSearchParams(),
+        SelectInput = useSelect({ defaultValue })
 
   const currentPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS["LIST-PAGE"]) || '0')
   
@@ -27,7 +28,7 @@ export default function useImageInput({ defaultValue }: { defaultValue?: string[
     <SelectInput.Wrapper className={scss.image_input_container} title='Uploaded images' pagesCount={data?.pagesCount || prev?.pagesCount || 0}>
       {!data && isPending ? 
       <ImageInputLoader/> : 
-      data && data.files.map(url => <SelectInput.Item key={url} value={url} children={/webp/.test(url) ? <img className={scss.image_input_image} src={url}/> : <video className={scss.image_input_image} src={url}/>}/>)}
+      data && data.files.map(url => <SelectInput.Item key={url} value={url} children={IMAGE_REGEXP.test(url) ? <img className={scss.image_input_image} src={url}/> : <video className={scss.image_input_image} src={url}/>}/>)}
     </SelectInput.Wrapper>
   
   return {

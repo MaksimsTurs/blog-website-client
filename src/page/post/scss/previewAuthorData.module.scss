@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .author_avatar {
   object-fit: cover;

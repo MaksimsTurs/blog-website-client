@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .insert_modal_container > * {
   align-items: flex-start;
@@ -11,14 +10,13 @@
 .insert_modal_body {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   max-width: 45rem;
 
   .insert_modal_input_container {
     flex-grow: 1;
 
-    .insert_modal_file_input {
-      height: 5rem;
-    }
+    .insert_modal_file_input { width: 100% !important; }
   }
 }
 

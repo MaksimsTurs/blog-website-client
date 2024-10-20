@@ -7,8 +7,8 @@ import type { ServerResponseError } from '@/global.type';
 import { Bold, Link2, FileImage, Eye, Heading1, Heading2 } from 'lucide-react';
 import { forwardRef, Fragment, memo, SyntheticEvent, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import TextInput from '../textInput/textInput';
-import FileInput from '../fileInput/fileInput';
+import TextInput from '../text-input/textInput';
+import FileInput from '../file-input/fileInput';
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 import ContentViewer from '@/component/content-viewer/contentViewer';
 import LocalError from '@/component/errors/local-error/localError';
@@ -222,7 +222,7 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
             {ImageOptionInput.selected.at(0) === 'Existet file from server' ? 
             ImageInput.Component :
             ImageOptionInput.selected.at(0) === 'From file system' ? 
-            <FileInput label='Upload asset!' name='file' asset={asset} supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
+            <FileInput label='Upload asset!' name='file' supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
             ImageOptionInput.selected.at(0) === 'From url' ? 
             <TextInput onInput={inputImgUrl} value={imgUrl || ''} name='' type='text' placeholder='Put you img URL here!'/> : null}
             <ImageOptionInput.Wrapper title='Add file option'>

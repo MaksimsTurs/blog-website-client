@@ -1,11 +1,10 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .pagintion_list_button {
   @include loader(0px);
   box-shadow: $box-shadow-container;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: $icon-xx-large;
+  height: $icon-xx-large;
 }
 
 @include loader-animation();

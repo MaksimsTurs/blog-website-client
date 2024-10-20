@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .author_preview_loader_avatar {
   @include loader(40px);

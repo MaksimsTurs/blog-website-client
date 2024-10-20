@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as Reusable;
 
 .side_menu_loader_container {
   display: flex;
@@ -7,10 +6,10 @@
   gap: 0.5rem;
 
   .side_menu_loader_item {
-    @include loader(0px);
+    @include Reusable.loader(0px);
     width: 100%;
     height: 2rem;
   }
 }
 
-@include loader-animation();
+@include Reusable.loader-animation();

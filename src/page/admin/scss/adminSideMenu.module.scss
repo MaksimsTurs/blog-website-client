@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .admin_side_menu_list_container {
   border-left: 1px solid $border-container-soft;
@@ -30,16 +29,16 @@
 
     section {
       transition: all $transition-time-very-fast;
+      border-bottom: 1px solid $color-black-soft;
       border-left: 1px solid transparent;
       border-top: 1px solid transparent;
-      border-bottom: 1px solid $color-black-soft;
       padding: 0.5rem 1rem;
       cursor: pointer;
 
       > svg {
-        transition: all $transition-time-very-fast;
         width: $icon-medium;
         height: $icon-medium;
+        transition: all $transition-time-very-fast;
       }
 
       &:hover {

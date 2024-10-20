@@ -1,8 +1,9 @@
 import scss from './selectInput.module.scss'
 import '@/scss/global.scss'
 
-import { PropsWithChildren, useState } from 'react'
-import { SelectInputItemProps, SelectInputWrapperProps } from '../input.type'
+import { type PropsWithChildren, useState } from 'react'
+import type { SelectInputItemProps, SelectInputWrapperProps } from './selectInput.type'
+
 import PaginationList from '@/component/pagination-list/paginationList'
 
 export default function useSelect({ isMultiple, defaultValue }: { isMultiple?: boolean, defaultValue?: string[] }) {
@@ -10,17 +11,11 @@ export default function useSelect({ isMultiple, defaultValue }: { isMultiple?: b
 
   const pushNewValue = (value: string): void => {
     select(prev => {
-      if(isMultiple && prev.includes(value)) {
-        return prev.filter(included => included !== value)
-      } else if(isMultiple) {
-        return [...prev, value]
-      }
+      if(isMultiple && prev.includes(value)) return prev.filter(included => included !== value)
+      else if(isMultiple) return [...prev, value]
 
-      if(prev[0] === value) {
-        return []
-      } else {
-        return [value]
-      }
+      if(prev[0] === value) return []
+      else return [value]
     })
   }
 

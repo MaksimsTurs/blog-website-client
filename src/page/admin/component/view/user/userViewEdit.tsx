@@ -1,16 +1,18 @@
 import scss from './userViewEdit.module.scss'
 
-import type { User } from "@/global.type";
+import type { CustomInputsRef, User } from "@/global.type";
+import type { AsssetsState } from '@/component/input/file-input/fileInput.type';
 import type { ContentData, EditViewProps } from "@/page/admin/page.type";
 
 import { ShieldHalf, SquarePen, UserRound } from "lucide-react";
 import { Fragment } from 'react/jsx-runtime';
 import { useParams } from 'react-router-dom';
+import { useRef } from 'react';
 
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
-import TextInput from "@/component/input/textInput/textInput";
+import TextInput from "@/component/input/text-input/textInput";
 import FormWrapper from "@/component/form-wrapper/formWrapper";
-import FileInput from "@/component/input/fileInput/fileInput";
+import FileInput from "@/component/input/file-input/fileInput";
 
 import useSelect from "@/component/input/select-input/useSelectItem";
 import useForm from "@/custom-hook/use-form/useForm";
@@ -23,21 +25,26 @@ import fetcher from '@/lib/fetcher/fetcher';
 
 export default function UserViewEdit({ defaultValue }: EditViewProps<User>) {
   const { tab } = useParams()
+  const { submit, register } = useForm<User>(undefined, { name: defaultValue?.name }),
+        SelectRole = useSelect({}),
+        SelectBan = useSelect({}),
+        searchParams = useSearchParams(),
+        customFileInputRef = useRef<CustomInputsRef<AsssetsState>>()
 
-  const { submit, register } = useForm<User>(undefined, { name: defaultValue?.name })
-  const SelectRole = useSelect({})
-  const SelectBan = useSelect({})
-  const searchParams = useSearchParams()
-
-
-  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
-  const id: string | null = searchParams.get('id')
+  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0'),
+        id: string | null = searchParams.get('id')
 
   const { mutate, isMutating } = useMutate<ContentData<User>>(`admin/${tab}/${currPage}`)
 
   const editUser = (data: User): void => {
     mutate(async(option) => {
-      const updatedUser: User = await fetcher.post('/admin/user/update', {...data, id, role: SelectRole.selected.at(0), ban: SelectBan.selected.at(0) }, AUTHORIZATION_OBJECT)
+      const updatedUser: User = await fetcher.post('/admin/user/update', {
+        ...data, 
+        id, 
+        role: SelectRole.selected.at(0), 
+        ban: SelectBan.selected.at(0),
+        file: customFileInputRef.current?.value.assets.at(0)
+      }, AUTHORIZATION_OBJECT)
       return { pagesCount: option.state?.pagesCount || 0, data: option.state?.data.map(item => item._id === updatedUser._id ? {...item, ...updatedUser } : item) || [] }
     })
   }  
@@ -57,7 +64,7 @@ export default function UserViewEdit({ defaultValue }: EditViewProps<User>) {
           <SelectBan.Item value='7'>7 Days</SelectBan.Item>
           <SelectBan.Item value='14'>14 Days</SelectBan.Item>
         </SelectBan.Wrapper>
-        <FileInput name='avatar' label="Change user avatar"/>
+        <FileInput ref={customFileInputRef} name='avatar' label="Change user avatar"/>
       </FormWrapper>
     </Fragment>
   ) 

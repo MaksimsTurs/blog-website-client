@@ -5,7 +5,7 @@ import type { ContentData, EditViewProps } from '@/page/admin/page.type';
 
 import FormWrapper from "@/component/form-wrapper/formWrapper";
 import Button from "@/component/buttons/button/button";
-import TextInput from "@/component/input/textInput/textInput";
+import TextInput from "@/component/input/text-input/textInput";
 import CheckBoxInput from "@/component/input/checkbox-input/checkBoxInput";
 import TextTagInput from "@/component/input/text-tag-input/textTagInput";
 import TextArea from "@/component/input/textArea/textArea";

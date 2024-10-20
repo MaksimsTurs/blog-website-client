@@ -1,13 +1,6 @@
-@import '../variabel';
+@use '../reusable.scss' as *;
 
 * {
-	// font-family: "Fira Code", monospace;
-	// font-family: "Fira Sans", sans-serif;
-	// font-family: "Work Sans", sans-serif;
-	// font-family: "Roboto Slab", serif;
-	// font-family: "Sofia Sans", sans-serif;
-	// font-family: "Public Sans", sans-serif;
-	// font-family: "Inter", sans-serif;
 	font-family: inherit;
   font-optical-sizing: auto;
   font-style: normal;
@@ -16,27 +9,23 @@
 	padding: 0rem;
 	margin: 0rem;
 	border: none;
+	
+	&:before, :after {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+		border: none;
+	}
 }
 
-*,
-*:before,
-*:after {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-	border: none;
-}
-
-body, 
-html {
+body, html {
 	height: 100%;
 	width: 100%;
 	background-color: white;
+	scroll-behavior: smooth;
 }
 
-header, 
-main, 
-footer {
+header, main, footer {
 	width: 100%;
 	background-color: white;
 }
@@ -47,45 +36,27 @@ main {
 }
 
 a {
+	text-decoration: none;
 	display: block;
 	color: black;
-}
-
-a,
-a:visited {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: none;
+	
+	&:visited, :hover { text-decoration: none; }
 }
 
 button {
 	font: inherit;
+	cursor: pointer;
 	background-color: transparent;
 	border: none;
-	cursor: pointer;
 }
 
-button, input {
-	outline: none;
-}
-
-textarea:focus,
-input:focus {
-	outline: none;
-}
-
-ul {
-	list-style: none;
-}
-
-h1, 
-h2,
-h3, 
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
 	font-size: $font-medium;
 	font-weight: normal;
 }
+
+button, input { outline: none; }
+
+textarea:focus, input:focus { outline: none; }
+
+ul { list-style: none; }

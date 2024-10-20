@@ -1,6 +1,3 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
 // ALIGN ITEM | JUSTIFY CONTENT | GAP
 
 .flex-row-normal-normal-none {
@@ -116,6 +113,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+}
+
+.flex-row-center-flex-end-big {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 1rem;
 }
 

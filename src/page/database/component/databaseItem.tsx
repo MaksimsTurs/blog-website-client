@@ -16,6 +16,7 @@ import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 import type { DatabaseItemProps } from '../page.type'
 import type { CustomInputsRef, Database } from '@/global.type'
+import type { AsssetsState } from '@/component/input/file-input/fileInput.type'
 
 import ImageComponent from '@/component/image-component/image'
 import Button from '@/component/buttons/button/button'
@@ -24,9 +25,9 @@ import FormWrapper from '@/component/form-wrapper/formWrapper'
 import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import ContentViewer from '@/component/content-viewer/contentViewer'
 import TextArea from '@/component/input/textArea/textArea'
-import TextInput from '@/component/input/textInput/textInput'
+import TextInput from '@/component/input/text-input/textInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
-import FileInput from '@/component/input/fileInput/fileInput'
+import FileInput from '@/component/input/file-input/fileInput'
 
 import fetcher from '@/lib/fetcher/fetcher'
 import Objects from '@/lib/object/object'
@@ -34,17 +35,17 @@ import Objects from '@/lib/object/object'
 const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 export default function DatabaseItem({ item }: DatabaseItemProps) {
-  const [isEditMode, setIsEditMode] = useState<boolean>(false)
-  const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
-  const navigate = useNavigate()
+  const [isEditMode, setIsEditMode] = useState<boolean>(false),
+        [useUploadedImages, setUseUploadedImages] = useState<boolean>(false),
+        searchParams = useSearchParams(),
+        ImageInput = useImageInput({ defaultValue: [item.thumbnail] }),
+        isAdmin: boolean = usePermitor().role(['Admin']).permited(),
+        contentRef = useRef<CustomInputsRef<string>>(),
+        customFileInputRef = useRef<CustomInputsRef<AsssetsState>>(),
+        navigate = useNavigate()
 
-  const contentRef = useRef<CustomInputsRef<string>>()
-
-  const searchParams = useSearchParams()
   const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION, { title: item.title })
   const { mutate, isMutating, changeError, error } = useMutate<Database[]>('database')
-  const ImageInput = useImageInput({ defaultValue: [item.thumbnail] })
-  const isAdmin: boolean = usePermitor().role(['Admin']).permited()
 
   const closeCurrentItem = (): void => {
     searchParams.remove([URL_SEARCH_PARAMS['DATABASE-ID']])
@@ -74,7 +75,10 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
     delete data.uploadImg
     delete data.url
 
-    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
+    const thumbnail: string | File | undefined = 
+      ImageInput.selected?.[0] ? ImageInput.selected?.[0] : 
+      customFileInputRef.current?.value.assets.at(0) ? customFileInputRef.current?.value.assets.at(0) : 
+      undefined
 
     if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
 
@@ -86,6 +90,7 @@ export default function DatabaseItem({ item }: DatabaseItemProps) {
       
       ImageInput.clear()
       contentRef.current?.clear()
+      customFileInputRef.current?.clear()
       reset()
       
       return option.state!.map(item => item._id === newItem._id ? newItem : item)

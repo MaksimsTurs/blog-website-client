@@ -1,41 +1,32 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
-h3 {
-  color: $color-common;
-  margin-bottom: 1rem;
-  text-shadow: 1px 1px black;
-  font-size: 1.45rem;
-}
+@use '@/scss/reusable' as *;
 
 .form_body {
   height: fit-content;
   padding: 1rem;
-}
-
-.form_error { 
-  border-radius: $border-radiues-button;
-  border: 1px solid #500;
-  font-size: 0.9rem;
-  padding: 0.5rem 0.25rem;
-  color: #500; 
-  font-weight: normal; 
-}
-
-.form_button {
-  @include button-slide-right-animation();
-  border-radius: $border-radiues-button;
-  box-shadow: $box-shadow-button;
-  transition: all $transition-time-fast;
-  padding: 0.5rem 1rem;
-}
-
-.form_button_pending:disabled {
-  transition: all $transition-time-fast;
-  background-color: #e38c44;
-  border: 1px solid #e38c44;
-
-  section { background-color: #e38c44; color: white; }
+  
+  .form_error { 
+    border-radius: $border-radiues-button;
+    font-size: $font-small;
+    border: 1px solid #500;
+    padding: 0.5rem 0.25rem;
+    color: #500; 
+  }
+  
+  .form_button {
+    @include button-slide-right-animation();
+    border-radius: $border-radiues-button;
+    box-shadow: $box-shadow-button;
+    transition: all $transition-time-fast ease;
+    padding: 0.5rem 1rem;
+  }
+  
+  .form_button_pending:disabled {
+    transition: all $transition-time-fast ease;
+    background-color: #e38c44;
+    border: 1px solid #e38c44;
+  
+    &:hover { background-color: #e38c44; border: 1px solid #e38c44; }
     
-  &:hover { background-color: #e38c44; border: 1px solid #e38c44; }
+    section { background-color: #e38c44; color: white; }
+  }
 }

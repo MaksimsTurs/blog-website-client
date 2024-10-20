@@ -1,14 +1,24 @@
 import { type PropsWithChildren, createContext, useEffect, useState } from "react";
 
-import type { TAuthContext, UserState } from "../use-auth/useAuth.type";
+import type { TAuthContext, UserSession, UserState } from "../use-auth/useAuth.type";
 
 import fetcher from "@/lib/fetcher/fetcher";
-import coockie from "@/lib/coockie/coockie";
+
+import { AUTHORIZATION_OBJECT } from "@/conts";
 
 export const AuthContext = createContext<TAuthContext | undefined>(undefined)
 
+const DEFAULT_ROUTES = [
+  { title: 'Home',           path: '/' },
+  { title: 'Suchen',         path: '/search' },
+  { title: 'Einstellungen',  path: '/setting' },
+  { title: 'Galerie',        path: '/galery' },
+  { title: 'Datenbank',      path: '/database' },
+  { title: 'About',          path: '/about' } 
+]
+
 export default function AuthProvider({ children }: PropsWithChildren) {
-  const [userState, updateUserState] = useState<UserState>({ isAuthPending: false, isLoading: false })
+  const [userState, updateUserState] = useState<UserState>({ isAuthPending: false, isLoading: false, permissions: { routing: DEFAULT_ROUTES }})
 
   useEffect(() => {
     async function isAuth() {
@@ -16,15 +26,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         const user = userState.user
 
         if(!user) {
-          updateUserState({ isAuthPending: true, isLoading: false })
+          updateUserState(prev => ({...prev, isAuthPending: true, isLoading: false }))
             
-          const response = await fetcher.get<any>('/authenticate', { 'Authorization': `Bearer ${coockie.getOne('PR_TOKEN')}` })
-          const isSuccess = Object.hasOwn(response, 'token')
+          const response = await fetcher.get<UserSession>('/authenticate', AUTHORIZATION_OBJECT)
             
-          updateUserState({ isAuthPending: false, isLoading: false, error: undefined, user: isSuccess ? response : undefined })
+          updateUserState({...response, isAuthPending: false, isLoading: false, error: undefined })
         }
       } catch(error) {
-        updateUserState({ isAuthPending: false, isLoading: false, error: undefined, user: undefined })
+        updateUserState(prev => ({...prev, isAuthPending: false, isLoading: false, error: undefined, user: undefined }))
       }
     }
 

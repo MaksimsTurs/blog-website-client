@@ -10,9 +10,10 @@ import form from "./form/form";
 export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>, defaultValue?: FormFieldsValues<T, R>, onReset?: () => void) {
   const [formState, setFormState] = useState<FormState>({ errors: undefined })
   
-  const isSubmited = useRef<boolean>(false)
-  const inputsRefs = useRef<Map<string, RefObject<HTMLInputElement>>>(new Map())
-  const formValues = useRef<KeyValueObject<any>>({})
+  const isSubmited = useRef<boolean>(false),
+        isFirstRender = useRef<boolean>(true),
+        inputsRefs = useRef<Map<string, RefObject<HTMLInputElement>>>(new Map()),
+        formValues = useRef<KeyValueObject<any>>({})
     
   function reset(): void {
     formValues.current = {}
@@ -26,14 +27,16 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
   }
 
   function register(name: string): FormFieldsRegisterReturn {
+    isFirstRender.current = false
+
     if(!inputsRefs.current.has(name)) {
       inputsRefs.current.set(name, createRef())
-    } else if(inputsRefs.current.has(name) && !formValues.current[name] && !isSubmited.current) {
+    } else if(inputsRefs.current.has(name) && isFirstRender.current) {
       const value = defaultValue?.[name as keyof typeof defaultValue] || ''
       const isChecbox: boolean = form.isType(inputsRefs.current.get(name)?.current?.type || '', 'checkbox')
 
       form.set.value(value, inputsRefs.current.get(name)?.current)
-      formValues.current[name] = typeof value === 'string' && isChecbox ? false :  value 
+      formValues.current[name] = typeof value === 'string' && isChecbox ? false : value 
     }
 
     return { 
@@ -56,6 +59,8 @@ export default function useForm<T, R = any>(validation?: FormFieldsValidation<T>
         const event = argArray[0] as SyntheticEvent<HTMLFormElement>
 
         let validationResult: KeyValueObject | undefined
+
+        console.log(formValues.current)
 
         event.preventDefault()
 

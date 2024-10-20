@@ -1,5 +1,4 @@
-@import '@/scss/variabel';
-@import '@/scss/mixin';
+@use '@/scss/reusable' as *;
 
 .search_loader_container {
   width: 100%;

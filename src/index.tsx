@@ -14,16 +14,16 @@ import SideMenu from "./component/side-menu/sideMenu"
 import RequestProvider from "./custom-hook/use-request/requestProvider"
 import AuthProvider from "./custom-hook/use-auth/authProvider"
 
-const Home = lazy(() => import('./page/home/page'))
-const Post = lazy(() => import('./page/post/page'))
-const WriteNewPost = lazy(() => import('./page/write-new/page'))
-const Search = lazy(() => import('./page/search/page'))
-const User = lazy(() => import('./page/user/page'))
-const Admin = lazy(() => import('./page/admin/page'))
-const Setting = lazy(() => import('./page/website-settings/page'))
-const Galery = lazy(() => import('./page/galery/page'))
-const Database = lazy(() => import('./page/database/page'))
-const About = lazy(() => import('./page/about/page'))
+const Home =         lazy(() => import('./page/home/page')),
+      Post =         lazy(() => import('./page/post/page')),
+      WriteNewPost = lazy(() => import('./page/write-new/page')),
+      Search =       lazy(() => import('./page/search/page')),
+      User =         lazy(() => import('./page/user/page')),
+      Admin =        lazy(() => import('./page/admin/page')),
+      Setting =      lazy(() => import('./page/website-settings/page')),
+      Galery =       lazy(() => import('./page/galery/page')),
+      Database =     lazy(() => import('./page/database/page')),
+      About =        lazy(() => import('./page/about/page'))
 
 import WriteNewPostLoader from './page/write-new/loader'
 import PostLoader from "./page/post/loader"
@@ -46,7 +46,7 @@ const App = () => {
 
   return(
     <Fragment>
-      <Header />
+      <Header/>
       <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1', backgroundColor: 'white' }}>
         <SideMenu/>
         <main>

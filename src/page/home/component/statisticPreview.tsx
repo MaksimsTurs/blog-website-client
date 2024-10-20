@@ -61,6 +61,7 @@ export default function StatisticPreview({ statisticToPreview }: StatisticPrevie
         <div className='flex-column-normal-normal-small'>
           {isPending ? <PaginationListLoader/> : pagesCount > 1 ? <PaginationList pagesCount={pagesCount}/> : null}
           <FetchDataComponent
+            useLocalErrorComponent
             isFetching={isPending}
             data={data?.items}
             emptyOptions={{ size: 'SMALL' }}

@@ -1,9 +1,9 @@
-import type { TextTagInputProps } from "../input.type";
+import type { TextTagInputProps } from "./textTagInput.type";
 import type { SyntheticEvent } from "react";
 
 import { useState, Fragment, forwardRef, useImperativeHandle } from "react";
 
-import TextInput from "../textInput/textInput";
+import TextInput from "../text-input/textInput";
 import TagPreview from "@/component/tag-preview/tagPreview";
 
 import tag from "./tag";
@@ -14,20 +14,16 @@ export default forwardRef(function({ placeholder, value }: TextTagInputProps, re
   const [tags, setTags] = useState<string[]>(value || [])
 
   const removeTag = (tag: string): void => {
-    setTags(prev => {
-      const newTagState: string[] = Array.removeDuplicates(prev, [tag])
-      return newTagState
-    })
+    setTags(prev => Array.removeDuplicates(prev, [tag]))
   }
 
   const insertNewTag = (event: SyntheticEvent<HTMLInputElement>): void => {
-    const newTagState: string[] = tag.createTagArray(event.currentTarget.value)
-    setTags(newTagState)
+    setTags(tag.createTagArray(event.currentTarget.value))
   }
 
   useImperativeHandle(ref, () => ({
     clear: () => setTags([]),
-    value: tags.filter(tag => tag)
+    value: tags.filter(Boolean)
   }), [tags])
   
   return(

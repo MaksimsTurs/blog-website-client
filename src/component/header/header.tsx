@@ -31,6 +31,7 @@ export default function Header() {
       otherModalState = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN']) || 'false')
     }
 
+    //When other modal open, don't open selected modal
     if(otherModalState) return
 
     searchParams.set({ [`is-${modal}-modal-open`]: !currState })
@@ -46,21 +47,19 @@ export default function Header() {
       <LoginModal/>
       <RegistrationModal/>
       <header className={`${scss.header_container} flex-row-center-space-between-none`}>
-        <div style={{ width: '100%' }} className='flex-row-center-normal-none'>
-          <button onClick={changeSideMenuVisibility} className={scss.header_side_menu_button}>
-            {isSideMenuOpen ? <X/> : <AlignJustify />}
-          </button>
+        <div className={`${scss.header_website_name_container} flex-row-center-normal-none`}>
+          <button onClick={changeSideMenuVisibility} className={scss.header_side_menu_button}>{isSideMenuOpen ? <X/> : <AlignJustify />}</button>
           <Link className={scss.header_website_name} to='/'>Ruzzkyi Mir</Link>
         </div>
         {auth.isAuthPending ? <UserContainerLoader/> :
         !auth.user ? 
         <section className={`${scss.header_user_action_container} flex-row-center-normal-none`}>
-          <button className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
+          <button className={`${scss.header_user_action_button} flex-row-center-normal-medium`} onClick={() => openAuthorizationModal('registrate')}>
             <UserPlus/>Registrate
           </button>
-          <button onClick={() => openAuthorizationModal('login')}>Login</button>
+          <button className={scss.header_user_action_button} onClick={() => openAuthorizationModal('login')}>Login</button>
         </section> :
-        <section className={`${scss.header_user_container} flex-row-center-center-medium`}>
+        <section className={`${scss.header_user_action_container} flex-row-center-center-medium`}>
           <Link className={scss.header_user_link} to={`/user/${auth.user._id}`}><ImageComponent styles={{ svg: { width: '2rem', height: '2rem' }, loader: { width: '2rem', height: '2rem' }}} src={auth.user.avatar} alt={auth.user.name}/></Link>
         </section>}
       </header>

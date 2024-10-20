@@ -1,7 +1,7 @@
 @media(width <= 830px) {
   .aside_menu_container { padding-left: 0rem !important; }
 
-  .aside_menu_body { left: -100% !important; box-shadow: $box-shadow-container; width: 15rem !important; }
+  .aside_menu_body { left: -100% !important; width: 15rem !important; }
 
   .aside_menu_user_action { display: block !important; }
 }

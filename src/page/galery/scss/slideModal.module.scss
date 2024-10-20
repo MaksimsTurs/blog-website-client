@@ -1,6 +1,5 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './media-query/slideModal.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './media-query/slideModal.media-query.scss';
 
 .galery_current_galery_modal_container_hidden {
   transition: all $transition-time-fast;
@@ -10,9 +9,9 @@
 
 .galery_current_galery_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 0%);
-  position: fixed;
   background-color: $color-black-medium-soft;
   transition: all $transition-time-fast;
+  position: fixed;
   z-index: 99;
   padding: 1rem 0rem;
   

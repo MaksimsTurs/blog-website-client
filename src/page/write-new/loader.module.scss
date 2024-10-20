@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .write_new_loader_container {
   width: 100%;
@@ -12,7 +11,7 @@
     width: 50%;
     height: fit-content;
 
-    button {
+    .write_new_loader_button {
       @include loader();
       width: 3rem;
       height: 2.5rem;

@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .burger_data_wrapper_container {
   border-bottom: 1px solid $border-container-soft;

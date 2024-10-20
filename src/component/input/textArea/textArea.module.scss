@@ -1,7 +1,5 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
-@import './media-query/textArea.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './media-query/textArea.media-query.scss';
 
 .text_area_asset_modal_container {
   @include absolute-left-top-zindex-width-height(50%, 50%, 100);

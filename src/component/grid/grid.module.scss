@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .grid_wrapper {
   display: grid;
@@ -20,14 +19,14 @@
   }
 
   &:hover > .grid_item_title {
-    transition: all $transition-time-fast;
+    transition: all $transition-time-fast ease;
     opacity: 1;
     visibility: visible;
   }
 
   .grid_item_title {
     @include absolute-left-top-zindex-width-height(0%, 0%);
-    transition: all $transition-time-fast;
+    transition: all $transition-time-fast ease;
     visibility: hidden;
     padding: 0.5rem;
     opacity: 0;

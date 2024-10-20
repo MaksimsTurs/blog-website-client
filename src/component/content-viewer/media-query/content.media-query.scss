@@ -1,14 +1,10 @@
 @media(width <= 500px) {
   .img { width: 100% !important; }
 
-  .video_container > video {
-    width: 100%;
-  }
+  .video_container > video { width: 100%; }
 }
 
 @media(width <= 560px) {
-  .quote_body {
-    width: 100% !important;
-  }
+  .quote_body { width: 100% !important; }
 }
 

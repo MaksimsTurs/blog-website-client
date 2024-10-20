@@ -1,5 +1,4 @@
-@import '@/scss/variabel';
-@import '@/scss/mixin';
+@use '@/scss/reusable' as *;
 
 .post_quotes_container {
 	border: 1px solid $color-common-soft;

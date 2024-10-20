@@ -1,20 +1,15 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .button {
-  @include flex-alignitems-justifycontent(center, center);
   @include button-slide-right-animation();
   border-radius: $border-radiues-button;
   box-shadow: $box-shadow-button;
-  transition: all $transition-time-fast;
+  transition: all $transition-time-fast ease;
     
   &:hover {
     box-shadow: $box-shadow-button-hover;
-    transition: all $transition-time-very-fast;
+    transition: all $transition-time-fast ease;
   }
 
-  svg {
-    width: $icon-large;
-    height: $icon-large;
-  }
+  svg { width: $icon-large; height: $icon-large; }
 }

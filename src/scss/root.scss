@@ -1,25 +1,9 @@
-@import './reset/default';
-@import './reset/input';
-
-@import './mixin';
+@use './reusable.scss' as *;
+@forward './reset/default';
+@forward './reset/input';
 
 #root {
-	@include flex-column-alignitems-justifycontent();
 	min-height: 100%;
 	overflow: hidden;
 	position: relative;
-}
-
-::-webkit-scrollbar {
-	width: 1rem;
-}
-
-::-webkit-scrollbar-thumb {
-	background: $color-common-soft;
-	border-radius: 15px;
-	cursor: pointer;
-
-	&:hover {
-		background: $color-common;
-	}
 }

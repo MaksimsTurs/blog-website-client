@@ -1,6 +1,3 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
 // ALIGN ITEM | JUSTIFY CONTENT | GAP
 
 .flex-column-normal-normal-none {
@@ -38,6 +35,12 @@
   display: flex;
   flex-direction: column;
   align-content: flex-start; 
+}
+
+.flex-column-flex-end-normal-none {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end; 
 }
 
 .flex-column-center-center-small {

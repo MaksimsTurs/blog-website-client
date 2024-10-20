@@ -1,15 +1,14 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .select_list_wrapper {
   border-radius: $border-radius-container;
   border: $border-container-soft;
-  transition: all $transition-time-fast;
+  transition: all $transition-time-fast ease;
   padding: 0rem;
   width: 100%;
 
   &:hover {
-    transition: all $transition-time-fast;
+  transition: all $transition-time-fast ease;
     border: 1px solid $color-common;
   }
 
@@ -27,8 +26,7 @@
   }
 
   .select_list_item {
-    transition: all $transition-time-very-fast;
-    // border-radius: $border-radius-container;
+    transition: all $transition-time-fast ease;
     border-bottom: 1px solid $color-black-soft;
     border: 1px solid transparent;
     font-size: 0.9rem;
@@ -39,14 +37,14 @@
 
     &:hover {
       color: $color-common-hover;
-      transition: all $transition-time-very-fast;
       background-color: $color-common-hover-soft;
+      transition: all $transition-time-fast ease;
     }
   }
   
   .select_list_item_selected {
     background-color: $color-common-hover-soft;
     color: $color-common-hover;
-    transition: all $transition-time-very-fast;
+    transition: all $transition-time-fast ease;
   }
 }

@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .user_preview_author {
   border-radius: $border-radius-container;
@@ -27,9 +26,7 @@
     p {
       font-size: $font-small;
     
-      &:last-child {
-        color: $color-black-medium-soft;
-      }
+      &:last-child { color: $color-black-medium-soft; }
     }
 
     &:not(:first-child) {

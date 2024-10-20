@@ -1,5 +1,5 @@
 import type { FormFieldsErrors, FormFieldsRegisterCallback } from "@/custom-hook/use-form/useForm.type"
-import type { MutableRefObject, PropsWithChildren, SyntheticEvent } from "react"
+import type { SyntheticEvent } from "react"
 
 export type InputProps = {
   attributes: {
@@ -13,15 +13,6 @@ export type InputProps = {
   errors?: FormFieldsErrors
 }
 
-export type FileInputProps = {
-  label: string
-  value?: string
-  asset?: MutableRefObject<File | undefined>
-  register?: FormFieldsRegisterCallback
-  className?: string
-  supportedFormats?: ('image/webp' | 'image/jpg' | 'image/png' | 'image/jpeg' | 'video/mp4')[]
-} & Pick<InputProps['attributes'], 'name'>
-
 export type InputAttributes = {
   type: 'text' | 'number' | 'password' | 'email' | 'file'
   name: string
@@ -34,15 +25,3 @@ export type InputAttributes = {
 }
 
 export type TextAreaProps = Pick<InputAttributes, 'placeholder' | 'defaultValue'>
-
-export type TextTagInputProps = { 
-  value?: string[]
-} & Pick<InputAttributes, 'placeholder'>
-
-export type TextInputProps = Partial<Pick<InputAttributes, 'type' | 'value' | 'register'>> & Pick<InputAttributes, 'onInput' | 'errors' | 'name' | 'placeholder'>
-
-export type CheckBoxInputProps = Pick<FileInputProps, 'label'> & Pick<InputAttributes, 'name' | 'onInput' | 'register' | 'errors'>
-
-export type SelectInputWrapperProps = PropsWithChildren<{ title: string, className?: string, pagesCount?: number }>
-
-export type SelectInputItemProps = PropsWithChildren<{ value: string }>

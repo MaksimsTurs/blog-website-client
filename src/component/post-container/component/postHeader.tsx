@@ -119,7 +119,7 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
 
   return(
     <Fragment>
-      <ConfirmModal text='Do you will to remove this post?' onConfirm={removePost}/>
+      <ConfirmModal title='Post löschen' text='Möchtest du diese Post tatsächlich löschen?' onConfirm={removePost}/>
       <div className={`${scss.post_header} flex-row-center-space-between-none`}>
         {user ? 
         <div className='flex-row-center-normal-medium'>

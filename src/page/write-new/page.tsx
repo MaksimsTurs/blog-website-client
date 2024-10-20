@@ -7,7 +7,7 @@ import type { CreatorState, ContentDraft } from '@/store/creator/creator.type'
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import FormWrapper from "@/component/form-wrapper/formWrapper"
-import TextInput from "@/component/input/textInput/textInput"
+import TextInput from "@/component/input/text-input/textInput"
 import TextArea from '@/component/input/textArea/textArea'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import TextTagInput from '@/component/input/text-tag-input/textTagInput'
@@ -35,15 +35,14 @@ import { AUTHORIZATION_OBJECT } from '@/conts'
 const USE_FORM_VALIDATION: FormFieldsValidation<Content> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 export default function WriteNewPost() {
-  const dispatch = useDispatch<AppDispatch>()
-  const redirect = useNavigate()
-  const creator = useSelector<RootState, CreatorState>(state => state.creator)
-  const postTagsRef = useRef<CustomInputsRef<string[]> | undefined>()
-  const postContentRef = useRef<CustomInputsRef<string> | undefined>()
-
-  const searchParams = useSearchParams()
-  const auth = useAuth()
-  const permitor = usePermitor()
+  const dispatch = useDispatch<AppDispatch>(),
+        redirect = useNavigate(),
+        creator = useSelector<RootState, CreatorState>(state => state.creator),
+        postTagsRef = useRef<CustomInputsRef<string[]> | undefined>(),
+        postContentRef = useRef<CustomInputsRef<string> | undefined>(),
+        searchParams = useSearchParams(),
+        auth = useAuth(),
+        permitor = usePermitor()
   
   const draftID: string | null = searchParams.get('draft-id')
 

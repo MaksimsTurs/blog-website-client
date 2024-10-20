@@ -1,6 +1,3 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
-@import './global/container.scss';
-@import './global/flexCoulmn.scss';
-@import './global/flexRow.scss';
+@forward './global/container.scss';
+@forward './global/flexCoulmn.scss';
+@forward './global/flexRow.scss';

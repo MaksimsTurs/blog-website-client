@@ -8,7 +8,7 @@ export default function ScrollTo() {
   const [isOnTop, setIsOnTop] = useState<boolean>(window.scrollX === 0)
 
   useEffect(() => {
-    document.addEventListener('scroll', () => {
+    document.addEventListener('scroll', (): void => {
       const documentHeight: number = document.body.scrollHeight / 2
       const viewMiddle: number = (window.scrollY + window.innerHeight)
 

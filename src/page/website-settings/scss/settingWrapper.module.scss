@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .setting_wrapper_container {
   border-bottom: 1px solid $color-black-soft;

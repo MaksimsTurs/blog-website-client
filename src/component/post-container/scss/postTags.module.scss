@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .post_tags {
   font-size: $font-small;
@@ -13,8 +12,6 @@
     padding: 0.35rem 0.5rem;
     cursor: pointer;
 
-    &:hover {
-      background-color: rgba(192, 192, 192, 0.3);
-    }
+    &:hover { background-color: rgba(192, 192, 192, 0.3); }
   }
 }

@@ -1,3 +1,1 @@
-export type LocalErrorProps = {
-  error: string
-}
+export type LocalErrorProps = { error: string }

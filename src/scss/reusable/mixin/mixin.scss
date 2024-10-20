@@ -1,17 +1,4 @@
-@import './variabel';
-
-@mixin flex-alignitems-justifycontent($align-items: flex-start, $justify-content: baseline) {
-  align-items: $align-items;
-  justify-content: $justify-content;
-  display: flex;
-}
-
-@mixin flex-column-alignitems-justifycontent($align-items: normal, $justify-content: normal) {
-  align-items: $align-items;
-  justify-content: $justify-content;
-  display: flex;
-  flex-direction: column;
-}
+@use '../variabel/variabel.scss' as Variabel;
 
 @mixin absolute-left-top-zindex-width-height($left: 0%, $top: 0%, $z-index: 1, $width: 100%, $height: 100%) {
   left: $left;
@@ -33,16 +20,16 @@
 @mixin button-slide-right-animation() {
   width: fit-content;
   background-size: 200% 100%;
-  background-image: linear-gradient(to right, $color-common 50%, white 50%);
-  transition: background-position $transition-time-fast ease;
-  border: 1px solid $color-common;
+  background-image: linear-gradient(to right, Variabel.$color-common 50%, white 50%);
+  transition: background-position Variabel.$transition-time-fast ease;
+  border: 1px solid Variabel.$color-common;
   overflow: hidden;
   color: white;
 
   &:hover {
-    color: $color-common-hover;
-    border: 1px solid $color-common-hover;
-    transition: background-position $transition-time-fast ease;
+    color: Variabel.$color-common-hover;
+    border: 1px solid Variabel.$color-common-hover;
+    transition: background-position Variabel.$transition-time-fast ease;
     background-position: -100% 0%;
   }
 }
@@ -54,7 +41,7 @@
   }
 }
 
-@mixin loader($border-radius: $border-radiues-button) {
+@mixin loader($border-radius: Variabel.$border-radiues-button) {
   border-radius: $border-radius;
   background-color: rgba(192, 192, 192, 0.4);
   overflow: hidden;

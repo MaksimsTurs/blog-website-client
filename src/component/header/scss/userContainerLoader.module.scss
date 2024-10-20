@@ -1,19 +1,13 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './media-query/userContainerLoader.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './media-query/userContainerLoader.media-query.scss';
 
-.loader_element_animation {
-  @include loader();
-}
+.loader_element_animation { @include loader(); }
 
 .loader_container {
   display: flex;
   gap: 0.5rem;
 
-  .loader_button {
-    height: 2rem;
-    width: 5rem;
-  }
+  .loader_button { height: 2rem; width: 5rem; }
 
   .loader_avatar {
     height: 2rem;

@@ -1,12 +1,11 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-
 .create_new_post_container {
   height: 100%;
   
   .create_new_post_form {
     flex-grow: 0.5;
     max-width: 60rem;
+
+    > * { align-items: flex-start; }
 
     .create_new_buttons_container {
       width: 100%;

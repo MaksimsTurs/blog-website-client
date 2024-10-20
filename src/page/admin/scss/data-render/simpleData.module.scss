@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .data_simple_container {
   border-bottom: 1px solid $color-black-soft;
@@ -14,9 +13,7 @@
     .data_simple_value {
       color: $color-black-medium-soft;
 
-      &:is(a):hover {
-        color: $color-common-hover;
-      }
+      &:is(a):hover { color: $color-common-hover; }
     }
 
     svg { 
@@ -32,8 +29,6 @@
     transition: all $transition-time-very-fast;
     transform: scale(1.1);
 
-    &:hover {
-      color: $color-common;
-    }
+    &:hover { color: $color-common; }
   }
 }

@@ -1,4 +1,4 @@
-import TextInput from '@/component/input/textInput/textInput'
+import TextInput from '@/component/input/text-input/textInput'
 
 import type { FilterInputProps } from '../page.type'
 

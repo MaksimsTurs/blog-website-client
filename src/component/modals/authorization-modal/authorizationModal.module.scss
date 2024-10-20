@@ -1,6 +1,5 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './media-query/authorizationModal.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './media-query/authorizationModal.media-query.scss';
 
 .authorization_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 8%, 2);

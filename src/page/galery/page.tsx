@@ -21,14 +21,12 @@ import { GridWrapper, GridButton, GridItem } from '@/component/grid/grid'
 import type { Galery } from '@/global.type'
 
 export default function Page() {
-  const permitor = usePermitor()
-  const searchParams = useSearchParams()
+  const permitor = usePermitor(),
+        searchParams = useSearchParams(),
+        [currentSlide, setCurrentSlide] = useState<number | undefined>()
 
-  const [currentSlide, setCurrentSlide] = useState<number | undefined>()
-
-  const galeryID: string | null = searchParams.get(URL_SEARCH_PARAMS['GALERY-ID'])
-
-  const isAdmin: boolean = permitor.role(['Admin']).permited()
+  const galeryID: string | null = searchParams.get(URL_SEARCH_PARAMS['GALERY-ID']),
+        isAdmin: boolean = permitor.role(['Admin']).permited()
 
   const { data, error, isFetching, isMutating } = useRequest<Galery[]>({ deps: [`galery`], request: async () => await fetcher.get('/get/galery') })
 

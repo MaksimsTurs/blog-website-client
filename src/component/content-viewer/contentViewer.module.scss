@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .content_viewer_container {
   display: flex;
@@ -11,16 +10,13 @@
     color: $color-black-medium-soft;
     width: 100%;
 
-    svg {
-      width: 1rem;
-      height: 1rem;
-    }
+    svg { width: $icon-medium; height: $icon-medium; }
   }
 
   .content_view_parse_error {
     border-radius: $border-radius-container;
+    background-color: $color-error;
     width: 100%;
-    background-color: rgb(129, 0, 0);
     padding: 0.75rem;
     color: white;
   }

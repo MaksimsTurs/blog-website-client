@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .pagination_list_button {
   outline: $border-container-soft;
@@ -13,8 +12,8 @@
   }
 
   svg {
-    height: 1.25rem;
-    width: 1.25rem;
+    height: $icon-x-large;
+    width: $icon-x-large;
   }
 }
 

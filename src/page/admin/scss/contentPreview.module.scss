@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .content_author_avatar {
   border-radius: $border-radius-container;
@@ -26,7 +25,7 @@
   padding-bottom: 0.6rem;
 
   svg {
-    width: 2rem;
-    height: 2rem;
+    width: $icon-xx-large;
+    height: $icon-xx-large;
   }
 }

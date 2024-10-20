@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .post_wrapper_container {
   background-color: white;
@@ -8,15 +7,15 @@
   flex-shrink: 1;
 
   .post_is_hidden {
+    background: $color-common;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;  
-    background: $color-common;
     padding: 0.5rem;
     color: white;
 
     svg {
-      width: 0.9rem;
-      height: 0.9rem;
+      width: $icon-small;
+      height: $icon-small;
     }
   }
 }

@@ -23,8 +23,6 @@ export default function ImageInputLoader() {
         <div className={scss.image_input_loader}></div>
         <div className={scss.image_input_loader}></div>
         <div className={scss.image_input_loader}></div>
-        <div className={scss.image_input_loader}></div>
-        <div className={scss.image_input_loader}></div>
       </div>
     </div>
   )

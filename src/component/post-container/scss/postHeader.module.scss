@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .post_header {
 
@@ -65,8 +64,8 @@
     }
 
     svg {
-      width: 1.55em; 
-      height: 1.55rem; 
+      width: $icon-x-large; 
+      height: $icon-x-large; 
       padding: 0.4rem 0rem;
     }
   }

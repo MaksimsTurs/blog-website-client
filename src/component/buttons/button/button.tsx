@@ -1,8 +1,8 @@
 import scss from './button.module.scss'
+import '@/scss/global.scss'
 
 import type { ButtonProps } from "./button.type";
-import type { PropsWithChildren } from 'react';
 
-export default function Button({ onClick, className, type, isDisable, children }: PropsWithChildren<ButtonProps>) {
-  return <button type={type || 'button'} disabled={isDisable} className={`${scss.button} ${className}`} onClick={onClick}>{children}</button>
+export default function Button({ onClick, className, type, isDisable, children }: ButtonProps) {
+  return <button type={type || 'button'} disabled={isDisable} className={`${scss.button} ${className} flex-row-center-center-none`} onClick={onClick}>{children}</button>
 }

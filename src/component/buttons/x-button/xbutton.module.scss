@@ -1,21 +1,20 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .xbutton_style {
-  color: $color-error;
   box-shadow: $box-shadow-button;
   border-radius: $border-radiues-button;
-  transition: all $transition-time-very-fast;
+  transition: all $transition-time-very-fast ease;
   border: 1px solid $color-error;
-  background-color: white;
+  background-color: $color-error;
+  color: white;
   padding: 0.3rem;
   cursor: pointer;
-
+  
   &:hover {
-    background-color: $color-error;
     box-shadow: $box-shadow-button-hover;
-    transition: all $transition-time-very-fast;
+    transition: all $transition-time-very-fast ease;
+    background-color: white;
     
-    svg { color: white !important; }
+    svg { color: $color-error; }
   }
 }

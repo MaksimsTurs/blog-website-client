@@ -1,21 +1,17 @@
 @media(width <= 640px) {
-  .galery_action_button_container {
-    > div {
-      width: 100%;
-      padding: 0rem !important;
-      margin: 0rem !important;
+  .galery_action_button_container > div {
+    width: 100%;
+    padding: 0rem !important;
+    margin: 0rem !important;
 
-      &:first-child { border: none !important; }
+    &:first-child { border: none !important; }
 
-      > button { justify-content: center; width: 100%; }
-    }
-  }  
+    > button { justify-content: center; width: 100%; }
+  }
 }
 
 @media(width <= 470px) {
-  .galery_action_button_container {
-    > div > button { padding: 0.5rem !important; }
-  }
+  .galery_action_button_container > div > button { padding: 0.5rem !important; }
 }
 
 @media(width <= 380px) {

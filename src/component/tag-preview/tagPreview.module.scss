@@ -1,5 +1,4 @@
-@import '@/scss/variabel';
-@import '@/scss/mixin';
+@use '@/scss/reusable' as *;
 
 .tag_list {
   width: 100%;

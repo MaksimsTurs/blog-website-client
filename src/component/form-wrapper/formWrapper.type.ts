@@ -1,11 +1,10 @@
-import type { CSSProperties, ReactNode, SyntheticEvent } from "react"
+import type { CSSProperties, PropsWithChildren, SyntheticEvent } from "react"
 
-export type FormWrapperProps = {
+export type FormWrapperProps = PropsWithChildren<{
   errors?: string[]
   isPending?: boolean
   buttonLabel?: string 
-  title?: string | ReactNode
   className?: string
   style?: CSSProperties
   onSubmit: (event: SyntheticEvent) => any
-}
+}>

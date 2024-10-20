@@ -1,6 +1,5 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './media-query/content.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './media-query/content.media-query.scss';
 
 .line { 
   flex-grow: 1;
@@ -71,9 +70,7 @@
   width: 100%;
   padding: 1rem 0rem;
 
-  video {
-    max-height: 15em;
-  }
+  video { max-height: 15em; }
 }
 
 .list {

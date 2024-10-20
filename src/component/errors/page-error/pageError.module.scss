@@ -1,27 +1,18 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .error_container {
   height: 100%;
   width: 100%;
 
   .error_body {
-    @include flex-column-alignitems-justifycontent(baseline);
     color: $color-common;
     max-width: 50rem;
     height: fit-content;
     
     .error_code { font-size: clamp(3rem, 5vw, 4rem); text-shadow: 1px 1px black; font-weight: bold; }
     
-    .error_message { font-size: clamp(0.9rem, 5vw, 1.1rem); }
+    .error_message { font-size: clamp(0.9rem, 5vw, $font-large); }
 
-    .error_reload_button { margin-top: 0.25rem; }
-
-    svg {
-      filter: drop-shadow(1px 1px black);
-      transform: rotate(180deg);
-      width: 2rem;
-      height: auto;
-    }
+    .error_reload_button { margin-top: 0.25rem; padding: 0.35rem 0.5rem; }
   }
 }

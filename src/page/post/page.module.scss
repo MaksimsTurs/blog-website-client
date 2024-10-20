@@ -1,6 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './scss/media-query/page.media-query.scss';
+@forward './scss/media-query/page.media-query.scss';
 
 .post_page_container {
   height: 100%;

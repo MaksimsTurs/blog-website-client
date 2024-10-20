@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .confirm_modal_container {
   @include absolute-left-top-zindex-width-height(0%, 0%, 100);
@@ -8,7 +7,7 @@
   opacity: 0;
   visibility: hidden;
 
-  .confirm_modal_body { min-width: 10rem; padding: 0rem; overflow: hidden; }
+  .confirm_modal_body { max-width: 19rem; padding: 0rem; overflow: hidden; }
 
   .confirm_modal_header { 
     border-bottom: 1px solid $color-common-hover;
@@ -18,12 +17,7 @@
   }
 
   .confirm_modal_button {
-    background-color: green;
-    border: 1px solid green;
-
-    &:hover > * {
-      color: green;
-    }
+    padding: 0.35rem 1rem;
   }
 
   .confirm_modal_text_body {

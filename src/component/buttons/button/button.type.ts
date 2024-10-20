@@ -1,9 +1,8 @@
-import type { SyntheticEvent } from "react"
+import type { PropsWithChildren, SyntheticEvent } from "react"
 
-export type ButtonProps = {
-  label?: string
+export type ButtonProps = PropsWithChildren<{
   className?: string
   type?: 'submit'
   isDisable?: boolean
   onClick?: (event: SyntheticEvent<HTMLButtonElement>) => any
-}
+}>

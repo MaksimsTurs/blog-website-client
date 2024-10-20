@@ -5,11 +5,12 @@ import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
 import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
-import type { User } from '@/global.type'
+import type { CustomInputsRef, User } from '@/global.type'
+import type { AsssetsState } from '@/component/input/file-input/fileInput.type'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
-import TextInput from '@/component/input/textInput/textInput'
-import FileInput from '@/component/input/fileInput/fileInput'
+import TextInput from '@/component/input/text-input/textInput'
+import FileInput from '@/component/input/file-input/fileInput'
 
 import Objects from '@/lib/object/object'
 import CharacterArray from '@/lib/string/strings'
@@ -26,18 +27,21 @@ const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
 }
 
 export default function RegistrationModal() {
-  const auth = useAuth()
-  const mainContainerRef = useRef<HTMLDivElement>(null)
-  const isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
-  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
+  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION),
+        auth = useAuth(),
+        mainContainerRef = useRef<HTMLDivElement>(null),
+        customFileInputRef = useRef<CustomInputsRef<AsssetsState>>(),
+        isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
 
   const registrate = async(data: User) => {
     const formData = Objects.createFormDataFromJSON(data)
 
-    if((formData.get('avatar') as File).size === 0) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
+    if(!customFileInputRef.current?.value.assets.at(0)) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
     
     await auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
+    
     reset()
+    customFileInputRef.current?.clear()
   }
 
   auth.clearError()
@@ -49,7 +53,7 @@ export default function RegistrationModal() {
         <TextInput register={register} errors={errors} name='email' placeholder='You e-mail' type='email'/>
         <TextInput register={register} errors={errors} name='password' placeholder='You password' type='password'/>
         <TextInput register={register} errors={errors} name='confirmPassword' placeholder='Confirm you password' type='password'/>
-        <FileInput register={register} name='avatar' label='Chose you avatar!'/>
+        <FileInput ref={customFileInputRef} name='avatar' label='Chose you avatar!'/>
       </FormWrapper>
     </div>
   )

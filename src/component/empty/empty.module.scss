@@ -1,5 +1,4 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
+@use '@/scss/reusable' as *;
 
 .empty_container {
   color: $color-black-medium-soft;
@@ -7,8 +6,5 @@
   width: 100%;
   padding: 0.5rem;
 
-  svg {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
+  svg { width: $icon-xx-large; height: $icon-xx-large; }
 }

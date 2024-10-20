@@ -8,5 +8,3 @@ export type ImageComponentProps = {
 }
 
 export type ImageLoaderProps = { className?: string, style?: CSSProperties }
-
-export type ImageCheckedUrlsMap = Map<string | undefined, string | undefined>

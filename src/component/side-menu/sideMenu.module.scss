@@ -1,62 +1,68 @@
-@import '@/scss/mixin';
-@import '@/scss/variabel';
-@import './scss/media-query/sideMenu.media-query.scss';
+@use '@/scss/reusable' as *;
+@forward './scss/media-query/sideMenu.media-query.scss';
 
-.aside_menu_container { padding-left: 12rem; }
-
-.aside_menu_body {
-  border-right: $border-container-soft;
-  transition: all $transition-time-medium;
-  background-color: white;
-  overflow: hidden;
-  position: fixed;
-  height: 100%;
-  width: 12rem;
-  padding: 4.5rem 0rem;
-  left: 0%;
-  z-index: 5;
-
-  .aside_menu_user_action { display: none;  }
+.aside_menu_container { 
+  padding-left: 14rem; 
   
-  .aside_menu_default_link { gap: 1rem; }
+  .aside_menu_body {
+    border-right: $border-container-soft;
+    transition: all $transition-time-medium ease;
+    width: 14rem;
+    position: fixed;
+    left: 0%;
+    z-index: 5;
+    height: 100%;
+    padding: 4.5rem 0rem;
+    background-color: white;
+    overflow: hidden;
   
-  .aside_menu_title { color: $color-black-medium-soft; padding: 0rem 2rem 0.25rem 2rem; }   
-  
-  .aside_menu_text_wrapper { @include text-overflow-ellipsis(); }
-
-  .aside_menu_user_avatar {
-    border-radius: 50%;
-    width: 1.9rem;
-    height: 1.9rem;
-  }
-  
-  a, button {
-    text-align: left;
-    padding: 0.45rem 2rem;
-    font-size: 0.9rem;
-
-    &:hover {
-      background-color: $color-common-soft;
-      color: $color-common;
-      transform: scale(1.05);
-      
-      > * { overflow: visible; }
+    .aside_menu_user_action { 
+      display: none;  
+      margin-bottom: 0.25rem;
     }
 
-    .aside_menu_icon { width: 1rem; height: 1rem; }
-  }
-
-  .aside_link_active {
-    background-color: $color-common-soft;
-    color: $color-common;
-    position: relative;
-
-    &::after {
-      @include absolute-left-top-zindex-width-height();
-      content: '';
-      height: 100%;
-      width: 0.25rem;
-      background-color: $color-common;
+    .aside_menu_user_avatar {
+      border-radius: 50%;
+      width: 1.9rem;
+      height: 1.9rem;
+    }
+        
+    .aside_menu_title { 
+      color: $color-black-medium-soft; 
+      padding: 0rem 2rem 0.75rem 2rem; 
+    }   
+    
+    .aside_menu_text_wrapper { @include text-overflow-ellipsis(); }
+    
+    a, button {
+      transition: all $transition-time-very-fast ease;
+      text-align: left;
+      padding: 0.45rem 2rem;
+      font-size: 0.9rem;
+  
+      &:hover {
+        background-color: $color-common-soft;
+        color: $color-common;
+        box-shadow: 1px 1px 1px $color-common;
+        transition: all $transition-time-very-fast ease;
+        transform: scale(1.05);
+      }
+  
+      .aside_menu_icon { width: $icon-large; height: $icon-large; }
+    }
+  
+    .aside_link_active {
+      background-color: $color-common-soft;
+      color: $color-common;
+      position: relative;
+  
+      &::after {
+        @include absolute-left-top-zindex-width-height();
+        background-color: $color-common;
+        content: '';
+        height: 100%;
+        width: 0.25rem;
+      }
     }
   }
 }
