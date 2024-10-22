@@ -1,8 +1,9 @@
 import scss from './textArea.module.scss'
 import '@/scss/global.scss'
 
-import type { TextAreaProps } from "../input.type";
+import type { TextAreaProps } from './textArea.type';
 import type { ServerResponseError } from '@/global.type';
+import type { FieldValues } from 'react-hook-form';
 
 import { Bold, Link2, FileImage, Eye, Heading1, Heading2 } from 'lucide-react';
 import { forwardRef, Fragment, memo, SyntheticEvent, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
@@ -27,7 +28,7 @@ import Array from '@/lib/array/array';
 
 import { URL_SEARCH_PARAMS } from '@/conts';
 
-export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaProps, ref) {
+export default memo(forwardRef(function<T extends FieldValues>({ placeholder, defaultValue }: TextAreaProps<T>, ref: any) {
   const [textAreaContent, setTextAreaContent] = useState<string>(defaultValue)
   const [error, setError] = useState<string | undefined>()
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false)
@@ -217,12 +218,12 @@ export default memo(forwardRef(function({ placeholder, defaultValue }: TextAreaP
               <p>Insert File</p>
               <XButton onClick={closeUploadModal}/>
             </div>
-            <TextInput onInput={inputImgAlt} value={imgAlt || ''} name='' type='text' placeholder='Put img Alt attributte here!'/>
-            <TextInput onInput={inputContext} value={context || ''} name='' type='text' placeholder='Put you context here!'/>
+            <TextInput onInput={inputImgAlt} value={imgAlt} name='img-alt' type='text' placeholder='Schreib Bild beschreibung hier'/>
+            <TextInput onInput={inputContext} value={context} name='img-context' type='text' placeholder='Schreib Bild context hier'/>
             {ImageOptionInput.selected.at(0) === 'Existet file from server' ? 
             ImageInput.Component :
             ImageOptionInput.selected.at(0) === 'From file system' ? 
-            <FileInput label='Upload asset!' name='file' supportedFormats={['image/jpeg', 'video/mp4', 'image/jpg', 'image/png', 'image/webp']}/> :
+            <FileInput label='Datei uploaden' name='file' type='file'/> :
             ImageOptionInput.selected.at(0) === 'From url' ? 
             <TextInput onInput={inputImgUrl} value={imgUrl || ''} name='' type='text' placeholder='Put you img URL here!'/> : null}
             <ImageOptionInput.Wrapper title='Add file option'>

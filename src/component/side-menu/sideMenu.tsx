@@ -47,14 +47,14 @@ export default function SideMenu() {
           </Link>
         </div> :
         <Fragment>
-            <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('login')}>
-              <UserPlus className={scss.aside_menu_icon}/>
-              <p>Login</p>
-            </button>
-            <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
-              <UserPlus className={scss.aside_menu_icon}/>
-              <p>Registrate</p>
-            </button>
+          <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('login')}>
+            <UserPlus className={scss.aside_menu_icon}/>
+            <p>Login</p>
+          </button>
+          <button style={{ width: '100%' }} className='flex-row-center-normal-medium' onClick={() => openAuthorizationModal('registrate')}>
+            <UserPlus className={scss.aside_menu_icon}/>
+            <p>Registrate</p>
+          </button>
         </Fragment>}
         <div className='flex-column-normal-normal-none'>
           <p className={scss.aside_menu_title}>Menu</p>

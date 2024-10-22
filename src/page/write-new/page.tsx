@@ -4,7 +4,6 @@ import type { Content, CustomInputsRef } from '@/global.type'
 import type { AppDispatch, RootState } from '@/store/store'
 import type { PostCommentsData } from '../post/page.type'
 import type { CreatorState, ContentDraft } from '@/store/creator/creator.type'
-import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import FormWrapper from "@/component/form-wrapper/formWrapper"
 import TextInput from "@/component/input/text-input/textInput"
@@ -19,10 +18,10 @@ import WriteNewLoader from './loader'
 import { Fragment, useRef } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
 import { editOrinsertContentDraft, removeContentDraft } from '@/store/creator/creator'
 
-import useForm from '@/custom-hook/use-form/useForm'
 import useAuth from '@/custom-hook/use-auth/useAuth'
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
@@ -31,8 +30,6 @@ import useMutate from '@/custom-hook/use-request/useMutate'
 import fetcher from '@/lib/fetcher/fetcher'
 
 import { AUTHORIZATION_OBJECT } from '@/conts'
-
-const USE_FORM_VALIDATION: FormFieldsValidation<Content> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
 
 export default function WriteNewPost() {
   const dispatch = useDispatch<AppDispatch>(),
@@ -51,16 +48,9 @@ export default function WriteNewPost() {
   const currContent: ContentDraft | undefined = draftID ? creator.contentDraft.find(content => content._id === draftID) : undefined
   
   const { mutate, isMutating, error } = useMutate<PostCommentsData | Content[]>('/10')
-  const { submit, reset, register, formState: { errors }} = useForm<Content>(
-    USE_FORM_VALIDATION, 
-    { title: currContent?.title, isHidden: currContent?.isHidden },
-    () => {
-      postTagsRef.current?.clear()
-      postContentRef.current?.clear()
-    }
-  )
+  const { handleSubmit, reset, register, formState: { errors }} = useForm<Content>({ defaultValues: { title: currContent?.title }})
     
-  const createNew = async(data: any): Promise<void> => {
+  const createNew: SubmitHandler<any> = async(data): Promise<void> => {
     delete data.alt
     delete data.uploadImg
     delete data.url
@@ -74,6 +64,8 @@ export default function WriteNewPost() {
     })
 
     reset()
+    postContentRef.current?.clear()
+    postTagsRef.current?.clear()
   }
 
   const saveDraft = (): void => {
@@ -97,11 +89,17 @@ export default function WriteNewPost() {
       {auth.isAuthPending ?
         <WriteNewLoader/> :
         <div className={`${scss.create_new_post_container} flex-row-normal-center-big`}>
-          <FormWrapper className={scss.create_new_post_form} onSubmit={submit(createNew)} isPending={false}>
-            <TextInput register={register} name='title' errors={errors} placeholder='Post title'/>
-            <CheckBoxInput register={register} name='isHidden' label='Hidde post'/>
+          <FormWrapper className={scss.create_new_post_form} onSubmit={handleSubmit(createNew)} isPending={false}>
+            <TextInput 
+              register={register} 
+              name='title' 
+              type='text'
+              errors={errors} 
+              validation={{ required: "Post title ist erfordelich!" }}
+              placeholder='Post title'/>
+            <CheckBoxInput register={register} name='isHidden' type='checkbox' label='Hidde post'/>
             <TextTagInput ref={postTagsRef} placeholder='Post tags' value={currContent?.tags}/>
-            <TextArea ref={postContentRef} defaultValue={currContent?.content} placeholder='Write content body here...'/>
+            <TextArea ref={postContentRef} defaultValue={currContent?.content} placeholder='Schreib Post content hier'/>
             <div className={`${scss.create_new_buttons_container} flex-row-center-normal-medium`}>
               <Button type='submit'>Post speichern</Button>
               <Button onClick={saveDraft}>{currContent ? "Entwurf speichern" : 'Als Entwurf speichern'}</Button>

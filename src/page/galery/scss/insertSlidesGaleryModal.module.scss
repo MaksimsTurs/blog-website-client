@@ -10,8 +10,6 @@
 .insert_modal_body {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  max-width: 45rem;
 
   .insert_modal_input_container {
     flex-grow: 1;
@@ -20,19 +18,14 @@
   }
 }
 
-.insert_item_button {
-  border-radius: $border-radiues-button;
-  background-color: $color-common;
-  border: 1px solid $color-common;
-  transition: all $transition-time-fast;
-  color: white;
-  padding: 0.35rem;
-  width: 2rem;
-  height: 2rem;
+.insert_item_buttons_container {
+  width: 100%;
 
-  &:hover {
-    transition: all $transition-time-fast;
-    color: $color-common;
-    background-color: white;
+  .insert_item_button {
+    padding: 0.35rem;
+    width: 2rem;
+    height: 2rem;
+
+    &:first-child { width: fit-content; font-size: 0.9rem; }
   }
 }

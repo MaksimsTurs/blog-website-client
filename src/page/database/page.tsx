@@ -1,5 +1,4 @@
 import { Plus } from 'lucide-react'
-import { useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
@@ -19,20 +18,18 @@ import type { Database } from '@/global.type'
 import fetcher from '@/lib/fetcher/fetcher'
 
 export default function Page() {
-  const [isInsertMode, setIsInsertMode] = useState<boolean>(false)
-
   const searchParams = useSearchParams()
 
-  const isAdmin: boolean = usePermitor().role(['Admin']).permited()
+  const isAdmin: boolean = usePermitor().role(['Admin']).permited(),
+        isInsertDatabaseMode = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-INSERT-DATABASE-MODE']) || 'false')
 
   const { data, isFetching, error } = useRequest<Database[]>({ deps: ['database'], request: async () => await fetcher.get('/get/ruzzkyi-mir') })
 
-  const itemID: string | null = searchParams.get(URL_SEARCH_PARAMS['DATABASE-ID'])
-
-  const selectedItem: Database | undefined = data?.find(items => items._id === itemID)
+  const itemID: string | null = searchParams.get(URL_SEARCH_PARAMS['DATABASE-ID']),
+         selectedItem: Database | undefined = data?.find(items => items._id === itemID)
 
   const changeInsertMode = (): void => {
-    setIsInsertMode(true)
+    searchParams.set({ [URL_SEARCH_PARAMS['IS-INSERT-DATABASE-MODE']]: true })
   }
 
   const openSelectedItem = (id: string): void => {
@@ -43,7 +40,7 @@ export default function Page() {
     <Fragment>
       {isFetching ? <Loader/> :
       error ? <PageError error={error}/> :
-      isInsertMode ? <InsertItemForm setIsInsertMode={setIsInsertMode}/> :
+      isInsertDatabaseMode ? <InsertItemForm/> :
       itemID && selectedItem ?
       <DatabaseItem item={selectedItem}/> :
       <Fragment>

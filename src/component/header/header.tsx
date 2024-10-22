@@ -53,7 +53,7 @@ export default function Header() {
         </div>
         {auth.isAuthPending ? <UserContainerLoader/> :
         !auth.user ? 
-        <section className={`${scss.header_user_action_container} flex-row-center-normal-none`}>
+        <section className={`${scss.header_user_action_container} flex-row-center-normal-medium`}>
           <button className={`${scss.header_user_action_button} flex-row-center-normal-medium`} onClick={() => openAuthorizationModal('registrate')}>
             <UserPlus/>Registrate
           </button>

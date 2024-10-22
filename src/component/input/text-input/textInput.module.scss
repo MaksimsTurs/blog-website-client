@@ -2,47 +2,19 @@
 
 .text_input_container {
   width: 100%;
-  position: relative;
-  
-  .text_input_error_text_container {
-    @include absolute-left-top-zindex-width-height(73%, 50%, 2, fit-content);
-    flex-direction: row-reverse;
-    transform: translate(-50%, -50%);
-    font-size: 0.7rem;
-    height: 100%;
-    text-wrap: nowrap;
-    
-    .text_input_error_text {
-      background-color: $color-error;
-      border-radius: $border-radiues-button;
-      transition: all $transition-time-very-fast ease;
-      padding: 0.45rem 0.5rem;
-      color: white;
-      width: fit-content;
-      height: fit-content;
-      opacity: 0;
-      visibility: hidden;
-    }
 
-    .text_input_error_icon {
-      color: $color-error;
-      transition: all $transition-time-very-fast;
-      width: 1rem;
-      height: 1rem;
-      cursor: pointer;
-  
-      &:hover ~ .text_input_error_text {
-        transition: all $transition-time-very-fast ease;
-        opacity: 1;
-        visibility: visible;
-      }
-    }
+  .text_input_error_message {
+    background-color: $color-error;
+    border-radius: $border-radiues-button;
+    display: block;
+    font-size: 0.7rem;
+    text-align: left;
+    color: white;
+    padding: 0.3rem;
   }
 
-  .text_input_icon_hidden {
-    transition: all $transition-time-very-fast ease;
-    opacity: 0;
-    visibility: hidden;
+  .text_input_error_message_hidden {
+    display: none;
   }
 
   .text_input {

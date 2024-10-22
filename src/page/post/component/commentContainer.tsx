@@ -10,12 +10,10 @@ import type { Content, CustomInputsRef } from '@/global.type';
 
 import Empty from "@/component/empty/empty";
 import PostContainer from "@/component/post-container/postContainer";
-import FormWrapper from "@/component/form-wrapper/formWrapper";
 import TextArea from "@/component/input/textArea/textArea";
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 import Button from '@/component/buttons/button/button';
 
-import useForm from "@/custom-hook/use-form/useForm";
 import useMutate from '@/custom-hook/use-request/useMutate';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission';
@@ -27,15 +25,13 @@ import fetcher from '@/lib/fetcher/fetcher';
 import Arrays from '@/lib/array/array';
 
 export default function CommentContainer({ isPostHidden, comments }: CommentContainerProps) {
-  const redirect = useNavigate()
-  const { id } = useParams()
-  const textAreaRef = useRef<CustomInputsRef<string>>()
-  const [quotes, setToQuotes] = useState<Content[]>([])
-
-  const { submit } = useForm<Pick<Content, 'content'>>()
-  const searchParams = useSearchParams()
-  const isAdmin = usePermitor().role(['Admin']).permited()
-  const auth = useAuth()
+  const { id } = useParams(),
+        redirect = useNavigate(),
+        textAreaRef = useRef<CustomInputsRef<string>>(),
+        [quotes, setToQuotes] = useState<Content[]>([]),
+        searchParams = useSearchParams(),
+        isAdmin = usePermitor().role(['Admin']).permited(),
+        auth = useAuth()
 
   if(isPostHidden && !isAdmin) return <Navigate to='/'/>
 
@@ -77,10 +73,10 @@ export default function CommentContainer({ isPostHidden, comments }: CommentCont
           isQuoted={Arrays.includeObjectByKey(quotes, '_id', comment._id)}/>
       )}
       {auth.user &&
-      <FormWrapper onSubmit={submit(insertComment)} isPending={isMutating} className={scss.comment_form_body}>
-        <TextArea placeholder='Write your comment here...' ref={textAreaRef}/>
-        <Button className={scss.comment_submit_button} type='submit'>Senden</Button>
-      </FormWrapper>}
+      <Fragment>
+        <TextArea placeholder='Schreib dein Kommentar hier' ref={textAreaRef}/>
+        <Button className={scss.comment_submit_button} onClick={insertComment}>Senden</Button>
+      </Fragment>}
     </Fragment>
   )
 } 

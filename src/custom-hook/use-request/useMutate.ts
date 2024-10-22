@@ -14,7 +14,7 @@ export default function useMutate<T>(key: string) {
   const state = context?.cache?.[key]
 
   function changeError(error?: ServerResponseError): void {
-    setError(() => error)
+    setError(error)
   }
 
   async function mutate(request: (option: MutateRequestFunctionParams<T>) => Promise<T | undefined>) {

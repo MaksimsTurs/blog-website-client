@@ -19,7 +19,7 @@ export default function FormWrapper({
 
   return(
     <form tabIndex={-1} onSubmit={onSubmit} className={`flex-column-normal-normal-none ${className}`}>
-      <div style={style} className={`${scss.form_body} main-content-container flex-column-center-center-medium`}>
+      <div style={style} className={`${scss.form_body} main-content-container flex-column-normal-normal-medium`}>
         {children}
         {(errors && errors.length > 0) ? <div style={{ width: '100%' }}>{errors.map(error => <div key={error} className={`${scss.form_error} flex-row-center-center-medium`}><Ban size={15}/><p key={error}>{error}</p></div>) }</div> : null}
         {buttonLabel && <button className={buttonClassName} disabled={isPending}>{label}</button>}

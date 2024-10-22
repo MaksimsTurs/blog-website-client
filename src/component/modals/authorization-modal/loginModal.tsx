@@ -1,33 +1,25 @@
 import scss from './authorizationModal.module.scss'
 
-import useForm from '@/custom-hook/use-form/useForm'
 import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
 import type { User } from '@/global.type'
-import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
 import TextInput from '@/component/input/text-input/textInput'
 
 import { useRef } from 'react'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 
-const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
-  name: { isMax: { message: "Name is to long!", value: 12 }, isMin: { message: "Name is to short!", value: 3 }},
-  email: { isPattern: { message: 'Email is not valid!', value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }},
-  password: { isMin: { message: "Password is to short!", value: 8 }}
-}
-
 export default function LoginModal() {
-  const auth = useAuth(),
+  const { handleSubmit, reset, register, formState: { errors }} = useForm<User>({ mode: 'onSubmit' }),
+        auth = useAuth(),
         mainContainerRef = useRef<HTMLDivElement>(null),
         isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-LOGIN-MODAL-OPEN'], mainContainerRef)
 
-  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION)
-
-  const login = async(user: User): Promise<void> => {
+  const login: SubmitHandler<User> = async(user): Promise<void> => {
     await auth.create({ apiURL: '/login', body: user, redirectURL: '/', setToken: true })
     reset()
   }
@@ -36,10 +28,28 @@ export default function LoginModal() {
 
   return(
     <div ref={mainContainerRef} className={isOpen ? scss.authorization_modal_container : scss.authorization_modal_container_hidden}>
-      <FormWrapper errors={auth.error?.message ? [auth.error.message] : []} className={scss.authorization_modal_body} onSubmit={submit(login)} isPending={auth.isLoading} buttonLabel='Log in'>
-        <TextInput register={register} name='name' type='text' errors={errors} placeholder='Write you name here...'/>
-        <TextInput register={register} name='email' type='text' errors={errors} placeholder='Write you email here...'/>
-        <TextInput register={register} name='password' type='password' errors={errors} placeholder='Write you password here...'/>
+      <FormWrapper errors={auth.error?.message ? [auth.error.message] : []} className={scss.authorization_modal_body} onSubmit={handleSubmit(login)} isPending={auth.isLoading} buttonLabel='Log in'>
+        <TextInput<User> 
+          register={register} 
+          name='name' 
+          type='text' 
+          errors={errors} 
+          validation={{ required: "Name ist erfordelich!", maxLength: { value: 20, message: 'Name ist zu lang!'  }, minLength: { value: 3, message: 'Name ist zu kurz!' }}}
+          placeholder='Schreibe deine Name hier'/>
+        <TextInput<User> 
+          register={register} 
+          name='email' 
+          type='text' 
+          errors={errors} 
+          validation={{ required: "Email ist erfordelich!", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email ist nicht korrekt!' }}}
+          placeholder='Schreibe dein E-mail hier'/>
+        <TextInput<User> 
+          register={register} 
+          name='password' 
+          type='password' 
+          errors={errors} 
+          validation={{ required: "Kennwort ist erfordelich!", min: { value: 8, message: 'Kennwort ist zu kurz!' }}}
+          placeholder='Schreibe deine Kennwort hier'/>
       </FormWrapper>
     </div>
   )

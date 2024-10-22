@@ -1,6 +1,12 @@
 @use '@/scss/reusable' as *;
 
-.user_modal_user_content {
+.user_data_avatar {
+  width: 5rem;
+  height: auto;
+  border-radius: $border-radiues-button;
+}
+
+.user_user_content {
   padding-right: 0.75rem;
 
   > a {
@@ -8,7 +14,7 @@
     padding: 0.5rem 0rem;
     cursor: pointer;
 
-    .user_modal_data_container {
+    .user_data_container {
       font-size: 0.8rem;
 
       p:first-child { font-weight: bold; }
@@ -21,7 +27,7 @@
       transition: all $transition-time-very-fast;
       padding-left: 0.5rem;
 
-      .user_modal_data_container p:last-child { color: $color-common !important; }
+      .user_data_container p:last-child { color: $color-common !important; }
     }
   }
 }

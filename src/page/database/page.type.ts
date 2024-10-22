@@ -1,10 +1,5 @@
 import type { Database } from "@/global.type"
-import type { Dispatch, SetStateAction } from "react"
 
-export type InsertItemFormProps = {
-  setIsInsertMode: Dispatch<SetStateAction<boolean>>
-}
+export type InsertItemFormProps = { isUpdate?: boolean, item?: Database }
 
-export type DatabaseItemProps = {
-  item: Database
-}
+export type DatabaseItemProps = { item: Database }

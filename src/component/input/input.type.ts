@@ -1,27 +1,13 @@
-import type { FormFieldsErrors, FormFieldsRegisterCallback } from "@/custom-hook/use-form/useForm.type"
-import type { SyntheticEvent } from "react"
+import type { UseFormRegister, FieldValues, FieldErrors, Path, RegisterOptions } from "react-hook-form"
 
-export type InputProps = {
-  attributes: {
-    type: 'text' | 'number' | 'password' | 'email' | 'file'
-    name: string
-    placeholder?: string
-    value?: any
-    defaultValue?: any
-    onInput?: (event: SyntheticEvent<HTMLInputElement | any>) => any
-  }
-  errors?: FormFieldsErrors
-}
-
-export type InputAttributes = {
-  type: 'text' | 'number' | 'password' | 'email' | 'file'
-  name: string
-  register?: FormFieldsRegisterCallback
-  errors?: FormFieldsErrors
+export type InputAttributes<T extends FieldValues> = {
+  type: 'text' | 'number' | 'password' | 'email' | 'file' | 'checkbox'
+  name: Path<T>
+  errors?: FieldErrors<T>
   placeholder?: string
+  disabled?: boolean
+  validation?: Pick<RegisterOptions<T, Path<T>>, 'max' | 'maxLength' | 'min' | 'minLength' | 'required' | 'pattern' | 'validate'>
+  className?: string
   defaultValue?: any
-  value?: string
-  onInput?: (event: SyntheticEvent<HTMLInputElement | any>) => any
+  register?: UseFormRegister<T>
 }
-
-export type TextAreaProps = Pick<InputAttributes, 'placeholder' | 'defaultValue'>

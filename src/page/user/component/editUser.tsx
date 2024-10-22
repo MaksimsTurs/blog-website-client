@@ -3,9 +3,8 @@ import '@/scss/global.scss'
 
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
-import { useRef } from 'react';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import useForm from '@/custom-hook/use-form/useForm';
 import useHavePermission from '@/custom-hook/use-permitor/useHavePermission';
 import useMutate from '@/custom-hook/use-request/useMutate';
 import useSearchParams from '@/custom-hook/use-search-params/useSearchParams';
@@ -19,8 +18,7 @@ import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader';
 import ModalWrapper from '@/component/modals/modal-wrapper/modalWrapper';
 
 import type { EditUserProps } from '../page.type';
-import type { CustomInputsRef, User } from '@/global.type';
-import type { AsssetsState } from '@/component/input/file-input/fileInput.type';
+import type { User } from '@/global.type';
 
 import Objects from '@/lib/object/object';
 import fetcher from '@/lib/fetcher/fetcher';
@@ -28,19 +26,18 @@ import fetcher from '@/lib/fetcher/fetcher';
 import { URL_SEARCH_PARAMS } from '@/conts';
 
 export default function EditUser({ _id }: EditUserProps) {
-  const { submit, reset, formState: { errors } } = useForm<User>()
+  const { handleSubmit, reset, register, formState: { errors } } = useForm<User>()
   const { mutate, isMutating } = useMutate<User>(`user-${_id}`),
         auth = useAuth(),
         searchParams = useSearchParams(),
-        customFileInputRef = useRef<CustomInputsRef<AsssetsState>>(),
         redirect = useNavigate()
   
   const isAdminOrIDEqual: boolean = useHavePermission().role(['Admin']).equal('_id', _id).permited()
 
-  const updateUser = (data: User): void => {
+  const updateUser: SubmitHandler<User> = (data): void => {
     if(isAdminOrIDEqual) {
       mutate(async function(option) {
-        const newUserData = await fetcher.post<User>('/update/user', Objects.createFormDataFromJSON({...data, _id, file: customFileInputRef.current?.value.assets }))
+        const newUserData = await fetcher.post<User>('/update/user', Objects.createFormDataFromJSON({...data, _id }))
         
         await auth.create({ setSession: { permissions: auth.permissions!, user: newUserData }})
         stopEditing()
@@ -63,9 +60,9 @@ export default function EditUser({ _id }: EditUserProps) {
     <Fragment>
       {isMutating ? <MutatingLoader/> : null}
       <ModalWrapper title='Edit user' modalKey='IS-EDIT-USER-MODAL-OPEN'>
-        <FormWrapper onSubmit={submit(updateUser)} className={scss.edit_user_body}>
-          <TextInput errors={errors} name='name' placeholder='You name'/>
-          <FileInput ref={customFileInputRef} name="avatar" label='Chose you avatar!'/>
+        <FormWrapper onSubmit={handleSubmit(updateUser)} className={scss.edit_user_body}>
+          <TextInput register={register} name='name' type='text' errors={errors} placeholder='Schreibe deine neue name hier'/>
+          <FileInput register={register} name='avatar' type='file' label='Upload deine neue Avatar'/>
           <div className={`${scss.edit_user_buttons} flex-row-normal-normal-small`}>
             <Button className={scss.edit_user_log_out} onClick={logOut}>Abmelden</Button>
             <Button type='submit'>Speichern</Button>

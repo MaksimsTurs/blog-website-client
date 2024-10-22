@@ -16,7 +16,7 @@ export default (param: Param): UserConfig => {
 			target: param.target || 'esnext',
 			minify: param.isDev ? undefined : (param.minify || 'esbuild'),
 			cssMinify: param.isDev ? undefined : 'esbuild',
-			// sourcemap: param.isDev ? false : 'hidden',
+			sourcemap: param.isDev ? false : 'hidden',
 			outDir: param.outDir,
 			emptyOutDir: true,
 			chunkSizeWarningLimit: 200,

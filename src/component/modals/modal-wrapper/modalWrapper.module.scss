@@ -16,7 +16,7 @@
   .modal_wrapper_body {
     @include absolute-left-top-zindex-width-height(50%, 50%, 120);
     border-bottom: $border-container-soft;
-  transition: all $transition-time-fast ease;
+    transition: all $transition-time-fast ease;
     transform: translate(-50%, -50%);
     height: fit-content;
     width: fit-content;

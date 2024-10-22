@@ -8,5 +8,5 @@
     "allowSyntheticDefaultImports": true,
     "types": ["vite/client"]
   },
-  "include": ["vite.config.ts", "./vite/**/*.ts"]
+  "include": ["vite.config.ts", "./vite/**/*.ts", "./const.ts"]
 }

@@ -1,59 +1,87 @@
 import scss from './authorizationModal.module.scss'
 
-import useForm from '@/custom-hook/use-form/useForm'
 import useAuth from '@/custom-hook/use-auth/useAuth'
 import useOutsideClick from '@/custom-hook/use-outside-click/useOutsideClick'
 
-import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
-import type { CustomInputsRef, User } from '@/global.type'
-import type { AsssetsState } from '@/component/input/file-input/fileInput.type'
+import type { User } from '@/global.type'
 
 import FormWrapper from '@/component/form-wrapper/formWrapper'
 import TextInput from '@/component/input/text-input/textInput'
 import FileInput from '@/component/input/file-input/fileInput'
 
 import Objects from '@/lib/object/object'
-import CharacterArray from '@/lib/string/strings'
+import Strings from '@/lib/string/strings'
 
 import { URL_SEARCH_PARAMS } from '@/conts'
 
 import { useRef } from 'react'
-
-const USE_FORM_VALIDATION: FormFieldsValidation<User> = {
-  name: { isMax: { message: "Name is to long!", value: 12 }, isMin: { message: "Name is to short!", value: 3 }},
-  email: { isPattern: { message: 'Email is not valid!', value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }},
-  password: { isMin: { message: "Password is to short!", value: 8 }, isEqual: { message: 'Passwords does match', compareWith: 'confirmPassword' }},
-  confirmPassword: { isMin: { message: 'Confirm password is to short!', value: 8 }, isEqual: { message: 'Passwords does match', compareWith: 'password' }}
-}
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
 export default function RegistrationModal() {
-  const { submit, reset, register, formState: { errors }} = useForm<User>(USE_FORM_VALIDATION),
+  const { handleSubmit, reset, register, getValues, formState: { errors }} = useForm<User>({ mode: 'onSubmit' }),
         auth = useAuth(),
         mainContainerRef = useRef<HTMLDivElement>(null),
-        customFileInputRef = useRef<CustomInputsRef<AsssetsState>>(),
         isOpen: boolean = useOutsideClick(URL_SEARCH_PARAMS['IS-REGISTRATE-MODAL-OPEN'], mainContainerRef)
 
-  const registrate = async(data: User) => {
-    const formData = Objects.createFormDataFromJSON(data)
+  const registrate: SubmitHandler<User> = async(data) => {
+    const formData = Objects.createFormDataFromJSON(data),
+          avatar: File | undefined = (data.avatar as unknown as File[])?.[0]
 
-    if(!customFileInputRef.current?.value.assets.at(0)) formData.set('avatar', CharacterArray.generateDefaultAvatar(data.name))
-    
+    if(!avatar) formData.set('avatar', Strings.generateDefaultAvatar(data.name))
+
     await auth.create({ apiURL: '/registrate', body: formData, redirectURL: '/', setToken: true })
-    
     reset()
-    customFileInputRef.current?.clear()
+  }
+
+  const validatePasswords = (value: any) => {
+    return getValues().password === value || 'Deine Kennworts sind nicht gleich!';
   }
 
   auth.clearError()
 
   return(
     <div ref={mainContainerRef} className={isOpen ? scss.authorization_modal_container : scss.authorization_modal_container_hidden}>
-      <FormWrapper isPending={auth.isLoading} buttonLabel='Registrate' errors={auth.error?.message ? [auth.error.message] : []} className={scss.authorization_modal_body} onSubmit={submit(registrate)}>
-        <TextInput register={register} errors={errors} name='name'  placeholder='You name'/>
-        <TextInput register={register} errors={errors} name='email' placeholder='You e-mail' type='email'/>
-        <TextInput register={register} errors={errors} name='password' placeholder='You password' type='password'/>
-        <TextInput register={register} errors={errors} name='confirmPassword' placeholder='Confirm you password' type='password'/>
-        <FileInput ref={customFileInputRef} name='avatar' label='Chose you avatar!'/>
+      <FormWrapper 
+        isPending={auth.isLoading} 
+        buttonLabel='Anmelden' 
+        errors={auth.error?.message ? [auth.error.message] : []} 
+        className={scss.authorization_modal_body} 
+        onSubmit={handleSubmit(registrate)}>
+        <TextInput<User> 
+          register={register} 
+          name='name' 
+          type='text' 
+          errors={errors} 
+          validation={{ required: "Name ist erfordelich!", maxLength: { value: 20, message: 'Name ist zu lang!'  }, minLength: { value: 3, message: 'Name ist zu kurz!'  }}}
+          placeholder='Schreibe deine Name hier'/>
+        <TextInput<User> 
+          register={register} 
+          name='email' 
+          type='text' 
+          errors={errors} 
+          validation={{ required: "Email ist erfordelich!", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email ist nicht korrekt!' }}}
+          placeholder='Schreibe dein E-mail hier'/>
+        <TextInput<User> 
+          register={register} 
+          name='password' 
+          type='password' 
+          errors={errors} 
+          validation={{ required: "Kennword ist erfordelich!", minLength: { value: 8, message: 'Kennwort ist zu kurz!' }}}
+          placeholder='Schreibe deine Kennwort hier'/>
+        <TextInput 
+          register={register} 
+          errors={errors} 
+          name='confirmPassword' 
+          type='password'
+          validation={{ required: "Kennwort bestätigung ist erfordelich!", minLength: { value: 8, message: 'Kennwort bestätigung ist zu kurz!' }, validate: validatePasswords }}
+          placeholder='Bestätige deine Kennwort hier'/>
+        <FileInput 
+          register={register}
+          name='avatar' 
+          type='file' 
+          label='Avatar uploaden' 
+          reset={auth.isLoading}
+          className={scss.authorization_modal_file_input}/>
       </FormWrapper>
     </div>
   )

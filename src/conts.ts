@@ -9,6 +9,7 @@ export const URL_SEARCH_PARAMS = {
   'IS-CONFIRM-MODAL-OPEN': 'is-confirm-modal-open',
   'IS-ADD-GALERY-MODAL-OPEN': 'is-add-galery-modal-open',
   'IS-ADD-FILE-MODAL-OPEN': 'is-add-file-modal-open',
+  'IS-INSERT-DATABASE-MODE': 'is-insert-database-mode',
 //--------------------------------------------------------------------
   'IS-SIDE-MENU-OPEN': 'is-side-menu-open',
 //--------------------------------------------------------------------

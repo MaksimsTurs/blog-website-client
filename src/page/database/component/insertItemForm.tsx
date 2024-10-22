@@ -10,44 +10,40 @@ import CheckBoxInput from '@/component/input/checkbox-input/checkBoxInput'
 import MutatingLoader from '@/component/loader/mutatig-loader/mutatingLoader'
 import LocalError from '@/component/errors/local-error/localError'
 
-import useForm from '@/custom-hook/use-form/useForm'
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
 import useMutate from '@/custom-hook/use-request/useMutate'
 import useImageInput from '@/component/input/image-input/useImageInput'
+import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 
 import fetcher from '@/lib/fetcher/fetcher'
-import createFormDataFromJSON from '@/lib/object/props/createFormDataFromJSON'
+import Objects from '@/lib/object/object'
 
 import type { CustomInputsRef, Database } from '@/global.type'
 import type { InsertItemFormProps } from '../page.type'
-import type { FormFieldsValidation } from '@/custom-hook/use-form/useForm.type'
 
 import { Fragment, SyntheticEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
-import { AUTHORIZATION_OBJECT } from '@/conts'
+import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 
-const USE_FORM_VALIDATION: FormFieldsValidation<Database> = { title: { isMin: { message: 'Title is to short!', value: 4 }}}
-
-export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps) {
-  const [useUploadedImages, setUseUploadedImages] = useState<boolean>(false)
-  
-  const contentRef = useRef<CustomInputsRef<string>>()
-
-  const { submit, reset, setError, register, formState: { errors }} = useForm(USE_FORM_VALIDATION, undefined, () => contentRef.current?.clear())
-  const { mutate, isMutating, error } = useMutate<Database[]>('database')
-  const ImageInput = useImageInput({})
-  const isAdmin: boolean = usePermitor().role(['Admin']).permited()
-
-  const navigate = useNavigate()
+export default function InsertItemForm({ isUpdate, item }: InsertItemFormProps) {
+  const { handleSubmit, reset, register, formState: { errors }} = useForm()
+  const { mutate, isMutating, error } = useMutate<Database[]>('database'),
+        [useUploadedImages, setUseUploadedImages] = useState<boolean>(false),
+        contentRef = useRef<CustomInputsRef<string>>(),
+        searchParams = useSearchParams(),
+        ImageInput = useImageInput({}),
+        isAdmin: boolean = usePermitor().role(['Admin']).permited(),
+        navigate = useNavigate()
 
   const changeThumbnailSource = (event: SyntheticEvent<HTMLInputElement>): void => {
     setUseUploadedImages(event.currentTarget.checked)
   }
 
   const goBack = (): void => {
+    searchParams.remove([URL_SEARCH_PARAMS['IS-INSERT-DATABASE-MODE']])
     navigate('/database')
-    setIsInsertMode(false)
   }
 
   const insertItem = (data: any): void => {
@@ -58,19 +54,21 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     delete data.url
     delete data.thumbnail
 
-    const thumbnail = ImageInput.selected?.[0] ? ImageInput.selected?.[0] : data?.thumbnail?.length > 0 ? data?.thumbnail : undefined
+    const thumbnail = 
+      ImageInput.selected?.[0] ? ImageInput.selected?.[0] : 
+      data?.[`thumbnail-${isUpdate}`] ? Array.from(data?.[`thumbnail-${isUpdate}`])?.at(0) : 
+      undefined
 
-    if(!thumbnail) return setError('thumbnail', 'Thumbnail cann not be undefined!')
-   
     mutate(async (option) => {
-      const newItem = await fetcher.post<Database>('/insert/ruzzkyi-mir', createFormDataFromJSON({...data, content: contentRef.current?.value, thumbnail }), AUTHORIZATION_OBJECT)
+      const URL: string = isUpdate ? '/update/ruzzkyi-mir' : '/insert/ruzzkyi-mir'
+      const newItem = await fetcher.post<Database>(URL, Objects.createFormDataFromJSON({...data, [`thumbnail-${isUpdate}`]: undefined, content: contentRef.current?.value, thumbnail }), AUTHORIZATION_OBJECT)
       
       navigate('/database')
       return [...option.state || [], newItem]
     })
     
     ImageInput.clear()
-    setIsInsertMode(false)
+    searchParams.remove([URL_SEARCH_PARAMS['IS-INSERT-DATABASE-MODE']])
     reset()
   }
 
@@ -78,11 +76,11 @@ export default function InsertItemForm({ setIsInsertMode }: InsertItemFormProps)
     <Fragment>
       {isMutating && <MutatingLoader/>}
       <div className={`${scss.insert_item_form_container} flex-row-normal-center-none`}>
-        <FormWrapper onSubmit={submit(insertItem)}>
-          {useUploadedImages ? ImageInput.Component : <FileInput register={register} name='thumbnail' label='Insert thumnbail'/>}
-          <CheckBoxInput register={register} errors={errors} name='thumbnail' label='Use uploaded images' onInput={changeThumbnailSource}/>
-          <TextInput register={register} name='title' placeholder='Item title' errors={errors}/>
-          <TextArea ref={contentRef} placeholder='Wirte item content'/>
+        <FormWrapper onSubmit={handleSubmit(insertItem)}>
+          {useUploadedImages ? ImageInput.Component : <FileInput register={register} name={`thumbnail-${isUpdate}`} type='file' label='Datenbank thumnbail'/>}
+          <CheckBoxInput register={register} name='thumbnail' type='checkbox' errors={errors} label='Dateien aus dem server nutzten' onInput={changeThumbnailSource}/>
+          <TextInput register={register} name='title' type='text' defaultValue={item?.content} placeholder='Datenbank title' errors={errors}/>
+          <TextArea ref={contentRef} defaultValue={item?.content} placeholder='Schreib Datenbank content hier'/>
           <div style={{ width: '100%' }} className='flex-row-normal-normal-medium'>
             <Button className={scss.insert_form_button} type='submit'>Senden</Button>
             <Button className={scss.insert_form_button} onClick={goBack}>Zurück</Button>

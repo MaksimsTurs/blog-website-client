@@ -28,7 +28,7 @@ export default forwardRef(function({ placeholder, value }: TextTagInputProps, re
   
   return(
     <Fragment>
-      <TextInput name="tags" onInput={insertNewTag} placeholder={placeholder} value={tag.removeTagKeys(tags).join(', ')}/>
+      <TextInput name='tags' type='text' onInput={insertNewTag} placeholder={placeholder} defaultValue={tag.removeTagKeys(tags).join(', ')}/>
       <TagPreview removeTag={removeTag} tags={tags}/>
     </Fragment>
   )
