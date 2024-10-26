@@ -26,15 +26,13 @@ import { useParams, Navigate } from 'react-router-dom'
 
 import { URL_SEARCH_PARAMS, AUTHORIZATION_OBJECT } from '@/conts'
 import { Fragment } from 'react/jsx-runtime'
-
 export default function Admin() {
-  const { tab } = useParams()
+  const { tab } = useParams(),
+        searchParams = useSearchParams(),
+        permitor = usePermitor()
 
-  const searchParams = useSearchParams()
-  const permitor = usePermitor()
-
-  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
-  const isSomeItemSelected: boolean = Boolean(searchParams.get('id'))
+  const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0'),
+        isSomeItemSelected: boolean = Boolean(searchParams.get('id'))
 
   if(!permitor.role(['ADMIN']).permited()) return <Navigate to='/'/>
 
@@ -44,8 +42,8 @@ export default function Admin() {
     request: async () => await fetcher.get(`/admin/${tab}/${currPage}`, AUTHORIZATION_OBJECT) 
   })
 
-  const pagesCount: number = data?.pagesCount || prev?.pagesCount || 0
-  const isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar'])
+  const pagesCount: number = data?.pagesCount || prev?.pagesCount || 0,
+        isRenderUser: boolean = inObject(data?.data?.[0] || {}, ['avatar'])
 
   return(
     <div style={{ height: '100%', paddingRight: '9.5rem', width: '100%' }} className='flex-row-normal-normal-none'>

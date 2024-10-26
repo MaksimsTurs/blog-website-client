@@ -22,11 +22,10 @@ import getIconByPath from './tool/getIconByPath'
 const SPECIAL_CHARACTERS: RegExp = /[\#\[\]\{\}\(\)]/g
 
 export default function SideMenu() {
-  const { pathname } = useLocation()
-  const creator = useSelector<RootState, CreatorState>(state => state.creator)
-  
-  const searchParams = useSearchParams()
-  const auth = useAuth()
+  const { pathname } = useLocation(),
+        creator = useSelector<RootState, CreatorState>(state => state.creator),
+        searchParams = useSearchParams(),
+        auth = useAuth()
   
   const isSideMenuOpen: boolean = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-SIDE-MENU-OPEN']) || 'false')
     
@@ -38,7 +37,8 @@ export default function SideMenu() {
   return(
     <div className={scss.aside_menu_container}>
       <aside className={`${!isSideMenuOpen ? scss.aside_menu_body : `${scss.aside_menu_container_visible} ${scss.aside_menu_body}`} flex-column-normal-normal-medium`}>
-        {auth.user ?
+        {auth.isAuthPending ? null :
+        auth.user ?
         <div className={`${scss.aside_menu_user_action} flex-column-normal-normal-none`}>
           <p className={scss.aside_menu_title}>User</p>
           <Link to={`/user/${auth.user?._id}`} className={'flex-row-center-normal-medium'}>

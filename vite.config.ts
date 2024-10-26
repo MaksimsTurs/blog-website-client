@@ -33,7 +33,7 @@ export default viteConfig(({ mode }) => {
 	const PROD_PLUGINS = [
 		webfontVite({ fonts: ['https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:wght@400;700&family=Inter:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap'] }),
 		reactswcVite(),
-		chunksplitVite(),
+		// chunksplitVite(),
 		imageminVite(),
 		optimizecssVite(),
 		htmlpluginVite(),
