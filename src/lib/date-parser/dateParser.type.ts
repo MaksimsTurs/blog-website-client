@@ -1,7 +1,7 @@
 export type DateParse = {
-  differenceObject?: Difference<number>
+  differences?: Difference<number>
   differenceObjectString?: Difference<string>
-  getDifference: (date?: string) => DateParse & { differenceObject?: Difference<number> }
+  getDifference: (date?: string) => DateParse & { differences?: Difference<number> }
   getDifferenceString: (differenceTemplates: GetDifferenceStringParams) => DateParse & { differenceObjectString: Difference<string> }
   getSortDate: (template: GetSortDateParams) => string
 }

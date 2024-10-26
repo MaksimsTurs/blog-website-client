@@ -30,7 +30,7 @@ export default function CommentContainer({ isPostHidden, comments }: CommentCont
         textAreaRef = useRef<CustomInputsRef<string>>(),
         [quotes, setToQuotes] = useState<Content[]>([]),
         searchParams = useSearchParams(),
-        isAdmin = usePermitor().role(['Admin']).permited(),
+        isAdmin = usePermitor().role(['ADMIN']).permited(),
         auth = useAuth()
 
   if(isPostHidden && !isAdmin) return <Navigate to='/'/>

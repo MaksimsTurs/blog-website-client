@@ -26,7 +26,7 @@ export default function Page() {
         [currentSlide, setCurrentSlide] = useState<number | undefined>()
 
   const galeryID: string | null = searchParams.get(URL_SEARCH_PARAMS['GALERY-ID']),
-        isAdmin: boolean = permitor.role(['Admin']).permited()
+        isAdmin: boolean = permitor.role(['ADMIN']).permited()
 
   const { data, error, isFetching, isMutating } = useRequest<Galery[]>({ deps: [`galery`], request: async () => await fetcher.get('/get/galery') })
 

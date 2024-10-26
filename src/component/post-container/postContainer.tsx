@@ -11,7 +11,7 @@ import type { Content } from '@/global.type';
 import type { PostCommentsData } from '@/page/post/page.type';
 import type { PostContainerProps } from "./postContainer.type";
 
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Fragment } from 'react/jsx-runtime';
 import { Eye, Heart, MessageCircle, Minus, Plus } from 'lucide-react';
 
@@ -31,17 +31,15 @@ import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts';
 export default function PostContainer({ setToQuote, post, type, isQuoted }: PostContainerProps) {
   const { id } = useParams()
   const { pathname } = useLocation(),
-        redirect = useNavigate(),
         auth = useAuth(),
         searchParams = useSearchParams(),
         permission = useHavePermission(),
         website = useWebsiteSetting()
   
-  const isPostPage: boolean = pathname.search('/post') > -1,
-        isHomePage: boolean = pathname === '/',
+  const isHomePage: boolean = pathname === '/',
         isLiked: boolean = post.likedBy.includes(auth.user?._id || ''),
-        isContentCreator: boolean = permission.role(['Creator']).equal('_id', post?.author?._id).permited(),
-        isAdmin: boolean = permission.role(['Admin']).permited(),
+        isContentCreator: boolean = permission.role(['CREATOR']).equal('_id', post?.author?._id).permited(),
+        isAdmin: boolean = permission.role(['ADMIN']).permited(),
         isHidden: boolean = post.isHidden,
         postID: string = (type === 'preview' || type === 'post') ? post._id : id!,
         currPage: number = (type === 'comment') ? parseInt(searchParams.get('page') || '0') : 0,
@@ -49,8 +47,6 @@ export default function PostContainer({ setToQuote, post, type, isQuoted }: Post
         key: string = type === 'post' ? `post-${post._id}` : `post-${postID}-comments-${currPage}`
   
   const { mutate } = useMutate<Content | PostCommentsData>(key)
-
-  if(isHidden && isPostPage && !isAdmin && !isContentCreator && type === 'post') redirect('/')
 
   const showSomeData = (showThe: string): void => {
     searchParams.set({ [URL_SEARCH_PARAMS['STATISTIC-TO-PREVIEW']]: showThe, [URL_SEARCH_PARAMS['STATISTIC-PREVIEW-POST-ID']]: post._id, [URL_SEARCH_PARAMS['LIST-PAGE']]: 0 })
@@ -95,7 +91,7 @@ export default function PostContainer({ setToQuote, post, type, isQuoted }: Post
 
   return(
     <Fragment>
-      {isHomePage && !isContentCreator && !isAdmin && isHidden ? null :
+      {isHomePage && (!isContentCreator || !isAdmin) && isHidden ? null :
         <PostWrapper className={hiddenClass}>
           {(type === 'comment' || type === 'preview') && <PostHeader tags={post.tags || []} title={post.title || ''} content={post.content} isHidden={post.isHidden} postID={postID} contentID={post._id} type={type} createdAt={post.createdAt} user={post?.author}/>}
           {type === 'post' &&

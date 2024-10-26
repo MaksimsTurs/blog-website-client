@@ -36,7 +36,7 @@ export default function Admin() {
   const currPage: number = parseInt(searchParams.get(URL_SEARCH_PARAMS['PAGE']) || '0')
   const isSomeItemSelected: boolean = Boolean(searchParams.get('id'))
 
-  if(!permitor.role(['Admin']).permited()) return <Navigate to='/'/>
+  if(!permitor.role(['ADMIN']).permited()) return <Navigate to='/'/>
 
   const { isMutating, isPending, data, prev, error } = useRequest<ContentData<Content | User>>({ 
     deps: [`admin/${tab}/${currPage}`], 

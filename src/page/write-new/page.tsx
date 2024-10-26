@@ -43,7 +43,7 @@ export default function WriteNewPost() {
   
   const draftID: string | null = searchParams.get('draft-id')
 
-  if(!permitor.role(['Admin', 'Creator']).permited()) return <Navigate to='/'/>
+  if(!permitor.role(['ADMIN', 'CREATOR']).permited()) return <Navigate to='/'/>
 
   const currContent: ContentDraft | undefined = draftID ? creator.contentDraft.find(content => content._id === draftID) : undefined
   

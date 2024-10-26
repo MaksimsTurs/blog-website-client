@@ -25,12 +25,12 @@ import ConfirmModal from '@/component/modals/confirm-modal/confirmModal'
 import { AUTHORIZATION_OBJECT, URL_SEARCH_PARAMS } from '@/conts'
 
 export default function PostHeader({ user, createdAt, type, contentID, postID, content, tags, title, isHidden }: PostHeaderProps) {
-  const permission = useHavePermission()
-  const searchParams = useSearchParams()
-  const redirect = useNavigate()
-  const { pathname } = useLocation()
+  const { pathname } = useLocation(),
+        permission = useHavePermission(),
+        searchParams = useSearchParams(),
+        redirect = useNavigate()
   
-  const isAdminOrCreator: boolean = permission.roleAndEqual(['Admin', 'Creator'], '_id', user?._id).permited()
+  const isAdminOrCreator: boolean = permission.roleAndEqual(['ADMIN', 'CREATOR'], '_id', user?._id).permited()
 
   const isPostPage: boolean = pathname.search('/post/') > -1
   const isHomePage: boolean = pathname.search('/') > -1
@@ -52,17 +52,17 @@ export default function PostHeader({ user, createdAt, type, contentID, postID, c
 
   const contentAction = (action: 'hidde' | 'show' | 'remove' | 'edit'): void => {
     //User have no permmissin
-    if(!permission.role(['Creator', 'Admin']).permited()) {
+    if(!isAdminOrCreator) {
       return changeError({ code: 403, message: 'You have no edit and remove permission!' })
     }
 
     if(action === 'edit') {
-      if(permission.role(['Creator']).permited()) {
+      if(permission.role(['CREATOR']).permited()) {
         localStorage.set(contentID, { content, tags, title, isHidden, isEdit: true, contentType: typeForAPI, onPage: page, onPost: postID })
         return redirect(`/write-post?content-id=${contentID}`)
       } 
 
-      if(permission.role(['Admin']).permited()) {
+      if(permission.role(['ADMIN']).permited()) {
         return redirect(`/admin/${typeForAPI}?id=${contentID}&${typeForAPI}-edit-modal=true`)
       }
     }

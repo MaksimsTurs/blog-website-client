@@ -32,7 +32,7 @@ export default function EditUser({ _id }: EditUserProps) {
         searchParams = useSearchParams(),
         redirect = useNavigate()
   
-  const isAdminOrIDEqual: boolean = useHavePermission().role(['Admin']).equal('_id', _id).permited()
+  const isAdminOrIDEqual: boolean = useHavePermission().role(['ADMIN']).equal('_id', _id).permited()
 
   const updateUser: SubmitHandler<User> = (data): void => {
     if(isAdminOrIDEqual) {

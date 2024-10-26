@@ -6,6 +6,8 @@ import type { UserDataHeaderProps } from '../page.type'
 import { Settings, ShieldHalf, UserRound } from 'lucide-react'
 
 import DateParser from '@/lib/date-parser/dateParser'
+import firstLetterToUpperCase from '@/lib/string/props/firstLetterToUpperCase'
+
 import ImageComponent from '@/component/image-component/image'
 
 import usePermitor from '@/custom-hook/use-permitor/useHavePermission'
@@ -14,13 +16,13 @@ import useSearchParams from '@/custom-hook/use-search-params/useSearchParams'
 import { URL_SEARCH_PARAMS } from '@/conts'
 
 export default function UserDataHeader({ user }: UserDataHeaderProps) {
-  const isCurrentUser: boolean = usePermitor().equal('_id', user._id).permited()
-  const isAdmin: boolean = user?.role === 'Admin'
+  const isCurrentUser: boolean = usePermitor().equal('_id', user._id).permited(),
+        searchParams = useSearchParams()
+
+  const isAdmin: boolean = user?.role === 'ADMIN',
+        roleColor: string = isAdmin ? "#F48023" : "#1682FD",
+        roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
   
-  const roleColor: string = isAdmin ? "#F48023" : "#1682FD"
-  const roleIcon: JSX.Element = isAdmin ? <ShieldHalf /> : <UserRound />
-  
-  const searchParams = useSearchParams()
 
   const createdAtDifference: string = DateParser
     .getDifference(user.createdAt)
@@ -42,7 +44,7 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
       <div className={`${scss.user_data_header_top} flex-row-normal-center-none`}>
         <div className={`${scss.user_data_img_container} flex-column-normal-normal-small`}>
           <ImageComponent classNames={{ img: scss.user_data_img, loader: scss.user_data_img_loader, svg: scss.user_data_img }} src={user.avatar} alt={user.name}/>
-          <div style={{ color: roleColor }} className={`${scss.user_data_role_container} flex-row-center-normal-small`}>{roleIcon}<p>{user.role}</p></div>
+          <div style={{ color: roleColor }} className={`${scss.user_data_role_container} flex-row-center-normal-small`}>{roleIcon}<p>{firstLetterToUpperCase(user.role.toLowerCase())}</p></div>
         </div>
         {isCurrentUser && <Settings className={scss.user_data_header_edit_button} size={30} onClick={openUpdateModal}/>}
       </div>
@@ -52,11 +54,11 @@ export default function UserDataHeader({ user }: UserDataHeaderProps) {
           <p>{user.name}</p>
         </section>
         <section>
-          <p>Registrated</p>
+          <p>Angemeldet an</p>
           <p>{createdAtDifference}</p>
         </section>
         <section>
-          <p>Content</p>
+          <p>Posts</p>
           <p>{user.myContent.length}</p>
         </section>
       </div>

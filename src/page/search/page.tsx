@@ -31,8 +31,8 @@ const is930px: boolean = window.matchMedia('(width <= 930px)').matches
 
 const sortOptions = [
   { name: 'Likes', icon: <Heart size={17}/> },
-  { name: 'Views', icon: <Eye size={17}/> },
-  { name: 'Comments', icon: <MessageCircle size={17}/> }
+  { name: 'Ansichten', icon: <Eye size={17}/> },
+  { name: 'Kommentare', icon: <MessageCircle size={17}/> }
 ]
 
 export default function Search() {
@@ -97,7 +97,7 @@ export default function Search() {
         </div>
         <div ref={modalContainerRef} className={isOpen ? scss.search_filter_container : `${scss.search_filter_container} ${scss.search_filter_container_hidden}`}>
           <div className='main-content-container flex-column-normal-normal-small'>
-              <p className={scss.search_sort_type_title}>Sort by</p>
+              <p className={scss.search_sort_type_title}>Sortieren nach:</p>
               <div className='flex-column-normal-normal-small'>
                 {sortOptions.map(option => (
                   <button
@@ -113,7 +113,7 @@ export default function Search() {
               <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='content'/>
               <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='author'/>
               <SortInput changeFilterData={changeFilterData} filterData={filterOptions} filterDataName='title'/>
-              <TextTagInput ref={sortTagRef} value={[selectedTag || '', ...sortTagRef.current?.value || []]} placeholder='Find by tags'/>
+              <TextTagInput ref={sortTagRef} value={[selectedTag || '', ...sortTagRef.current?.value || []]} placeholder='Suchen nach tags'/>
               <div className={`flex-row-normal-normal-small`}>
                 <Button className={scss.search_filter_button} onClick={getBySortOptions}>Sortieren</Button>
                 <Button className={scss.search_filter_button} onClick={resetSort}>Wiederherstellen</Button>

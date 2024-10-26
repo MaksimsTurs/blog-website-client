@@ -1,22 +1,23 @@
 import { CircleHelp, Home, Images, LibraryBig, Search, Settings, Shield, SquarePen } from 'lucide-react'
 
-export default function getIconByPath(path: string, className: string) {
-  switch(path) {
-    case '/write-post':
+export default function getIconByPath(id: number, className: string) {
+  switch(id) {
+    case 1:
+    case 3:
       return <SquarePen className={className}/>
-    case '/admin/post':
+    case 2:
       return <Shield className={className}/>
-    case '/':
+    case 4:
       return <Home className={className}/>
-    case '/search':
+    case 5:
       return <Search className={className}/>
-    case '/setting':
+    case 6:
       return <Settings className={className}/>
-    case '/galery':
+    case 7:
       return <Images className={className}/>
-    case '/database':
+    case 8:
       return <LibraryBig className={className}/>
-    case '/about':
+    case 9:
       return <CircleHelp className={className}/>
   }
 }

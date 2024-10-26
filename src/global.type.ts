@@ -4,7 +4,7 @@ export type ServerResponseError = { code: number, message: string }
 
 export type CustomInputsRef<T = any> = { value: T, clear: () => void }
 
-export type UserRoles = 'User' | 'Admin' | 'Creator'
+export type UserRoles = 'USER' | 'ADMIN' | 'CREATOR'
 
 export type User = {
   _id: string

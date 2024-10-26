@@ -40,7 +40,7 @@ export default function useAuth() {
       }
     },
     out: function(): void {
-      userContext?.updateUserState(prev => ({...prev, isAuthPending: false, isLoading: false }))
+      userContext?.updateUserState(prev => ({...prev, isAuthPending: false, isLoading: false, user: undefined }))
       coockie.set('PR_TOKEN', 'undefined')
     },
     clearError: function(): void {

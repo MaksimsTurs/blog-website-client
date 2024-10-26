@@ -6,7 +6,8 @@ export default function SortInput({ changeFilterData, filterData, filterDataName
   return(
     <TextInput 
       name={filterDataName} 
-      placeholder={`Find by ${filterDataName}...`} 
+      type='text'
+      placeholder={`Suchen nach ${filterDataName}...`} 
       value={filterData[filterDataName] as string} 
       onInput={(event) => changeFilterData(filterDataName, event.currentTarget.value)}/>
     )

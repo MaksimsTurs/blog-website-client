@@ -20,7 +20,7 @@ import fetcher from '@/lib/fetcher/fetcher'
 export default function Page() {
   const searchParams = useSearchParams()
 
-  const isAdmin: boolean = usePermitor().role(['Admin']).permited(),
+  const isAdmin: boolean = usePermitor().role(['ADMIN']).permited(),
         isInsertDatabaseMode = JSON.parse(searchParams.get(URL_SEARCH_PARAMS['IS-INSERT-DATABASE-MODE']) || 'false')
 
   const { data, isFetching, error } = useRequest<Database[]>({ deps: ['database'], request: async () => await fetcher.get('/get/ruzzkyi-mir') })

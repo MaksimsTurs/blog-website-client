@@ -61,9 +61,9 @@ export default function SideMenu() {
           {auth.isAuthPending ?
           <SideMenuLoader/> :
           <section className='flex-column-normal-normal-small'>
-            {auth.permissions?.routing.map(route => (
+            {auth.permissions?.routing.SIDE_MENU.map(route => (
               <Link className={(pathname.split('/')[1] === route.path.split('/')[1]) ? `${scss.aside_link_active} flex-row-center-normal-medium` : `flex-row-center-normal-medium`} key={route.title} to={route.path}>
-                {getIconByPath(route.path, scss.aside_menu_icon)}
+                {getIconByPath(route.iconID, scss.aside_menu_icon)}
                 <p className={scss.aside_menu_text_wrapper}>{route.title}</p>
               </Link>
             ))}

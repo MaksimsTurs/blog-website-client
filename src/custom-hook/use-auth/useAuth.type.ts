@@ -21,6 +21,9 @@ export type UserSession = { user?: AuthUser, permissions: Permissions }
 
 export type CreateParams = { body?: any, apiURL?: string, redirectURL?: string, setToken?: boolean, setSession?: UserSession }
 
-export type Permissions = {
-  routing: { title: string, path: string }[]
+export type Permissions = { 
+  routing: { 
+    SIDE_MENU: { iconID: number, title: string, path: string  }[],
+    INDEX:     { loaderID: number, path: string }[] 
+  }
 }

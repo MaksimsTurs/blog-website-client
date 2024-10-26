@@ -6,16 +6,16 @@ const DateParser: DateParse = {
 
     const difference = Date.parse(date) - Date.now()
 
-    let differenceObject: Difference<number> = {
+    let differences: Difference<number> = {
       second: formatTimeNumber((difference / 1000) % 60),
       minute: formatTimeNumber((difference / 1000 / 60) % 60),
       hour:   formatTimeNumber((difference / (1000 * 60 * 60)) % 24),
-      day:    formatTimeNumber((difference / (1000 * 60 * 60 * 24)) % 30.44),
-      month:  formatTimeNumber((difference / (1000 * 60 * 60 * 24 * 30.44)) % 12),
+      day:    formatTimeNumber((difference / (1000 * 60 * 60 * 24)) % 29.5),
+      month:  formatTimeNumber((difference / (1000 * 60 * 60 * 24 * 29.5)) % 12),
       year:   formatTimeNumber(difference  / (1000 * 60 * 60 * 24 * 365.25))
     }
 
-    return {...this, differenceObject }
+    return {...this, differences }
   },
   getDifferenceString: function(differenceTemplates: GetDifferenceStringParams) {
     const NUM_REGEXP: RegExp = /(\$)/
@@ -29,39 +29,39 @@ const DateParser: DateParse = {
       year: ''
     }
 
-    if(!this.differenceObject) {
+    if(!this.differences) {
       console.error('You need call "getDifference first"')
       return {...this, differenceObjectString }
     }
 
     if(differenceTemplates.year) {
-      differenceObjectString.year = differenceTemplates.year.replace(NUM_REGEXP, this.differenceObject.year.toString())
+      differenceObjectString.year = differenceTemplates.year.replace(NUM_REGEXP, this.differences.year.toString())
     } else if(differenceTemplates.month) {
-      differenceObjectString.month = differenceTemplates.month.replace(NUM_REGEXP, this.differenceObject.month.toString())
+      differenceObjectString.month = differenceTemplates.month.replace(NUM_REGEXP, this.differences.month.toString())
     } else if(differenceTemplates.day) {
-      differenceObjectString.day = differenceTemplates.day.replace(NUM_REGEXP, this.differenceObject.day.toString())
+      differenceObjectString.day = differenceTemplates.day.replace(NUM_REGEXP, this.differences.day.toString())
     } else if(differenceTemplates.hour) {
-      differenceObjectString.hour = differenceTemplates.hour.replace(NUM_REGEXP, this.differenceObject.hour.toString())
+      differenceObjectString.hour = differenceTemplates.hour.replace(NUM_REGEXP, this.differences.hour.toString())
     } else if(differenceTemplates.minute) {
-      differenceObjectString.minute = differenceTemplates.minute.replace(NUM_REGEXP, this.differenceObject.minute.toString())
+      differenceObjectString.minute = differenceTemplates.minute.replace(NUM_REGEXP, this.differences.minute.toString())
     } else if(differenceTemplates.second) {
-      differenceObjectString.second = differenceTemplates.second.replace(NUM_REGEXP, this.differenceObject.second.toString())
+      differenceObjectString.second = differenceTemplates.second.replace(NUM_REGEXP, this.differences.second.toString())
     }
 
     return {...this, differenceObjectString }
   },
   getSortDate: function(template: GetSortDateParams) {
-    const differenceObject: Difference<number> | undefined = this.differenceObject
+    const differenceObject: Difference<number> | undefined = this.differences
 
     if(!differenceObject) {
       console.error('You need call "getDifference" first')
       return ''
     }
 
-    if(differenceObject.year > 0 && template.year) return parseTemplate(template.year, differenceObject)
-    if(differenceObject.month > 0 && template.month) return parseTemplate(template.month, differenceObject)
-    if(differenceObject.day > 0 && template.day) return parseTemplate(template.day, differenceObject)
-    if(differenceObject.hour > 0 && template.hour) return parseTemplate(template.hour, differenceObject)
+    if(differenceObject.year > 0 && template.year)     return parseTemplate(template.year, differenceObject)
+    if(differenceObject.month > 0 && template.month)   return parseTemplate(template.month, differenceObject)
+    if(differenceObject.day > 0 && template.day)       return parseTemplate(template.day, differenceObject)
+    if(differenceObject.hour > 0 && template.hour)     return parseTemplate(template.hour, differenceObject)
     if(differenceObject.minute > 0 && template.minute) return parseTemplate(template.minute, differenceObject)
     if(differenceObject.second > 0 && template.second) return parseTemplate(template.second, differenceObject)
 
