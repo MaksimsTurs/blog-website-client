@@ -42,7 +42,7 @@ export default (param: Param): UserConfig => {
 		
 						return `assets/${ext}/[name][extname]`
 					},
-				},
+				}
 			},
 		}
 	}

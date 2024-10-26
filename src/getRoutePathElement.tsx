@@ -27,24 +27,24 @@ export default function getRoutePathElement(loaderID: number) {
     case 1:
       return <Suspense fallback={<HomeLoader/>}><Home/></Suspense>
     case 2:
-      return <Suspense fallback={<PostLoader/>}><Post/></Suspense>
-    case 3:
       return <Suspense fallback={<SearchLoader/>}><Search/></Suspense>
-    case 4:
-      return <Suspense fallback={<UserLoader/>}><User/></Suspense>
-    case 5:
+    case 3:
       return <Suspense fallback={<SettingLoader/>}><Setting/></Suspense>
-    case 6:
+    case 4:
       return <Suspense fallback={<GaleryLoader/>}><Galery/></Suspense>
-    case 7:
+    case 5:
       return <Suspense fallback={<GaleryLoader/>}><Database/></Suspense>
-    case 8:
+    case 6:
       return <Suspense fallback={<GaleryLoader/>}><About/></Suspense>
-    case 9:
-      return <PageError error={{ code: 404, message: 'Page not found!' }} description="Site there you search is not implemented or not exist!"/>
-    case 10:
+    case 7:
       return <Suspense fallback={<WriteNewPostLoader/>}><WriteNewPost/></Suspense>
-    case 11:
+    case 8:
       return <Suspense fallback={<AdminLoader/>}><Admin/></Suspense>
+    case 9:
+      return <Suspense fallback={<PostLoader/>}><Post/></Suspense>
+    case 10:
+      return <Suspense fallback={<UserLoader/>}><User/></Suspense>
+    case 11:
+      return <PageError error={{ code: 404, message: 'Page not found!' }} description="Site there you search is not implemented or not exist!"/>
   }
 }

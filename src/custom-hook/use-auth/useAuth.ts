@@ -40,8 +40,24 @@ export default function useAuth() {
       }
     },
     out: function(): void {
-      userContext?.updateUserState(prev => ({...prev, isAuthPending: false, isLoading: false, user: undefined }))
       coockie.set('PR_TOKEN', 'undefined')
+      userContext?.updateUserState(prev => {
+        let SIDE_MENU: any[] = [], INDEX: any[] = []
+
+        for(let index in prev.permissions.routing.SIDE_MENU) {
+          const route = prev.permissions.routing.SIDE_MENU[index]
+          if(route.iconID === 8 || route.iconID === 7) continue
+          SIDE_MENU.push(route)
+        }
+
+        for(let index in prev.permissions.routing.INDEX) {
+          const route = prev.permissions.routing.INDEX[index]
+          if(route.loaderID === 8 || route.loaderID === 7) continue
+          INDEX.push(route)
+        }
+        
+        return {...prev, isAuthPending: false, isLoading: false, user: undefined, permissions: {...prev, routing: { INDEX, SIDE_MENU }}}
+      })
     },
     clearError: function(): void {
       useEffect(() => {
