@@ -13,6 +13,7 @@ import ScrollTo from "./component/scroll-to-top/scrollTo"
 import SideMenu from "./component/side-menu/sideMenu"
 import RequestProvider from "./custom-hook/use-request/requestProvider"
 import AuthProvider from "./custom-hook/use-auth/authProvider"
+import HomeLoader from "./page/home/page"
 
 import useWebsiteSetting from "./custom-hook/use-website-setting/useWebsiteSetting"
 import useAuth from "./custom-hook/use-auth/useAuth"
@@ -31,7 +32,9 @@ const App = () => {
       <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1', backgroundColor: 'white' }}>
         <SideMenu/>
         <main>
-          <Routes>{auth.permissions?.routing.INDEX.map(route => <Route key={route.path} path={route.path} element={getRoutePathElement(route.loaderID)}/>)}</Routes>
+          {auth.isAuthPending ? <HomeLoader/> :
+            <Routes>{auth.permissions?.routing.INDEX.map(route => <Route key={route.path} path={route.path} element={getRoutePathElement(route.loaderID)}/>)}</Routes>
+          }
         </main>
       </div>
       <ScrollTo/>

@@ -34,7 +34,7 @@ export default function InsertItemForm({ isUpdate, item }: InsertItemFormProps) 
         contentRef = useRef<CustomInputsRef<string>>(),
         searchParams = useSearchParams(),
         ImageInput = useImageInput({}),
-        isAdmin: boolean = usePermitor().role(['Admin']).permited(),
+        isAdmin: boolean = usePermitor().role(['ADMIN']).permited(),
         navigate = useNavigate()
 
   const changeThumbnailSource = (event: SyntheticEvent<HTMLInputElement>): void => {

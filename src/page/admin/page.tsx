@@ -26,6 +26,7 @@ import { useParams, Navigate } from 'react-router-dom'
 
 import { URL_SEARCH_PARAMS, AUTHORIZATION_OBJECT } from '@/conts'
 import { Fragment } from 'react/jsx-runtime'
+
 export default function Admin() {
   const { tab } = useParams(),
         searchParams = useSearchParams(),

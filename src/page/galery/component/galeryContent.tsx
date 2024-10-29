@@ -27,7 +27,7 @@ export default function GaleryContent({ galery, setCurrentSlide }: GaleryContent
         [isSlideEditMode, setIsSlideEditMode] = useState<boolean>(false),
         [contextToEditID, setContextToEditID] = useState<string | undefined>(),
         searchParams = useSearchParams(),
-        isAdmin: boolean = usePermitor().role(['Admin']).permited() 
+        isAdmin: boolean = usePermitor().role(['ADMIN']).permited() 
   
   const imageExtentions: string[] = ['webp', 'jpeg', 'png', 'jpg']
 

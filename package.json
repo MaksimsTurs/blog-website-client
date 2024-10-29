@@ -1,6 +1,6 @@
 {
   "name": "ruzzkiy-mir",
-  "version": "0.28.47",
+  "version": "0.29.47",
   "type": "module",
   "engines": {
     "node": ">= 20.12.0",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
-    "caniuse-lite": "^1.0.30001671",
+    "caniuse-lite": "^1.0.30001674",
     "lucide-react": "^0.447.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -28,7 +28,7 @@
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "@types/node": "^22.8.1",
+    "@types/node": "^22.8.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.1",
@@ -45,11 +45,10 @@
     "unplugin-imagemin": "^0.5.20",
     "vite": "^5.4.10",
     "vite-imagetools": "^7.0.4",
-    "vite-plugin-chunk-split": "^0.5.0",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-image-optimizer": "^1.1.8",
     "vite-plugin-optimize-css-modules": "^1.1.0",
     "vite-plugin-webfont-dl": "^3.9.5",
-    "vitest": "^2.1.3"
+    "vitest": "^2.1.4"
   }
 }

@@ -6,7 +6,7 @@ type Params = {
 
 export default (params?: Params) => {
   return viteWebFont(params?.fonts, { 
-    injectAsStyleTag: true, 
+    injectAsStyleTag: false, 
     embedFonts: false,
   })
 }
