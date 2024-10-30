@@ -32,9 +32,7 @@ const App = () => {
       <div className="flex-row-normal-normal-medium" style={{ padding: '0rem 1.5rem 0rem 1rem', flexGrow: '1', backgroundColor: 'white' }}>
         <SideMenu/>
         <main>
-          {auth.isAuthPending ? <HomeLoader/> :
-            <Routes>{auth.permissions?.routing.INDEX.map(route => <Route key={route.path} path={route.path} element={getRoutePathElement(route.loaderID)}/>)}</Routes>
-          }
+          {auth.isAuthPending ? <HomeLoader/> : <Routes>{auth.permissions?.routing.INDEX.map(route => <Route key={route.path} path={route.path} element={getRoutePathElement(route.loaderID)}/>)}</Routes>}
         </main>
       </div>
       <ScrollTo/>

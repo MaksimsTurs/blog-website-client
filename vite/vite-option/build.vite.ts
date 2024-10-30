@@ -1,4 +1,4 @@
-import type { BuildOptions, UserConfig } from 'vite'
+import type { UserConfig } from 'vite'
 
 type Param = {
 	isDev: boolean
@@ -49,7 +49,7 @@ export default (param: Param): UserConfig => {
 							return `js/pages/${fileName}`
 						}
 
-						if(/index\.tsx/.test(path)) 	    return `${crypto.randomUUID()}`
+						if(/index\.tsx/.test(path)) 	    return `${(Math.random() * 255).toString(16)}.${(Math.random() * 255).toString(16)}.${(Math.random() * 255).toString(16)}`
 						if(/src\/component/.test(path))  	return 'js/components'
 						if(/src\/custom-hook/.test(path)) return 'js/hooks'
 						if(/src\/lib/.test(path)) 				return 'js/libs'			
