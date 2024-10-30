@@ -1,7 +1,7 @@
 import type { Fetcher } from "./fetcher.type"
 
 export default {
-  baseURL: import.meta.env.DEV ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app/home/10',
+  baseURL: import.meta.env.DEV ? 'http://localhost:4000' : 'https://fuck-putler.vercel.app',
   formatURL: function(URL: string) {
     if(this.baseURL) return `${this.baseURL}${URL}`
     return URL
