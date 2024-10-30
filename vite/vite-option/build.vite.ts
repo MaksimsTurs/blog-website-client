@@ -32,8 +32,6 @@ export default (param: Param): UserConfig => {
 					assetFileNames: (asset: any) => {
 						let [fileName, fileExtention] = asset.name.split('.')
 
-						console.log(fileName)
-
 						if(/(jpeg|jpg|png|webp|gif)/.test(fileExtention))  fileExtention = 'img'
 						if(/(woff|woff2|ttf)/.test(fileExtention)) 				 fileExtention = 'fonts'
 						if(/css/.test(fileExtention))              				 fileExtention = 'css'
