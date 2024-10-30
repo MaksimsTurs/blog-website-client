@@ -32,6 +32,8 @@ export default (param: Param): UserConfig => {
 					assetFileNames: (asset: any) => {
 						let [fileName, fileExtention] = asset.name.split('.')
 
+						console.log(fileName)
+
 						if(/(jpeg|jpg|png|webp|gif)/.test(fileExtention))  fileExtention = 'img'
 						if(/(woff|woff2|ttf)/.test(fileExtention)) 				 fileExtention = 'fonts'
 						if(/css/.test(fileExtention))              				 fileExtention = 'css'
@@ -49,7 +51,7 @@ export default (param: Param): UserConfig => {
 							return `js/pages/${fileName}`
 						}
 
-						if(/index\.tsx/.test(path)) 	    return `${(Math.random() * 255).toString(16)}.${(Math.random() * 255).toString(16)}.${(Math.random() * 255).toString(16)}`
+						if(/index\.tsx/.test(path)) 	    return `${(Math.random() * 100).toString(16)}`
 						if(/src\/component/.test(path))  	return 'js/components'
 						if(/src\/custom-hook/.test(path)) return 'js/hooks'
 						if(/src\/lib/.test(path)) 				return 'js/libs'			
